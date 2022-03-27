@@ -1,0 +1,116 @@
+<div class="col-md-6">
+  <div class="ibox">
+
+    <div class="ibox-content form-horizontal">
+      <div class="form-group required">
+        <label class="col-md-3"><% solog.label.general.branch %></label>
+        <div class="col-md-9">
+            <branch-select-input ng-model="formData.company_id" ng-disabled='isItemExists'></branch-select-input>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-md-3"><% solog.label.general.warehouse %></label>
+        <div class="col-md-9">
+            <warehouses-select-input ng-model="formData.warehouse_id" company-id='formData.company_id' />
+        </div>
+      </div>
+     
+      <div class="form-group required">
+        <label class="col-md-3"><% solog.label.general.date %></label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" ng-model="formData.date_transaction" datepick>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3"><% solog.label.general.description %></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" ng-model="formData.description">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+      <div style='margin-bottom:16mm' ng-if='formData.warehouse_id'>
+          <div class="form-group pull-right">
+            <div class="col-md-12">
+              <item-warehouses-modal-input type='button' is-multiple='1' warehouse-id='formData.warehouse_id' ng-model='formData.item_id' />
+            </div>
+          </div>
+      </div>
+
+      <div>
+          
+          <table class="table table-bordered table-striped" id="appendTable">
+            <thead>
+              <tr>
+                <th><% solog.label.item.code %></th>
+                <th><% solog.label.item.name %></th>
+                <th><% solog.label.warehouse_receipt.code %></th>
+                <th><% solog.label.general.rack %></th>
+                <th><% solog.label.general.qty %></th>
+                <th style="width:5%;"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr ng-if='detail.length == 0'>
+                    <td colspan="6" class='text-center'><% solog.label.general.no_data %></td>
+                </tr>
+                <tr ng-repeat='(i, v) in detail'>
+                    <td><% v.code %></td>
+                    <td><% v.name %></td>
+                    <td><% v.warehouse_receipt_code %></td>
+                    <td><% v.rack_code %></td>
+                    <td>
+                        <input type="text" class='form-control' placeholder only-num ng-model='detail[i].qty'>
+                    </td>
+                    <td class='text-center'>
+                        <a ng-click='deletes(v.id)'>
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+      </div>
+      <!-- <pre><% jStyle(formData) %></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <button type="button" ng-disabled='disBtn' ng-click="submitForm()"class="btn btn-sm btn-primary" name="button"><% solog.label.general.save %></button>
+      <a ui-sref="operational_warehouse.picking" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+    </div>
+  </div>
+</div>
+<!-- modal pallet master -->
+<div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Item List</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped" id="pallet_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode</th>
+              <th>Nama</th>
+              <th class='hidden'>Barcode</th>
+              <th>Satuan</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

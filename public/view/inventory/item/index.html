@@ -1,0 +1,83 @@
+<div class="col-md-12">
+    
+    <div class="ibox" ng-show="isFilter">
+        <div class="ibox-title">
+            <h5><% solog.label.general.filter %></h5>
+        </div>
+
+        <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+        <div class="ibox-content">
+            <div class="form-group">
+                <label class="col-md-3 control-label"><% solog.label.general.category %></label>
+                <div class="col-md-9">
+                    <item-category-select-input ng-model='formData.category_id' ng-change='searchData()'></item-category-select-input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label"><% solog.label.general.purchase_price %></label>
+                <div class="col-md-9">
+                    <div class="input-daterange input-group" style="width:100%;">
+                        <input type="text" class="form-control text-right" ng-model='formData.start_price' jnumber2 only-num ng-change="searchData()">
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="form-control text-right" ng-model='formData.end_price' jnumber2 only-num ng-change="searchData()">
+                    </div>
+                </div>
+            </div>
+
+            <span ng-show="settings.general.is_use_sales">
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-9">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" ng-model="formData.is_merchandise" ng-true-value="1" ng-false-value="null" ng-change="searchData()"> 
+                            <span>
+                                Merchandise item ?
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </span>
+
+            <span>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-9">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" ng-model="formData.is_service" ng-true-value="1" ng-false-value="null" ng-change="searchData()"> 
+                            <span>
+                                Is Service ?
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </span>
+
+        </div>
+        <div class="ibox-footer">
+          <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+          <!-- <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button> -->
+          <!-- <a href="<%baseUrl+'/excel/inventory_item_export'%>" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i> Export All</a> -->
+
+        </div>
+      </form>
+    </div>
+
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><% solog.label.item.title %></h5>
+        <div class="ibox-tools">
+            <span id="export_button"></span>
+            <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+              <a ng-show="roleList.includes('inventory.item.create')" class="btn btn-sm btn-primary" ui-sref="inventory.item.create"><i class="fa fa-plus"></i> Add</a>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <item-table></item-table>
+      </div>
+    </div>
+</div>

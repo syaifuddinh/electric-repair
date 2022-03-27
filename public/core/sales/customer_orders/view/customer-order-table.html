@@ -1,0 +1,27 @@
+<div class="ibox" ng-show="isFilter">
+    <div class="ibox-title">
+      <h5><% $root.solog.label.general.filter %></h5>
+    </div>
+    <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+      <div class="ibox-content">
+  
+      </div>
+      <div class="ibox-footer">
+        <a class="btn btn-sm btn-warning" ng-click="resetFilter()"><% $root.solog.label.general.reset %></a>
+      </div>
+    </form>
+  </div>
+  
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% pageTitle %></h5>
+      <div class="ibox-tools">
+          <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+          <button ng-show="$root.roleList.includes('sales.customer_order.add')" class="btn btn-sm btn-primary" ng-click='add()'><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></button>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <solog-datatable options="options" id="customer_order_datatable"></solog-datatable>
+    </div>
+  </div>
+  

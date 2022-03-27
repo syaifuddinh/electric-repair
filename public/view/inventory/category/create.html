@@ -1,0 +1,101 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Item Category</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Main Category</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose main category'" chosen allow-single-deselect="true" ng-model="formData.parent_id" ng-options="s.id as s.name for s in data.parent">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Code</label>
+          <div class="col-md-5">
+            <input type="text" ng-model="formData.code" class="form-control">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Name</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.name" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Is Asset</label>
+          <div class="col-md-9">
+            <input type="checkbox" ng-disabled="formData.is_tire==1" ng-model="formData.is_asset" ng-true-value="1" ng-false-value="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Is Service</label>
+          <div class="col-md-9">
+            <input type="checkbox" ng-model="formData.is_jasa" ng-true-value="1" ng-false-value="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Is Tires</label>
+          <div class="col-md-9">
+            <input type="checkbox" ng-change="banChange(formData.is_tire)" ng-model="formData.is_tire" ng-true-value="1" ng-false-value="0">
+          </div>
+        </div>
+        <span ng-if='settings.general.is_use_depo'>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Is Container Part</label>
+              <div class="col-md-9">
+                <input type="checkbox" ng-model="formData.is_container_part" ng-true-value="1" ng-false-value="0">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Is Container Yard</label>
+              <div class="col-md-9">
+                <input type="checkbox" ng-model="formData.is_container_yard" ng-true-value="1" ng-false-value="0">
+              </div>
+            </div>
+        </span>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Is Pallet</label>
+          <div class="col-md-9">
+            <input type="checkbox" ng-model="formData.is_pallet" ng-true-value="1" ng-false-value="0">
+          </div>
+        </div>
+        <div class="form-group" ng-if="formData.is_tire==1">
+          <label class="col-md-3 control-label">Tire Types</label>
+          <div class="col-md-9">
+            <input type="radio" ng-model="formData.type_ban" ng-value="1"> <strong>Ban Luar</strong>
+            <input type="radio" ng-model="formData.type_ban" ng-value="2"> <strong>Ban Dalam</strong>
+            <input type="radio" ng-model="formData.type_ban" ng-value="3"> <strong>Ban Marset</strong>
+          </div>
+        </div>
+
+        <div class="form-group" ng-if='formData.is_jasa == 0'>
+          <label class="col-md-3 control-label"><% solog.label.general.default_rack %></label>
+          <div class="col-md-9">
+            <racks-select-input ng-model="formData.default_rack_id" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label">Description</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.description" class="form-control">
+          </div>
+        </div>
+        <!-- <%formData%> -->
+      </div>
+      <div class="ibox-footer">
+        <a ng-click='backward()' class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

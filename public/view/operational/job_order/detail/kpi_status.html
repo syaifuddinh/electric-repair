@@ -1,0 +1,68 @@
+<button ng-if='!settings.job_order.auto_update_status' ng-show="roleList.includes('operational.job_order.detail.detail_job_order.update_status')" type="button" ng-click="job_order.addStatus()" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Update Status</button>
+
+<div class="btn-group" ng-if='settings.job_order.auto_update_status'>
+    <button  type="button" class="btn btn-default btn-xs"> Status : <% job_order.kpi_status_data.name  %></button>
+    <button  type="button" ng-click='job_order.autoSubmitStatus()' ng-if='job_order.kpi_status_data.is_done == 0' ng-disabled='disBtn' class="btn btn-success btn-xs pd-1"><i class='fa fa-check'></i></button>
+
+    <button  type="button" ng-click='job_order.autoSubmitStatus()' ng-if='job_order.kpi_status_data.is_done == 1'  ng-disabled='disBtn' class="btn btn-primary btn-xs pd-1"><i class='fa fa-close'></i></button>
+</div>
+
+<!-- modal status -->
+<div class="modal fade" id="modalStatus" role="dialog" aria-labelledby="" aria-hidden="true" style='text-align:left'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Update Status Proses</h4>
+            </div>
+            <form class="form-horizontal" ng-submit="job_order.submitStatus()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-md-3">Status Saat Ini</label>
+                        <div class="col-md-9">
+                            <span class="font-bold"><% job_order.kpi_status_data.name %></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Status Baru</label>
+                        <div class="col-md-9">
+                            <select class="form-control" data-placeholder-text-single="'Choose Status'" chosen allow-single-deselect="false" ng-model="job_order.statusData.kpi_status_id" ng-options="s.id as s.name for s in job_order.kpi_status" ng-change='job_order.statusOnChange()'>
+                                <option value=""></option>
+                            </select>
+                            <div>
+                                <div class="checkbox-inline" ng-if='job_order.statusIsDone'>
+                                    <input type="checkbox" ng-model='job_order.statusData.decrease' ng-true-value='1' ng-false-value='0' class='mg-r2'> Keluarkan barang ?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Tanggal Update</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control text-center" ng-model="job_order.statusData.update_date" datepick>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control clockpick text-center" ng-model="job_order.statusData.update_time">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Keterangan</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" ng-model="job_order.statusData.description" rows="4"></textarea>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click='job_order.submitStatus()' ng-disabled="disBtn" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

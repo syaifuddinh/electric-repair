@@ -1,0 +1,72 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Edit Job Order</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td style="width:25%;">Customer</td>
+                  <td>: <span class="font-bold"><% item.customer.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Kontrak</td>
+                  <td>: <span class="font-bold"><% item.quotation.no_contract %></span></td>
+                </tr>
+                <tr>
+                  <td>Layanan</td>
+                  <td>: <span class="font-bold" ng-if="item.service_id"><% item.service.name %> (<% item.service.service_type.name %>)</span></td>
+                </tr>
+                <tr>
+                  <td>Tanggal Input</td>
+                  <td>: <span class="font-bold" ng-if="item.created_at"><% item.created_at|fullDateTime %></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="form-group hidden">
+              <label class="col-md-3">No Surat Pendukung</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.no_bl">
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-md-12"><hr></div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">Gudang</label>
+              <div class="col-md-9">
+                <select style='width:100%' class="form-control" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="true" ng-model="formData.warehouse_id" ng-options="s.id as s.name for s in data.warehouse">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Tanggal Transaksi</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.shipment_date" datepick>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-3">Keterangan</label>
+              <div class="col-md-9">
+                <textarea class="form-control" ng-model="formData.description" rows="2"></textarea>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational_warehouse.warehouse_rent" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

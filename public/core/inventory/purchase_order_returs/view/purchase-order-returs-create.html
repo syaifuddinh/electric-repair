@@ -1,0 +1,103 @@
+<div class="col-md-12">
+  <div class="ibox">
+
+    <div class="ibox-content form-horizontal">
+      <div class="form-group required">
+        <label class="col-md-3"><% $root.solog.label.general.branch %></label>
+        <div class="col-md-9">
+            <branch-select-input ng-model="formData.company_id" ng-disabled='isItemExists'></branch-select-input>
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label class="col-md-3"><% $root.solog.label.general.warehouse %></label>
+        <div class="col-md-9">
+            <warehouses-select-input ng-model="formData.warehouse_id" company-id='formData.company_id' />
+        </div>
+      </div>
+           
+      <div class="form-group required">
+        <label class="col-md-3"><% $root.solog.label.general.supplier %></label>
+        <div class="col-md-9">
+            <supplier-select-input ng-model="formData.supplier_id" company-id='formData.supplier_id' />
+        </div>
+      </div>
+     
+      <div class="form-group required">
+        <label class="col-md-3"><% $root.solog.label.general.date %></label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" ng-model="formData.date_transaction" datepick>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3"><% $root.solog.label.general.description %></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" ng-model="formData.description">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+      <div style='margin-bottom:16mm' ng-if='formData.warehouse_id'>
+          <div class="form-group pull-right">
+            <div class="col-md-12">
+                <item-warehouses-modal-input 
+                    type='button' 
+                    is-multiple='1' 
+                    is-merchandise='is_merchandise' 
+                    is-pallet='is_pallet' 
+                    warehouse-id='formData.warehouse_id' 
+                    ng-model='formData.item_id' 
+                />
+            </div>
+          </div>
+      </div>
+
+      <div>
+          
+          <table class="table table-bordered table-striped" id="appendTable">
+            <thead>
+              <tr>
+                <th><% $root.solog.label.item.code %></th>
+                <th><% $root.solog.label.item.name %></th>
+                <th><% $root.solog.label.warehouse_receipt.code %></th>
+                <th><% $root.solog.label.general.rack %></th>
+                <th><% $root.solog.label.general.qty %></th>
+                <th style="width:5%;"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr ng-if='detail.length == 0'>
+                    <td colspan="6" class='text-center'><% $root.solog.label.general.no_data %></td>
+                </tr>
+                <tr ng-repeat='(i, v) in detail'>
+                    <td><% v.code %></td>
+                    <td><% v.name %></td>
+                    <td><% v.warehouse_receipt_code %></td>
+                    <td><% v.rack_code %></td>
+                    <td>
+                        <input type="text" class='form-control' placeholder only-num ng-model='detail[i].qty'>
+                    </td>
+                    <td class='text-center'>
+                        <a ng-click='deletes(v.id)'>
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+      </div>
+      <!-- <pre><% jStyle(formData) %></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <button type="button" ng-disabled='disBtn' ng-click="submitForm()"class="btn btn-sm btn-primary" name="button"><% $root.solog.label.general.save %></button>
+      <a ng-click="back()" class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+    </div>
+  </div>
+</div>
+

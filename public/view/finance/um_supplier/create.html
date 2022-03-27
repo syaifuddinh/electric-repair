@@ -1,0 +1,195 @@
+<div class="form-horizontal">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Data</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Branch</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Tanggal</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Supplier</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Supplier'" chosen allow-single-deselect="false" ng-model="formData.contact_id" ng-options="s.id as s.name for s in data.supplier">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <!--
+          <div class="form-group">
+            <label class="col-md-3 control-label">Jumlah</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" jnumber2 only-num ng-model="formData.amount">
+            </div>
+          </div>
+          -->
+          <div class="form-group">
+            <label class="col-md-3 control-label">Keterangan</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.description">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Add Cara Pembayaran</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Cara Pembayaran</label>
+            <div class="col-md-9">
+              <select class="form-control" id="typeBayar" ng-change="typeChange(detail.type)" data-placeholder-text-single="'Choose Cara Bayar'" chosen allow-single-deselect="false" ng-model="detail.type" ng-options="s.id as s.name for s in type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="detail.type==1">
+            <label class="col-md-3 control-label">Akun Kas/Bank</label>
+            <div class="col-md-9">
+              <select class="form-control" id="accountName" data-placeholder-text-single="'Choose Akun Kas/Bank'" chosen allow-single-deselect="false" ng-model="detail.cash_account_id" ng-options="s.id as s.name for s in data.cash_account">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="detail.type==2">
+            <label class="col-md-3 control-label">No Cek/Giro</label>
+            <div class="col-md-9">
+              <input type="text" ng-click="modalCekGiro()" class="form-control" readonly ng-model="detail.cek_giro_name">
+              <input type="hidden" ng-model="detail.cek_giro_id">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Jumlah</label>
+            <div class="col-md-5">
+              <input type="text" ng-disabled="detail.type==2" class="form-control" jnumber2 only-num ng-model="detail.amount">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Keterangan</label>
+            <div class="col-md-9">
+              <input type="text" id="desc" class="form-control" ng-model="detail.description">
+            </div>
+          </div>
+        </div>
+        <div class="ibox-footer">
+          <!-- <%detail%><br> -->
+          <button ng-click="appendTable()" ng-model="appendTableBtn" ng-disabled="detail.amount<=0 || !detail.amount || (detail.type==1&&!detail.cash_account_id) || (detail.type==2&&!detail.cek_giro_id)" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add ke Tabel Pembayaran</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Cara Pembayaran</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+          <!-- <pre><%formData.detail%></pre><br> -->
+          <table class="table display compact nowrap table-bordered table-stripped" id="appendTable">
+            <thead>
+              <tr>
+                <th>Cara Bayar</th>
+                <th>Refrensi</th>
+                <th>Keterangan</th>
+                <th style="width: 20%;">Jumlah</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+              <!--
+              <tr>
+                <th colspan="3">Total</th>
+                <th>
+                  <input type="text" class="form-control text-right" jnumber2 only-num ng-model="formData.amount" readonly>
+                </th>
+                <th></th>
+              </tr>
+              -->
+              <tr>
+                <th colspan="3">Total</th>
+                <th>
+                  <input type="text" class="form-control text-right" jnumber2 only-num ng-model="formData.total_bayar" readonly>
+                </th>
+                <th></th>
+              </tr>
+              <!--
+              <tr>
+                <th colspan="3"><% formData.lebih_bayar<0?'Kurang Bayar':'Lebih Bayar' %></th>
+                <th>
+                  <input type="text" class="form-control text-right" ng-bind="formData.lebih_bayar=formData.total_bayar-formData.amount" jnumber2 only-num ng-model="formData.lebih_bayar" readonly>
+                </th>
+                <th></th>
+              </tr>
+              -->
+            </tfoot>
+          </table>
+        </div>
+        <div class="ibox-footer">
+          <a ui-sref="finance.um_supplier" class="btn btn-sm btn-warning">Kembali</a>
+          <button ng-click="submitForm()" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCekGiro" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width: 75%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Daftar Cek Giro</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="cekGiroDatatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Branch</th>
+              <th>No Cek/Giro</th>
+              <th>Tgl Terbit</th>
+              <th>Tgl Efektif</th>
+              <th class="hidden">Penerbit</th>
+              <th class="hidden">Penerima</th>
+              <th>Tipe</th>
+              <th>Jumlah</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

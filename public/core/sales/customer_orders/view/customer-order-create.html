@@ -1,0 +1,136 @@
+<div class="col-md-12">
+    <div class="ibox-content form-horizontal">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 mg-l4">
+                <div class="form-group required">
+                    <div class="col-md-3">
+                        <label><% $root.solog.label.general.customer %></label>
+                    </div>
+                    <div class="col-md-9">
+                        <customer-select-input ng-model='formData.customer_id' ng-change="changeCustomer(formData.customer_id)"></customer-select-input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label><% $root.solog.label.customer_order.no_po_customer %></label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" ng-model="formData.code" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="formData.customer_id">
+                    <div class="col-md-3">
+                        <label>No. <% $root.solog.label.general.contract %></label>
+                    </div>
+                    <div class="col-md-9">
+                        <contract-modal-input 
+                            ng-model='formData.quotation_id' customer-id='formData.customer_id' 
+                            is-sales-contract="is_sales_contract"
+                        />
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-3">Date</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" ng-model="formData.date" datepick>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3">Description</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" ng-model="formData.description">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3">Pembayaran <span style="color:red">*</span></label>
+                    <div class="col-md-9">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" ng-model="formData.payment" id="debit_radio" value="1">
+                            <label class="form-check-label m-r-sm" for="debit_radio">
+                                Due On Receipt
+                            </label>
+                            <input class="form-check-input" type="radio" ng-model="formData.payment" id="kredit_radio" value="2">
+                            <label class="form-check-label" for="kredit_radio">
+                                Jatuh Tempo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 pd-b8">
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4><i class="fa fa-cubes"></i> <% $root.solog.label.general.item %></h4>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="pull-right" ng-show="$root.roleList.includes('sales.customer_order.add')">
+                            <item-warehouses-modal-input type='button' is-multiple='1' ng-model='formData.item_id' is-pallet="isPallet" quotation-id='formData.quotation_id'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-responsive" id="appendTable">
+                    <thead>
+                      <tr>
+                        <th><% $root.solog.label.item.code %></th>
+                        <th><% $root.solog.label.item.name %></th>
+                        <th><% $root.solog.label.general.unit %></th>
+                        <th><% $root.solog.label.general.qty %></th>
+                        <th><% $root.solog.label.general.stock %></th>
+                        <th><% $root.solog.label.general.description %></th>
+                        <th><% $root.solog.label.general.price %></th>
+                        <th><% $root.solog.label.general.price_total %></th>
+                        <th style="width:5%;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if='formData.detail.length == 0'>
+                            <td colspan="7" class='text-center'><% $root.solog.label.general.no_data %></td>
+                        </tr>
+                        <tr ng-repeat='(i, v) in formData.detail'>
+                            <td><% v.code %></td>
+                            <td><% v.name %></td>
+                            <td><% v.unit %></td>
+                            <td>
+                                <input type="text" class='form-control' placeholder only-num ng-model='formData.detail[i].qty'>
+                            </td>
+                            <td><% v.stock %></td>
+                            <td>
+                                <input type="text" class='form-control' placeholder ng-model='formData.detail[i].description'>
+                            </td>
+                            <td><% v.price %></td>
+                            <td><% v.qty * v.price %></td>
+                            <td class='text-center'>
+                                <a ng-click='deletes(v.id)'>
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <hr>
+                <h4><i class="fa fa-files-o"></i> <% $root.solog.label.general.files %></h4>
+            </div>
+            <div class="col-md-12">
+                <h5>Upload Lampiran</h5>
+                <div action="/" class="dropzone" id="file_upload">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-footer">
+        <a ng-click="back()" class="mg-l4 btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+        <button ng-show="$root.roleList.includes('sales.customer_order.add')" type="button" ng-click="submitForm()" ng-disabled="disBtn" class="btn btn-sm btn-primary submitButton" name="button"><% $root.solog.label.general.save %></button>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Registrasi Vendor</h5>
+      <div class="ibox-tools">
+          <a href="<%baseUrl+'/excel/register_vendor_export'%>" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i>
+            Export</a>
+        <a ng-show="roleList.includes('vendor.register.create')" class="btn btn-sm btn-primary" ui-sref="vendor.register_vendor.create"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nama Vendor</th>
+            <th>Alamat</th>
+            <th>Telephone</th>
+            <th>Email</th>
+            <th style="width:10%;"></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>

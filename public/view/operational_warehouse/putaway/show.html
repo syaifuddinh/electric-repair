@@ -1,0 +1,101 @@
+'<form class="form-horizontal" ng-submit="submitForm()" id="submitForm">
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Put Away</h5>
+      <div class="ibox-tools">
+        <!-- <button type="button" ng-if="item.status==1" class="btn btn-sm btn-success" ui-sref='operational_warehouse.putaway.edit({id:item.id})' name="button"> Edit</button> -->
+        <button ng-show="roleList.includes('inventory.putaway.detail.out')" type="button" ng-if="item.status==1" class="btn btn-sm btn-primary" ng-disabled='disBtn' ng-click="approve()" name="button"><i class="fa fa-upload"></i> Item Out</button>
+        <button ng-show="roleList.includes('inventory.putaway.detail.in')" type="button" ng-if="item.status==2" class="btn btn-sm btn-primary" ng-disabled='disBtn' ng-click="item_in()" name="button"><i class="fa fa-download"></i> Item In</button>
+      </div>
+    </div>
+      <div class="ibox-content">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:30%;"><% solog.label.general.warehouse %></td>
+              <td>: <% item.warehouse_name %></td>
+            </tr>
+              <td>No. Transaction</td>
+              <td>: <% item.code %></td>
+            </tr>
+            <tr>
+              <td><% solog.label.general.date %></td>
+              <td>: <% item.date_transaction|fullDate %></td>
+            </tr>
+            <tr>
+              <td><% solog.label.general.status %></td>
+              <td>: <span ng-bind-html="findJsonId(item.status,status).name"></span></td>
+            </tr>
+            <tr>
+              <td><% solog.label.general.description %></td>
+              <td>: <% item.description %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Item</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th><% solog.label.item.code %></th>
+            <th><% solog.label.item.name %></th>
+            <th class='hidden'>Barcode</th>
+            <th><% solog.label.general.rack %></th>
+            <th><% solog.label.general.qty %></th>
+            <th><% solog.label.general.destination_rack %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i,value) in detail">
+            <td><% value.item_code %></td>
+            <td><% value.item_name %></td>
+            <td><% value.origin_rack_code %></td>
+            <td class='text-right' style="width:8%;"><% value.qty|number %></td>
+            <td><% value.destination_rack_code %></td>
+            <td class="text-center">
+              <a ng-click="editDetail(value)" ng-if="item.status==1"><i class="fa fa-edit"></i></a>&nbsp;
+              <a ng-click="deleteDetail(value.id)" ng-if="item.status==1"><i class="fa fa-trash"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <%formData%> -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="operational_warehouse.putaway" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+    </div>
+  </div>
+</div>
+</form>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Item</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group required">
+          <label class="col-md-3">Qty</label>
+          <div class="col-md-5">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="editData.qty" >
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-disabled='disBtn' ng-click="submitEdit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

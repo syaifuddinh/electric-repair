@@ -1,0 +1,70 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Vehicle yang dikemudikan</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table display compact nowrap table-bordered">
+      <thead>
+        <tr>
+          <th>No Lambung</th>
+          <th>Nopol</th>
+          <th>Varian</th>
+          <th>Terakhir Digunakan</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in data.item">
+          <td><% item.vehicle.code %></td>
+          <td><% item.vehicle.nopol %></td>
+          <td><% item.vehicle.vehicle_variant.name %></td>
+          <td><span ng-if="item.last_used!=null"><% item.last_used|fullDate %></span></td>
+          <td><% item.active_name %></td>
+          <td>
+            <a ng-show="roleList.includes('driver.driver.detail.vehicle.delete')" ng-click="delete_vehicle(item.id)"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel-footer">
+    <a ng-show="roleList.includes('driver.driver.detail.vehicle.register')" ng-click="addVehicle()" class="btn btn-sm btn-primary">Register Vehicle</a>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_vehicle" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width: 30%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Register Vehicle</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitForm()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3">Status Driver</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Status Driver'" chosen allow-single-deselect="true" ng-model="formData.driver_status" ng-options="s.id as s.name for s in driver_status">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Vehicle</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="true" ng-model="formData.vehicle_id" ng-options="s.id as s.name for s in vehicles">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

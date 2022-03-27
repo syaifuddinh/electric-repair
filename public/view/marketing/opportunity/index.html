@@ -1,0 +1,83 @@
+<div class="col-md-12">
+  <div class="ibox" ng-show="isFilter">
+    <div class="ibox-title">
+      <h5>Filter Opportunity</h5>
+    </div>
+    <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" ng-submit="filterJobOrder()">
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-3 control-label">Customer</label>
+          <div class="col-md-9">
+            <select ng-change="searchData()" class="form" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in customers">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Periode</label>
+          <div class="col-md-9">
+            <div class="input-daterange input-group" style="width:100%;">
+              <input ng-change="searchData()" type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+              <span class="input-group-addon">to</span>
+              <input ng-change="searchData()" type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Stage</label>
+          <div class="col-md-9">
+            <select ng-change="searchData()" name="stage" chosen class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" allow-single-deselect="false" ng-model='formData.customer_stage_id' ng-options="c.id as c.name for c in data.customer_stage"></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Status</label>
+          <div class="col-md-9">
+            <select ng-change="searchData()" class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" data-placeholder-text-single="'Semua Status'" allow-single-deselect="true" ng-model="formData.status" >
+              <option value="1">Opportunity</option>
+              <option value="5">Cancel Opportunity</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <div class="ibox-footer">
+        <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+<!--        <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button>-->
+        <!-- <button type='button' ng-click='exportExcel()' class="pull-right btn btn-default font-bold"><i class="fa fa-file-excel-o"></i> Export</button> -->
+      </div>
+    </form>
+  </div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Opportunity</h5>
+      <div class="ibox-tools">
+        <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>        
+        <a ng-show="roleList.includes('marketing.opportunity.create')" class="btn btn-sm btn-primary" ui-sref="marketing.opportunity.create"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <th><% solog.label.opportunity.code %></th>
+            <th><% solog.label.opportunity.date %></th>
+            <th>Customer</th>
+            <th>Stage</th>
+            <th>Sales</th>
+            <th><% solog.label.general.description %></th>
+            <th>Status</th>
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

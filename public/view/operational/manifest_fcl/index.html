@@ -1,0 +1,61 @@
+<div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5>Filter Packing List FCL / LCL</h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% solog.label.general.branch %></label>
+        <div class="col-md-9">
+          <branch-select-input ng-model='formData.company_id' ng-change='searchData()'>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Periode</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input  ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+            <span class="input-group-addon">to</span>
+            <input  ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3 control-label">Status</label>
+        <div class="col-md-9">
+          <select  ng-change='searchData()' class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" data-placeholder-text-single="'Semua Status'" chosen="" allow-single-deselect="true" ng-model="formData.status">
+            <option value="" class="" selected="selected"></option>
+            <option value='1'>Terjadwal</option>
+            <option value='2'>Berangkat</option>
+            <option value='3'>Sampai</option>
+            <option value='4'>Selesai</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+<!--      <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button>-->
+    </div>
+  </form>
+</div>
+
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>Packing List FCL / LCL</h5>
+    <div class="ibox-tools">
+      <button type="button" class="btn btn-success btn-sm font-bold mg-r1" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+      <!-- <a ng-show="roleList.includes('operational.manifest.container.create')" class="btn btn-sm btn-primary" ui-sref="operational.manifest_fcl.create"><i class="fa fa-plus"></i> Add</a> -->
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable"></table>
+  </div>
+</div>

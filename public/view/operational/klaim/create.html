@@ -1,0 +1,264 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Data</h5>
+        </div>
+        <div class="ibox-content">
+          <div class="form-group">
+            <label class="col-md-3 control-label">Branch</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Tanggal</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Customer</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.contact_id" >
+              <!-- ng-options="s.id as s.name for s in data.customer"> -->
+                <option value="6">PT ABADI</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" >
+          <label class="col-md-3 control-label">Job Order </label>
+          <div class="col-md-9">
+            <div class="input-group">
+              <input readonly ng-click="cariJO(formData.contact_id)" type="text" class="form-control" ng-model="formData.job_order_code" placeholder="Cari Job Order">
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              <input type="hidden" ng-model="formData.job_order_id">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Pengenaan Klaim</label>
+          <div class="col-md-3">
+                <select class="form-control" data-placeholder-text-single="'Choose Pengenaan'" chosen allow-single-deselect="false" ng-model="formData.pengenaan" ng-options="s.id as s.name for s in pengenaan">
+          
+            </select>
+          </div>
+          <div class="col-md-6" ng-if="formData.pengenaan==1">
+            <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="false" ng-model="formData.contact_pengenaan" ng-options="s.id as s.name for s in data.vendor">
+                <option value=""></option>
+              </select>
+          </div> 
+          <div class="col-md-6" ng-if="formData.pengenaan==2">
+            <select class="form-control" data-placeholder-text-single="'Choose Karyawan/Driver'" chosen allow-single-deselect="false" ng-model="formData.contact_pengenaan" ng-options="s.id as s.name for s in data.driver">
+                <option value=""></option>
+              </select>
+          </div>
+        </div>
+          
+          <div class="form-group">
+            <label class="col-md-3 control-label">Keterangan</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.description">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Detail Komoditas</h5>
+        </div>
+        <div class="ibox-content">
+          <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-5">
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="pJO" ng-change="lain_jo={}" ng-model="detail.type" ng-value="1">
+              <label for="pJO">Job Order</label>
+            </div>
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="pLain" ng-change="lain_jo={}" ng-model="detail.type" ng-value="2">
+              <label for="pLain">Lain-Lain</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="detail.type==1">
+          <label class="col-md-3 control-label">Cari Komoditas</label>
+          <div class="col-md-9">
+            <div class="input-group">
+              <input readonly ng-click="cariKomoditas(formData.job_order_id)" type="text" id="Komoditas" class="form-control" ng-model="detail.komoditasJO" placeholder="Cari Komoditas Job Order">
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="detail.type==2">
+          <label class="col-md-3 control-label">Komoditas Lain</label>
+          <div class="col-md-9">
+            <div class="input-group">
+              <select class="form-control" id="KomoditasLain" data-placeholder-text-single="'Choose Komoditas'" chosen allow-single-deselect="false" ng-model="detail.komoditas" >
+                <!-- ng-options="s.id as s.name for s in data.komoditas" >  -->
+                <option value="1">Bahan Bangunan</option>
+                <option value="2">Produk Perikanan</option>
+                <option value="3">Produk Pertambangan</option>
+              </select>
+            </div>
+          </div>
+        </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Qty</label>
+            <div class="col-md-4">
+              <input type="text" jnumber2 only-num ng-keyup="detail.jumlah=detail.qty*detail.harga" class="form-control" ng-model="detail.qty"  >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Harga Satuan</label>
+            <div class="col-md-6"> 
+              <input type="text" jnumber2 only-num ng-keyup="detail.jumlah=detail.qty*detail.harga" class="form-control" ng-model="detail.harga"  >
+            </div>
+          </div> 
+          <div class="form-group">
+            <label class="col-md-3 control-label">Jumlah Klaim</label>
+            <div class="col-md-6">
+              <input type="text" jnumber2 only-num class="form-control" ng-model="detail.jumlah" readonly="" >
+            </div>
+          </div> 
+          <div class="form-group">
+            <label class="col-md-3 control-label">Qty</label>
+            <div class="col-md-4">
+              <input type="text" jnumber2 only-num ng-keyup="detail.jumlah2=detail.qty2*detail.harga2" class="form-control" ng-model="detail.qty2" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Harga Satuan</label>
+            <div class="col-md-6">
+              <input type="text" jnumber2 only-num ng-keyup="detail.jumlah2=detail.qty2*detail.harga2" class="form-control" ng-model="detail.harga2"  >
+            </div>
+          </div> 
+          <div class="form-group">
+            <label class="col-md-3 control-label">Klaim Kry/Vndr</label>
+            <div class="col-md-6">
+              <input type="text" jnumber2 only-num class="form-control" ng-model="detail.jumlah2" readonly="" >
+            </div>
+          </div> 
+          <div class="form-group">
+            <label class="col-md-3 control-label">Keterangan</label>
+            <div class="col-md-9">
+              <input type="text" id="desc" class="form-control" ng-model="detail.description">
+            </div>
+          </div>
+        </div>
+        <div class="ibox-footer">
+          <!-- <%detail%><br> -->
+          <button ng-click="appendTable()" ng-model="appendTableBtn" ng-disabled="detail.komoditas=='' || detail.jumlah=='0'|| detail.jumlah==''"  class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add ke Tabel</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Daftar Komoditas Klaim</h5>
+        </div>
+        <div class="ibox-content">
+          <!-- <pre><%formData.detail%></pre><br> -->
+          <table class="table display compact nowrap table-bordered table-stripped" id="appendTable">
+            <thead>
+              <tr>
+                <th>Komoditas</th>
+                <th>Qty</th>
+                <th>Harga Satuan</th>
+                <th>Jml Klaim</th>
+                <th>Klaim Kry/Vndr</th>
+                <th width="25%">Keterangan</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="5" style="text-align: right;">Total Klaim</th>
+                <th>
+                  <input type="text" class="form-control text-right" jnumber2 only-num ng-model="formData.total" readonly>
+                </th>
+                <th></th>
+              </tr>
+             
+            </tfoot>
+          </table>
+        </div>
+        <div class="ibox-footer">
+          <a ui-sref="operational.klaim" class="btn btn-sm btn-warning">Kembali</a>
+          <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn || formData.total<=0 || formData.contact_id==0 || formData.contact_id=='' || formData.job_order_id==0" class="btn btn-sm btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<!-- modal JO-->
+<div class="modal fade" id="modalJO" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Job Order</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="jo_datatable" style="width:100%;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode JO</th>
+              <th>Tanggal</th>
+              <th>PO Customer</th>
+              <th>Layanan</th>
+              <th>Jenis</th>
+              <th>Route</th>
+              <th>Customer</th>
+              <th>Alamat Kirim</th>
+              <th>Pengiriman</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal JO-->
+<div class="modal fade" id="modalKomoditas" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Komoditas Job Order</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="komoditas_datatable" style="width:100%;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Item</th>
+              <th>Jumlah</th>
+              <th>Harga Satuan</th>
+              <th>Harga Total</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<form class="form-horizontal">
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Permintaan Mutasi</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width: 20%">Kode Permintaan</td>
+              <td>: <span><% item.code %></span></td>
+            </tr>
+            <tr>
+              <td>Tgl Permintaan</td>
+              <td>: <span ng-if="item.date_request"><% item.date_request|fullDate %></span></td>
+            </tr>
+            <tr>
+              <td>Tgl Kebutuhan</td>
+              <td>: <span ng-if="item.date_needed"><% item.date_needed|fullDate %></span></td>
+            </tr>
+            <tr>
+              <td>Branch Asal</td>
+              <td>: <span><% item.company_fr.name %></span></td>
+            </tr>
+            <tr>
+              <td>Branch Tujuan</td>
+              <td>: <span><% item.company_tr.name %></span></td>
+            </tr>
+            <tr>
+              <td>Akun Kas/Bank Asal</td>
+              <td>: <span><% item.account_from.account_name %></span></td>
+            </tr>
+            <tr>
+              <td>Akun Kas/Bank Tujuan</td>
+              <td>: <span><% item.account_to.account_name %></span></td>
+            </tr>
+            <tr>
+              <td>Jumlah</td>
+              <td>: <span><% item.total|number %></span></td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>: <span class="font-bold"><% findJsonId(item.status,status).name %></span></td>
+            </tr>
+            <tr ng-show='item.status == 5'>
+              <td>Alasan penolakan</td>
+              <td>: <span class="font-bold"><% item.reject_reason %></span></td>
+            </tr>
+            <tr>
+              <td>Keterangan</td>
+              <td>: <span><% item.description %></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ibox-footer">
+      <a ng-click="backward()" class="btn btn-sm btn-warning">Kembali</a>
+      <!-- redirect ke edit mutasi dan ketika save ubah status -->
+      <a ng-show="roleList.includes('finance.mutasi_kas.request.approve')"
+        ng-click="approve()"
+        ng-if="item.status==1"
+        class="btn btn-sm btn-success">Persetujuan Keuangan</a>
+      <a ng-show="roleList.includes('finance.mutasi_kas.request.approve_direksi')"
+        ng-click="approveDireksi()"
+        ng-if="item.status==2"
+        class="btn btn-sm btn-primary">Persetujuan Direksi</a>
+      <a ng-show="roleList.includes('finance.mutasi_kas.request.realisasi')"
+        ng-click="realisation()"
+        ng-if="item.status==3"
+        class="btn btn-sm btn-info font-bold">
+            <i class="fa fa-check"></i> Realisasi</a>
+      <a ng-if="item.status==1" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalReject">Tolak Mutasi</a>
+    </div>
+  </div>
+</div>
+
+</form>
+
+<!-- modal -->
+<div class="modal" id="modalReject" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Alasan Penolakan</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.reject_reason" >
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="reject()"
+            ng-disabled="!formData.reject_reason"
+            class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+

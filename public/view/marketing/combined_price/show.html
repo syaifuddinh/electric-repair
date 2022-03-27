@@ -1,0 +1,77 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Harga</h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+
+
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Kode</label>
+        <div class="col-md-9">
+          <span>: <% data.item.code %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Name</label>
+        <div class="col-md-9">
+          <span>: <% data.item.name %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Status</label>
+        <div class="col-md-9">
+          <span>: <% data.item.status %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Branch</label>
+        <div class="col-md-9">
+          <span>: <% data.item.company.name %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Total layanan</label>
+        <div class="col-md-9">
+          <span>: <% data.item.total_item %></span>
+        </div>
+      </div>
+
+
+    </div>
+    
+  </div>
+</div>
+
+
+      <div class="col-md-12">
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>Detail Item</h5>
+          </div>
+          <div class="ibox-content">
+            <table class="table display compact nowrap table-bordered" id="appendTable">
+              <thead>
+                <tr>
+                  <th>Layanan</th>
+                  <th>Tipe Layanan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="(i,value) in data.detail">
+                  <td><% value.service.name %></td>
+                  <td><% value.service.service_type.name %></td>            
+                </tr>
+              </tbody>
+            </table>
+            <!-- <%formData%> -->
+          </div>
+          <div class="ibox-footer">
+            <div class="btn-group">
+              
+                <a ui-sref="marketing.combined_price" class="btn btn-sm btn-warning">Kembali</a>
+                <a ui-sref="marketing.combined_price.edit({id:data_id})" class="btn btn-sm btn-success">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>

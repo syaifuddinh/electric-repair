@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" id="info_tab" ng-click='openInfo()'>
+                    <% solog.label.general.detail %> 
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="migration_tab" ng-click='openMigration()'  ng-if="item_migration_id">
+                    <% solog.label.transfer_mutation.title %> 
+                </a>
+            </li>
+
+            <li>
+                <a data-toggle="tab" id="voyage_tab" ng-click='openVoyage()' ng-if="voyage_schedule_id">
+                    <% solog.label.voyage_schedule.title %> 
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id='info_detail' class='tab-item'>
+                <warehouse-receipts-show id='id'>
+            </div>
+
+            <div id='migration_detail' class='tab-item' ng-if="item_migration_id">
+                <item-migrations-show id='item_migration_id'>
+            </div>
+
+            <div id='voyage_detail' class='tab-item' ng-if="voyage_schedule_id">
+                <voyage-schedules-show id='voyage_schedule_id'>
+            </div>
+        </div>
+    </div>
+</div>

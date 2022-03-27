@@ -1,0 +1,23 @@
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id=""><% title %></h4>
+            </div>
+
+            <div class='modal-body'>
+                <div class='form-horizontal' ng-transclude></div>
+            </div>
+            
+            <div class="modal-footer" ng-hide="hide_footer">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal"><% $root.solog.label.general.back %></button>
+                    <span ng-hide='hide_save'>
+                        <button type="button" class="btn btn-sm btn-primary" ng-click='onSubmit()' ng-disabled='$root.disBtn'><% $root.solog.label.general.save %></button>
+                    </span>
+                </div>
+            </div>     
+        </div>
+    </div>
+</div>

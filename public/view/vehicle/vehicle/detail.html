@@ -1,0 +1,35 @@
+<div class="col-md-12">
+  <!-- <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <td class="pull-right">
+        <a ui-sref="vehicle.vehicle.show.maintenance.create" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Perawatan</a>
+      </td>
+    </tbody>
+  </table> -->
+  <div class="tabs-container">
+    <div class="tabs-left">
+      <ul class="nav nav-tabs">
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.detail.detail_info')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.detail.detail"><i class="fa fa-tag"></i> Detail Info</a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.detail.driver')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.detail.driver"><i class="fa fa-user"></i> Driver</a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.detail.assurance')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.detail.insurance"><i class="fa fa-clipboard"></i> Asuransi</a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.detail.body')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.detail.body"><i class="fa fa-cogs"></i> Body Vehicle</a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.detail.completeness')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.detail.checklist"><i class="fa fa-wrench"></i> Kelengkapan</a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.detail.document')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.detail.document"><i class="fa fa-files-o"></i> Berkas</a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.detail.ritase')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.detail.rate"><i class="fa fa-line-chart"></i> Ritase</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active">
+          <div class="panel-body">
+            <!-- main body -->
+            <div class="col-md-12 table-responsive">
+              <div ui-view="">
+              </div>
+            </div>
+            <!-- end main body -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

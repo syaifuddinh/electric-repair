@@ -1,0 +1,70 @@
+<div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5><% $root.solog.label.general.filter %></h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+      </div>
+      <span ng-hide='hide_branch_filter'>
+          <div class="form-group" ng-if="is_admin==1">
+            <label class="col-md-3 control-label"><% $root.solog.label.general.branch %></label>
+            <div class="col-md-9">
+               <branch-select-input ng-model='formData.company_id' ng-change='searchData()'></branch-select-input>
+            </div>
+          </div>
+       </span>
+      <span ng-hide='hide_warehouse'>
+          <div class="form-group">
+            <label class="col-md-3 control-label"><% $root.solog.label.general.warehouse %></label>
+            <div class="col-md-9">
+                <warehouses-select-input ng-model='formData.warehouse_id' ng-change='searchData()'></warehouses-select-input>
+            </div>
+          </div>
+      </span>
+      <span ng-hide='hide_customer_filter'>
+          <div class="form-group">
+            <label class="col-md-3 control-label"><% $root.solog.label.general.customer %></label>
+            <div class="col-md-9">
+                <customer-select-input ng-model='formData.customer_id' ng-change='searchData()'></customer-select-input>
+            </div>
+          </div>
+      </span>
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% $root.solog.label.general.receive_date %></label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" ng-change='searchData()' datepick="">
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-change='searchData()' ng-model="formData.end_date" datepick="">
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    <div class="ibox-footer" id="export_button">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+    </div>
+  </form>
+</div>
+
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>Good Receipt</h5>
+    <div class="ibox-tools">
+        <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> <% $root.solog.label.general.filter %></button>
+
+        <span ng-hide='hide_add'>
+            <button type='button' ng-show="$root.roleList.includes('inventory.receipt.create')" class="btn btn-sm btn-primary" ng-click="add()"><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></button>
+        </span>
+    </div>
+  </div>
+  <div class="ibox-content">
+    
+    <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable" style="width:100%;">
+    </table>
+  </div>
+</div>

@@ -1,0 +1,364 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+<div class="row form-horizontal">
+    <div class="col-md-6">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Data</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="form-group required">
+                    <label for="" class="control-label col-md-3">Branch</label>
+                    <div class="col-md-9">
+                        <branch-select-input ng-model='formData.branch_id'></branch-select-input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-md-3 control-label">Tgl Klaim</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" ng-model="formData.date_transaction" datepick>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label for="" class=" control-label col-md-3">Customer</label>
+                    <div class="col-md-9">
+                        <customer-select-input ng-model='formData.customer_id' ng-change="resetJO()"></customer-select-input>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label for="" class=" control-label col-md-3">Pilih Klaim</label>
+                    <div class="col-md-9">
+                        <select class="form-control" data-placeholder-text-single="'Pilih Subject Klaim'" chosen allow-single-deselect="false" ng-model="formData.claim_subject" ng-options="s.id as s.name for s in claim_subjects">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group required" ng-show="formData.claim_subject == 1">
+                    <label for="" class=" control-label col-md-3">Job Order</label>
+                    <div class="col-md-9">
+                        <div class="input-group" ng-click="openJobOrder()">
+                            <input readonly type="text" class="form-control" ng-model="formData.job_order_code" placeholder="Cari Job Order">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input type="hidden" ng-model="formData.job_order_id">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group required" ng-show="formData.claim_subject == 2">
+                    <label for="" class=" control-label col-md-3">Sales Order</label>
+                    <div class="col-md-9">
+                        <div class="input-group" ng-click="openSalesOrder()">
+                            <input readonly type="text" class="form-control" ng-model="formData.sales_order_code" placeholder="Cari Sales Order">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input type="hidden" ng-model="formData.sales_order_id">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class=" control-label col-md-3">Pengenaan Klaim</label>
+                    <div ng-class="{ 'col-md-9' : formData.claim_type == 3, 'col-md-3' : formData.claim_type == 2 || formData.claim_type == 1 }">
+                        <select class="form-control" data-placeholder-text-single="'Pilih Pengenaan'" chosen allow-single-deselect="false" ng-model="formData.claim_type" ng-options="s.id as s.name for s in pengenaan" ng-change="changePengenaan()">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-md-6" ng-if="formData.claim_type==1">
+                        <drivers-select-input ng-model="formData.driver_id"></drivers-select-input>
+                    </div>
+                    <div class="col-md-6" ng-if="formData.claim_type==2">
+                        <vendor-select-input ng-model="formData.vendor_id"></vendor-select-input>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label for="" class=" control-label col-md-3">Keterangan</label>
+                    <div class="col-md-9">
+                        <input type="text" ng-model="formData.description" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Detail Komoditas</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Jenis Komoditas</label>
+                    <div class="col-md-5">
+                        <div class="radio radio-inline radio-primary">
+                            <input type="radio" id="pJO" ng-model="detail.type" ng-value="1">
+                            <label for="pJO">Job Order</label>
+                        </div>
+                        <div class="radio radio-inline radio-primary">
+                            <input type="radio" id="pLain" ng-model="detail.type" ng-value="2">
+                            <label for="pLain">Lain-Lain</label>
+                        </div>
+                        <div class="radio radio-inline radio-primary">
+                            <input type="radio" id="pSO" ng-model="detail.type" ng-value="3">
+                            <label for="pSO">Sales Order</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="detail.type==1">
+                    <label class="col-md-3 control-label">Cari Komoditas</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input readonly ng-click="openJobOrderDetail()" type="text" id="Komoditas" class="form-control" ng-model="detail.commodity_name" placeholder="Cari Komoditas Job Order">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="detail.type==2">
+                    <label class="col-md-3 control-label">Komoditas Lain</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <select class="form-control" id="KomoditasLain" data-placeholder-text-single="'Pilih Komoditas'" chosen allow-single-deselect="false" ng-model="detail.commodity_id" 
+                            ng-change='findCommodity()'
+                            ng-options="s.id as s.name for s in data.commodity">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="detail.type==3">
+                    <label class="col-md-3 control-label">Cari Komoditas</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input readonly ng-click="openSalesOrderDetail()" type="text" id="KomoditasSo" class="form-control" ng-model="detail.commodity_name" placeholder="Cari Komoditas Sales Order">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Qty</label>
+                    <div class="col-md-4">
+                        <input type="text" jnumber2 only-num ng-keyup="detail.total_price=detail.qty*detail.price" class="form-control" ng-model="detail.qty"  >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Harga Satuan</label>
+                    <div class="col-md-6"> 
+                        <input type="text" jnumber2 only-num ng-keyup="detail.total_price=detail.qty*detail.price" class="form-control" ng-model="detail.price"  >
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Jumlah Klaim</label>
+                    <div class="col-md-6">
+                        <input type="text" jnumber2 only-num class="form-control" ng-model="detail.total_price" readonly="" >
+                    </div>
+                </div> 
+                <hr>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Qty</label>
+                    <div class="col-md-4">
+                        <input type="text" jnumber2 only-num ng-keyup="detail.claim_total_price=detail.claim_qty*detail.claim_price" class="form-control" ng-model="detail.claim_qty" ng-change='claimQtyChanged()'>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Harga Satuan</label>
+                    <div class="col-md-6">
+                        <input type="text" jnumber2 only-num ng-keyup="detail.claim_total_price=detail.claim_qty*detail.claim_price" class="form-control" ng-model="detail.claim_price"  >
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Klaim Karyawan / Vendor</label>
+                    <div class="col-md-6">
+                        <input type="text" jnumber2 only-num class="form-control" ng-model="detail.claim_total_price" readonly="" >
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Penyebab Klaim</label>
+                    <div class="col-md-9">
+                        <div class="col-md-4" ng-repeat='(c, C) in data.claim_categories'>
+                            <span ng-repeat='(d, D) in C'>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" ng-model='detail.claim_categories[c * 4 + d].value'>  <% D.name %>
+                                </label>
+                                <br>
+                            </span>
+                        </div>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Keterangan</label>
+                    <div class="col-md-9">
+                        <input type="text" id="desc" class="form-control" ng-model="detail.description">
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-footer">
+                <button ng-click="appendTable()" type='button' ng-model="appendTableBtn" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Tambah ke Tabel</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Daftar Komoditas Klaim</h5>
+            </div>
+            <div class="ibox-content">
+                <table class="table display compact nowrap table-bordered table-stripped" id="appendTable">
+                <thead>
+                    <tr>
+                        <th>Komoditas</th>
+                        <th>Qty</th>
+                        <th>Harga Satuan</th>
+                        <th>Jml Klaim</th>
+                        <th>Klaim Kry/Vndr</th>
+                        <th width="25%">Keterangan</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if='formData.detail.length == 0'>
+                        <td colspan="7" class='text-center'>Tidak ada data</td>
+                    </tr>
+                    <tr ng-repeat='d in formData.detail'>
+                        <td><% d.commodity_name %></td>
+                        <td class='text-right'><% d.qty %></td>
+                        <td class='text-right'><% d.price | number %></td>
+                        <td class='text-right'><% d.total_price | number %></td>
+                        <td class='text-right'><% d.claim_total_price | number %></td>
+                        <td><% d.description %></td>
+                        <td class='text-center'>
+                            <a ng-click='deleteDetail(d)' ><span class='fa fa-trash' data-toggle='tooltip' title='Delete Data'></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="6" style="text-align: right;">Total Klaim</th>
+                        <th class='text-right'>
+                            <% (formData.total || 0) | number %>
+                        </th>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+            <div class="ibox-footer">
+                <div class="btn-group">
+                    <a ui-sref="operational.claim" class="btn btn-sm btn-warning">Kembali</a>
+                    <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<!-- modal JO-->
+<div class="modal fade" id="modalJO" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="">Cari Job Order</h4>
+        </div>
+        <div class="modal-body">
+          <div style='overflow-x:scroll'>
+              <table class="table display compact nowrap table-bordered" id="job_order_datatable" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Kode JO</th>
+                    <th>Tanggal</th>
+                    <th>Pengirim</th>
+                    <th>Penerima</th>
+                    <th>Trayek</th>
+                  </tr>
+                </thead>
+              </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- modal JOD -->
+<div class="modal fade" id="modalJobOrderDetail" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="">Cari Komoditas Job Order</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table display compact nowrap table-bordered" id="job_order_detail_datatable" style="width:100%;">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Komoditas</th>
+                <th>Jumlah</th>
+                <th>Harga Satuan</th>
+                <th>Harga Total</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- modal SO-->
+<div class="modal fade" id="modalSO" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="">Cari Sales Order</h4>
+        </div>
+        <div class="modal-body">
+          <div style='overflow-x:scroll'>
+              <table class="table display compact nowrap table-bordered" id="sales_order_datatable" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Kode SO</th>
+                    <th>Tanggal</th>
+                    <th>Customer</th>
+                  </tr>
+                </thead>
+              </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- modal SOD -->
+<div class="modal fade" id="modalSalesOrderDetail" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="">Cari Komoditas Job Order</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table display compact nowrap table-bordered" id="sales_order_detail_datatable" style="width:100%;">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Komoditas</th>
+                <th>Jumlah</th>
+                <th>Harga Satuan</th>
+                <th>Harga Total</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+</div>

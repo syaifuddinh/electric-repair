@@ -1,0 +1,22 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+        <div class="modal-body">
+          <div class="form-group required">
+            <label class="col-md-3 control-label"><% $root.solog.label.general.name %></label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" required ng-model="formData.name" placeholder="" ng-change='show()'>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label"><% $root.solog.label.additional_fields.for_feature %></label>
+            <div class="col-md-9">
+                <solog-select ng-model='formData.type_transaction_id' title='$root.solog.label.general.feature' rows='type_transactions'></solog-select>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label"><% $root.solog.label.general.type %></label>
+            <div class="col-md-9">
+                <solog-select ng-model='formData.field_type_id' title='$root.solog.label.general.type' rows='field_types'></solog-select>
+            </div>
+          </div>
+        </div>
+ </form>

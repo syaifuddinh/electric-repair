@@ -1,0 +1,39 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Pengafkiran Asset</h5>
+      <div class="ibox-tools">
+        <a class="btn btn-sm btn-primary" ui-sref="finance.pengafkiran_asset.create" ng-show="roleList.includes('finance.asset.rejected.create')"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nama Asset</th>
+            <th>Tgl Penghapusan</th>
+            <th>Branch</th>
+            <th>Nilai Kerugian</th>
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+           <!-- <tr>
+            <td>123</td>
+            <td>asset</td>
+            <td>2/20/2019</td>
+            <td>Ngawi</td>
+            <td>230,000</td>
+            <td><a ui-sref="finance.pengafkiran_asset.show({id:50})"><span class='fa fa-folder-o'></span></a></td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

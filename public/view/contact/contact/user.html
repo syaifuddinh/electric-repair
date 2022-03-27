@@ -1,0 +1,27 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="form-group">
+    <label class="col-md-3">Email</label>
+    <div class="col-md-5">
+      <input type="email" ng-model="formData.emails" name="emails" autocomplete="off" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3">Password</label>
+    <div class="col-md-5">
+      <input type="password" name="passwords" ng-model="formData.passwords" autocomplete="off" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3">Ulangi Password</label>
+    <div class="col-md-5">
+      <input type="password" ng-model="formData.confirm_password" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3"></label>
+    <div class="col-md-5">
+      <button type="submit" class="btn btn-sm btn-primary"><% user?'Update':'Save User' %></button>
+    </div>
+  </div>
+
+</form>

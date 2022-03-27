@@ -1,0 +1,162 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="col-md-12">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Invoice Vendor</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3">Vendor</label>
+          <div class="col-md-9">
+                <vendor-select-input ng-model="formData.vendor_id">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3">Tgl Invoice</label>
+          <div class="col-md-4">
+            <input type="text" datepick class="form-control" ng-model="formData.date_invoice">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3">Tgl Terima</label>
+          <div class="col-md-4">
+            <input type="text" datepick class="form-control" ng-model="formData.date_receive">
+          </div>
+        </div>
+        <div class="form-group required">
+            <label class="col-md-3">Jatuh Tempo</label>
+            <div class="col-md-4">
+                <input type="text" datepick class="form-control" ng-model="formData.due_date">
+            </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3">No Invoice</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" ng-model="formData.code">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Keterangan</label>
+          <div class="col-md-9">
+            <textarea class="form-control" ng-model="formData.description" rows="8"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <style media="screen" lang="scss">
+      .middle-text th, td {
+        vertical-align: middle;
+      }
+    </style>
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Detail Tagihan</h5>
+        <div class="ibox-tools">
+          <button ng-disabled="!formData.vendor_id" type="button" class="btn btn-sm btn-primary" ng-click="cariJO()" name="Cari Biaya JO">Cari Biaya JO</button>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <table class="table table-striped table-bordered middle-text" id="content_table">
+          <thead>
+            <tr>
+              <th>Nama Biaya</th>
+              <th>Deskripsi</th>
+              <th>Total</th>
+              <th>PPN</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(i,val) in formData.detail">
+              <td><% val.reff_no %></td>
+              <td><% val.description %></td>
+              <td class="text-right"><% val.total|number %></td>
+              <td class="text-right"><a ng-click="taxDetail(i)"><% val.ppn|number %></a></td>
+              <td style="width:5%;" class="text-center"><a ng-click="deleteDetail(i)"><i class="fa fa-trash" style="color:red;"></i></a></td>
+            </tr>
+            <tr ng-if="formData.detail.length<1">
+              <td colspan="6" style="text-center"><small>Tidak ada data, silahkan klik tombol "Cari Biaya JO"/"Cari Biaya Manifest" diatas!</small></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-borderless middle-text">
+          <tr>
+            <td class="text-right" style="width:85%;">Sub Total</td>
+            <td class="text-right"><h3><% formData.subtotal|number %></h3></td>
+          </tr>
+          <tr>
+            <td class="text-right">Total PPN</td>
+            <td class="text-right"><h3><% formData.ppn|number %></h3></td>
+          </tr>
+          <tr>
+            <td class="text-right">Total Tagihan</td>
+            <td class="text-right" style="border-top: 2px solid black; border-bottom: 1px solid black;"><h3><% formData.total|number %></h3></td>
+          </tr>
+        </table>
+        <!-- <pre><% jStyle(formData) %></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational.invoice_vendor" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="formData.detail.length < 1 || disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="jo_cost_dt_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:60%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Biaya Job Order Vendor</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="jo_cost_dt" style="width:100%;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode</th>
+              <th>Nama Biaya</th>
+              <th>Tgl. JO</th>
+              <th>Keterangan</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL PPN -->
+<div class="modal fade" id="ppnModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">PPN</h4>
+      </div>
+      <div class="modal-body" id="ppnContent">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>

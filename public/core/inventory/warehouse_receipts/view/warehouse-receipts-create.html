@@ -1,0 +1,539 @@
+<style>
+    th {
+        text-align:center;
+        vertical-align: middle;
+    }
+</style>
+<div class="col-md-12">
+    <form class="form-horizontal" id='formSubmit' ng-submit="submitForm()">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Data</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3"><% $root.solog.label.general.branch %></label>
+                    <div class="col-md-9">
+                        <branch-select-input ng-model="formData.company_id" ng-change="companyChange(formData.company_id);validateForm()" />          
+                    </div>
+                </div>
+                <span ng-if='show_receipt_type'>
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.receipt_type %></label>
+                        <div class="col-md-9">
+                            <receipt-types-select-input ng-model="formData.receipt_type_id" />          
+                        </div>
+                    </div>
+                </span>
+                <span ng-if='show_purchase_order'>
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.purchase_order.code %></label>
+                        <div class="col-md-9">
+                            <purchase-orders-modal-input 
+                                company-id='formData.company_id' 
+                                ng-model='formData.purchase_order_id' 
+                                is-merchandise="is_merchandise"
+                            />
+                        </div>
+                    </div>
+                </span>
+                <div class="form-group required">
+                    <label class="col-md-3"><% $root.solog.label.general.warehouse %></label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <warehouses-select-input ng-change="validateForm();getSuggestion()" company-id='formData.company_id' ng-model="formData.warehouse_id"  />
+
+                            <div class="input-group-btn" ng-hide='hide_warehouse_add_button'>
+                                <button type="button" class="btn btn-md btn-success" ng-click='insertWarehouse()' ng-show="$root.roleList.includes('operational_warehouse.setting.warehouse.create')">
+                                    <i class="fa fa-plus pd-08"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 "><% $root.solog.label.general.receive_date %> <span class='text-danger'>*</span></label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control text-center" ng-model="formData.receive_date" ng-change='validateForm()' datepick>
+                        <span ng-if='show_lembur'>
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" ng-model='formData.is_overtime' ng-true-value="1" ng-false-value="0"> Tagihkan lembur ?
+                                </label>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control text-center" clockpick clockpick-position="bottom" ng-model="formData.receive_time">
+                    </div>
+                </div>
+                <div class="form-group hidden">
+                    <label class="col-md-3 ">Selesai Stripping</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control text-center" disabled>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control text-center" disabled>
+                    </div>
+                </div>
+                <span ng-if='show_customer'>
+                    <div class="form-group required">
+                        <label class="col-md-3"><% $root.solog.label.general.customer %></label>
+                        <div class="col-md-9">
+                            <customer-select-input ng-change="customerChange(formData.customer_id);validateForm()" ng-model="formData.customer_id" />
+                        </div>
+                    </div>
+                </span>
+                <span ng-if='show_shipper'>
+                    <div class="form-group required">
+                        <label class="col-md-3"> <% $root.solog.label.general.shipper %></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model='formData.sender' ng-change='validateForm()'>
+                        </div>
+                    </div>
+                </span>
+                <span ng-if='show_consignee'>
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.consignee %></label>
+                        <div class="col-md-9">
+                            <angucomplete id="ex1"
+                            placeholder=""
+                            pause="100"
+                            selectedobject="receiver"
+                            localdata="data.penerima"
+                            searchfields="name"
+                            titlefield="name"
+                            minlength="0"
+                            inputclass="form-control"/>
+                        </div>
+                    </div>
+                </span>
+                <span ng-if='show_destination'>
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.destination %></label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="formData.city_to" ng-value='receiver.originalObject.address' class="form-control">
+                        </div>
+                    </div>
+                </span>
+
+                <span ng-if='show_reff_no'>
+                    <div class="form-group">
+                        <label class="col-md-3">No Surat Jalan Pengirim</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="formData.reff_no" class="form-control">
+                        </div>
+                    </div>
+                </span>
+
+                <span ng-if='show_vehicle_type'>
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.vehicle_type %></label>
+                        <div class="col-md-9">
+                            <select class="form-control" id="vehicle_type" data-placeholder-text-single="'Choose Vehicle Type'" chosen allow-single-deselect="false" ng-model="formData.vehicle_type_id" ng-options="s.id as s.name for s in data.vehicle_type">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </span>
+                
+                <div class="form-group" ng-if="formData.packing_id == 6">
+                    <label class="col-md-3"></label>
+                    <div class="col-md-9">
+                        <input  type="text"
+                        placeholder="Tipe Kemasan Lainnya"
+                        ng-model="formData.package"
+                        class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ibox">
+            <span ng-hide="!formData.receipt_type_id || (receipt_type_code == 'r01' && !formData.purchase_order_id)">
+                <div class="ibox-title">
+                    <h5><% $root.solog.label.item.title %></h5>
+                    <div class="ibox-tools" ng-show="show_import">
+                        <div class="btn-group">
+                            <button type='button' class='btn btn-sm btn-success' ng-click='downloadImportData()'>
+                                Download Import Item Format
+                            </button>
+                            <label for='import_item_file' class='btn btn-sm btn-primary' ng-click='uploadImportItem'>
+                                Import Item
+                            </label>
+                            <input type="file" class='hidden' id='import_item_file'>
+                        </div>
+                    </div>
+                </div>
+            </span>
+            <div class="ibox-content">
+                <span ng-hide="!formData.receipt_type_id || (receipt_type_code == 'r01' && !formData.purchase_order_id)">
+                    <div class="row">
+                        <div class="col-md-7 col-sm-12">
+                            <span ng-if='show_imposition'>
+                                <div class="form-group">
+                                    <label class="col-md-3"><% $root.solog.label.general.imposition %></label>
+                                    <div class="col-md-9">
+                                        <div class="radio radio-inline radio-primary">
+                                            <input type="radio" id="kubikasi" ng-model="detailData.imposition" ng-click='detailData.weight = 0' ng-value="1">
+                                            <label for="kubikasi">Kubikasi</label>
+                                        </div>
+                                        <div class="radio radio-inline radio-primary">
+                                            <input type="radio" id="tonase" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;' ng-value="2">
+                                            <label for="tonase">Berat</label>
+                                        </div>
+                                        <div class="radio radio-inline radio-primary">
+                                            <input type="radio" id="kubton" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;detailData.weight = 0' ng-value="3">
+                                            <label for="kubton">Item</label>
+                                        </div>
+                                        <div class="radio radio-inline radio-primary">
+                                            <input type="radio" id="borongan" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;detailData.weight = 0' ng-model="detailData.imposition" ng-value="4">
+                                            <label for="borongan">Borongan</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                            
+                            <div class="form-group">
+                                <label class="col-md-3"><% $root.solog.label.item.name %></label>
+                                <div class="col-md-9">
+                                    <div class="input-group" >
+                                        <input type="text" ng-click="cariItem()" class="form-control" ng-model="detailData.item_name" ng-readonly='!detailData.is_exists || detailData.is_exists == 1'>
+                                        <span ng-show="show_manual_input_item" class="input-group-addon" ng-click="detailData.is_exists = -1;detailData.item_id=null"><i class="fa fa-plus"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" ng-if='false'>
+                                <label class="col-md-3">Barcode</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="detailData.barcode" ng-readonly='detailData.is_exists == 1' class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-md-3"><% $root.solog.label.general.package %></label>
+                                <div class="col-md-9">
+                                    <label for="karton" class="radio-inline">
+                                        <input id='karton' type="radio" ng-model='detailData.kemasan' ng-value='"CASE"'> Case
+                                    </label>
+                                    <label for="peti" class="radio-inline">
+                                        <input id='peti' type="radio" ng-model='detailData.kemasan' ng-value='"PETI"'> Peti
+                                    </label>
+                                    <label for="pallet" class="radio-inline">
+                                        <input id='pallet' type="radio" ng-model='detailData.kemasan' ng-value='"PALLET"'> Pallet
+                                    </label>
+                                    <label for="bag" class="radio-inline">
+                                        <input id='bag' type="radio" ng-model='detailData.kemasan' ng-value='"BAG"'> Bag
+                                    </label>
+                                    <label for="lainnya" class="radio-inline">
+                                        <input id='lainnya' type="radio" ng-model='detailData.kemasan' ng-value='"LAINNYA"'> Lainnya
+                                    </label>
+                                    
+                                    <input type="text" ng-model='detailData.kemasan_lainnya' ng-show='detailData.kemasan == "LAINNYA"' class='form-control mg-t1'>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-md-3"><% $root.solog.label.general.qty %></label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control text-right" ng-model="detailData.qty" ng-change='validateDetail()' only-num>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <units-select-input ng-model='detailData.piece_id' ng-change='showPiece()' />
+                                </div>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">UOM 2</label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control text-right" ng-model="detailData.qty_2" ng-change='validateDetail()' only-num>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <units-select-input ng-model='detailData.piece_id_2' ng-change='showPiece2()' />
+                                </div>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3"><% $root.solog.label.general.dimension %></label>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon font-bold"><% $root.solog.label.general.long %></span>
+                                        <input type="text" class="form-control text-right" ng-model="detailData.long" placeholder="Panjang (cm)" jnumber2 only-num>
+                                        <span class="input-group-addon">cm</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon font-bold"><% $root.solog.label.general.wide %></span>
+                                        <input type="text" class="form-control text-right" ng-model="detailData.wide" placeholder="Lebar (cm)" jnumber2 only-num>
+                                        <span class="input-group-addon">cm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3"></label>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon font-bold"><% $root.solog.label.general.high %></span>
+                                        <input type="text" class="form-control text-right"  ng-model="detailData.high" placeholder="Tinggi (cm)" jnumber2 only-num>
+                                        <span class="input-group-addon">cm</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon font-bold"><% $root.solog.label.general.weight %></span>
+                                        <input type="text" class="form-control text-right"  ng-model="detailData.weight" placeholder="Berat (Kg)" jnumber2 only-num >
+                                        <span class="input-group-addon">Kg</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-12">
+                                    
+                                    <h5 class="text-right" style="color:#1a7bb9;margin-top:9px">
+                                        <span style="display:inline-block">
+                                            
+                                            <i class="fa fa-th-large" title='Volume satuan'></i> <% (detailData.long || 0) * (detailData.wide || 0) * (detailData.high || 0) / 1000000 %> m<sup>3</sup>
+                                        </span>
+                                        <span style="display:inline-block;margin-left:2mm">
+                                            <i class="fa fa-th" title='Volume total'></i> <% (detailData.qty || 0) * (detailData.long || 0) * (detailData.wide || 0) * (detailData.high || 0) / 1000000 %> m<sup>3</sup>
+                                            
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-5 col-sm-12">
+                            
+                            <div class="form-group">
+                                <label class="col-md-3"><% $root.solog.label.general.storage_type %></label>
+                                <div class="col-md-9">
+                                    <receipt-storage-type-input ng-model='detailData.storage_type' />
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show='detailData.storage_type == "RACK"'>
+                                <label class="col-md-3">Bin Location <% detailData.storage_type %></label>
+                                <div class="col-md-9">
+                                    <racks-select-input warehouse-id='formData.warehouse_id' ng-model="detailData.rack_id" allow-get-rack='1' />
+                                    
+                                    <h5 class="text-primary text-right" style="color:#1a7bb9" ng-show='detailData.rack_id'>
+                                        <i class="fa fa-th-large" title='Kapasitas volume'></i> <% selected_rack.capacity_volume | number %> m<sup>3</sup>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Pakai Pallet ?</label>
+                                <div class="col-md-9">
+                                    <input type="checkbox" ng-model="detailData.is_use_pallet" ng-true-value='1' ng-false-value='0' ng-click='switchPallet()'>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" ng-show='detailData.is_use_pallet == 1'>
+                                <label class="col-md-3">Pallet</label>
+                                <div class="col-md-9">
+                                    <div class="input-group" ng-click="cariPallet()" >
+                                        <input type="text" class="form-control" ng-model="detailData.pallet_name" readonly>
+                                        <span class="input-group-addon" ><i class="fa fa-search"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" ng-show='detailData.is_use_pallet == 1'>
+                                <label class="col-md-3">Jumlah Pallet</label>
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        
+                                        <input type="text" class="form-control text-right" ng-model="detailData.pallet_qty" jnumber2 only-num>
+                                        <span class="input-group-addon">Item</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="btn-group">
+                                
+                                <button type="button" ng-click="formData.total = 0;detailData = {};detailData.is_exists = 0" class="btn btn-warning btn-sm">Reset</button>
+                                <button type="button" ng-disabled="!detailData.item_name || disAppendBtn" ng-click="appendTable()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add ke Tabel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="width: 100%;overflow-x: scroll;">
+                        
+                        <table class="table display compact nowrap table-bordered" style="width:130%;">
+                            <thead id='detail_header'>
+                                <tr>
+                                    <th rowspan="2"><% $root.solog.label.item.name %></th>
+                                    <th rowspan="2"><% $root.solog.label.general.package %></th>
+                                    <th rowspan="2" ng-if='show_imposition'><% $root.solog.label.general.imposition %></th>
+                                    <th rowspan="2"><% $root.solog.label.general.long %></th>
+                                    <th rowspan="2"><% $root.solog.label.general.wide %></th>
+                                    <th rowspan="2"><% $root.solog.label.general.high %></th>
+                                    <th rowspan="2"><% $root.solog.label.general.weight %> (Kg)</th>
+                                    <th rowspan="2"><% $root.solog.label.general.qty %></th>
+                                    <th rowspan="2">UOM 2</th>
+                                    <th rowspan="2"><% $root.solog.label.general.rack %></th>
+                                    <th colspan="2"><% $root.solog.label.general.capacity %></th>
+                                    <th colspan="2"><% $root.solog.label.general.pallet %></th>
+                                    <th rowspan="2"></th>
+                                </tr>
+                                <tr>
+                                    <th><% $root.solog.label.general.kg %></th>
+                                    <th><% $root.solog.label.general.m3 %></th>
+                                    <th><% $root.solog.label.general.name %></th>
+                                    <th><% $root.solog.label.general.qty %></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(i,val) in formData.detail">
+                                    <td><% val.item_name %></td>
+                                    <td><% val.kemasan %></td>
+                                    <td  ng-if='show_imposition'><% val.imposition_name %></td>
+                                    <td><% val.long %></td>
+                                    <td><% val.wide %></td>
+                                    <td><% val.high %></td>
+                                    <td><% val.weight %></td>
+                                    <td>
+                                        <div class="flex">
+                                            <input only-num ng-model="formData.detail[i].qty" class="form-control">
+                                            <units-select-input ng-model="formData.detail[i].piece_id" />
+                                        </div>       
+                                    </td>
+                                    <td><% val.qty_2 %> <% val.piece_name_2 %></td>
+                                    <td><% val.rack_name %></td>
+                                    <td><% val.capacity_volume %></td>
+                                    <td><% val.capacity_tonase %></td>
+                                    <td><% val.pallet_name %></td>
+                                    <td><% val.pallet_qty %></td>
+                                    <td><a ng-click="deleteDetail(i)"><i class="fa fa-trash"></i></a></td>
+                                </tr>
+                                <tr ng-if='formData.detail.length == 0'>
+                                    <td colspan='<% column_qty %>' class='text-center'>
+                                        <% $root.solog.label.general.no_data %>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                </span>
+                <div class="row">
+                    <div class="col-md-12 mg-t2">
+                        <div class="form-group mg-t2">
+                            <label class="col-md-3"><% $root.solog.label.general.description %></label>
+                            <div class="col-md-9">
+                                <textarea class='form-control' ng-model='formData.description' cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+
+                        <span ng-if='show_driver'>
+                            <div class="form-group">
+                                <label class="col-md-3"><% $root.solog.label.general.driver %></label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="formData.driver" class="form-control">
+                                </div>
+                            </div>
+                        </span>
+
+                        <span ng-if='show_nopol'>
+                            <div class="form-group">
+                                <label class="col-md-3">Nopol</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="formData.nopol" class="form-control">
+                                </div>
+                            </div>
+                        </span>
+
+                        <span ng-if='show_phone_number'>
+                            <div class="form-group">
+                                <label class="col-md-3"><% $root.solog.label.general.handphone %></label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="formData.phone_number" class="form-control">
+                                </div>
+                            </div>
+                        </span>
+                        <div class="form-group" ng-show='!is_fill_signature' style='padding-left:3mm'>
+                            <a href="" class="btn btn-sm btn-success" ng-click='is_fill_signature = 1'>
+                                <i class="fa fa-pencil"></i> Isi tanda tangan
+                            </a>
+                        </div>
+                        <div class="form-group" ng-show='is_fill_signature'>
+                            <label class="col-md-3">TTD Driver</label>
+                            <div class="col-md-9" >
+                                <div style='border:1px solid #e5e6e7;height: 210px'>
+                                    <div class="signature" style="width: 100%;">
+                                        
+                                    </div>
+                                </div>
+                                <div class="btn-group" style="margin-top: 2mm">
+                                    <button class="btn btn-danger" ng-click='is_fill_signature = 0;resetSignature()'>Hapus</button>
+                                    <button class="btn btn-warning" ng-click='resetSignature();'>Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        
+                        <hr>
+                        <h2>Upload Lampiran <span style="color:red">*</span></h2>
+                        <div action="/" accept='image/*' class="dropzone" id="file_upload">
+                            
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-footer">
+                <a ng-click="back()" class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+                <button type="button" ng-init='disBtn = true' ng-disabled="disBtn" ng-click='formData.status = 1;submitForm()' class="btn btn-sm btn-primary submitButton" ><% $root.solog.label.general.save %></button>
+                <button type="button" ng-disabled="disBtn" ng-click='formData.status = 0;submitForm()' class="btn btn-sm btn-success submitButton" name="button"><% $root.solog.label.general.draft %></button>
+            </div>
+        </div>
+        
+        
+    </form>
+</div>
+<!-- modal master item-->
+<items-modal is-pallet="isPallet" purchase-order-id='formData.purchase_order_id' sales-order-return-id='formData.sales_order_return_id' item-migration-id='formData.item_migration_id' />
+<!-- modal master pallet-->
+<div class="modal fade" id="modalPallet" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Daftar Pallet</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table display compact nowrap table-striped" id="item_pallet_datatable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                </table>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Add Realisasi Mutasi</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Tgl Realisasi</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Tgl Permintaan</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" datepick ng-model="formData.date_permintaan" disabled="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Tgl Kebutuhan</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" datepick ng-model="formData.date_kebutuhan" disabled="">
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Kode Permintaan</label>
+          <div class="col-md-6">
+            <input type="text"  class="form-control" ng-model="formData.kodepermintaan" >
+          </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Branch Asal</label>
+            <div class="col-md-6">
+              <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id1" ng-options="s.id as s.name for s in data.company">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Branch Tujuan</label>
+            <div class="col-md-6">
+              <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id2" ng-options="s.id as s.name for s in data.company_to">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+          <label class="col-md-3 control-label">Akun Kas/Bank Asal</label>
+          <div class="col-md-6">
+            <select class="form-control" allow-single-deselect="true" chosen  data-placeholder="Choose Akun" ng-model="formData.akun_kas1" ng-options="s.id as s.code+' - '+s.name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Akun Kas/Bank Tujuan</label>
+          <div class="col-md-6">
+            <select class="form-control" allow-single-deselect="true" chosen  data-placeholder="Choose Akun" ng-model="formData.akun_kas2" ng-options="s.id as s.code+' - '+s.name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Jumlah</label>
+          <div class="col-md-5">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="formData.jumlah" >
+          </div>
+        </div>
+         <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-8">
+            <input type="text" class="form-control" ng-model="formData.keterangan" >
+          </div>
+        </div>
+        <hr>
+        <a ui-sref="finance.realisasi_mutasi" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

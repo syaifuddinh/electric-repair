@@ -1,0 +1,69 @@
+<style media="screen">
+  .ttable tbody tr td {
+    font-size: 12px;
+  }
+</style>
+<div class="sk-container panel-body" ng-init="sumDetail={}">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+  <table class="table display compact nowrap table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Layanan</th>
+        <th>Route</th>
+        <th>Komoditas</th>
+        <th>Tipe Vehicle</th>
+        <th>Penawaran</th>
+        <th>Harga Kontrak</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="(i, val) in data_item.details">
+        <td><% i+1 %></td>
+        <td><% val.service.name %></td>
+        <td><% val.route.name %></td>
+        <td><% val.commodity.name %></td>
+        <td><% val.vehicle_type_id?val.vehicle_type.name:val.container_type.code %></td>
+        <td class="text-right"><% val.price_inquery_tonase+val.price_inquery_volume+val.price_inquery_item+val.price_inquery_full|number %></td>
+        <td class="text-right"><% val.price_contract_tonase+val.price_contract_volume+val.price_contract_item+val.price_contract_full|number %></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <div ng-repeat="(i, value) in data_item.details">
+    <hr>
+    <h4>Detail Route #<%i+1%></h4>
+    <h5><% value.service.name +' - '+value.route.name %></h5>
+    <table class="table display compact nowrap table-striped table-bordered ttable">
+      <thead>
+        <tr>
+          <th>Uraian</th>
+          <th>Qty</th>
+          <th>Harga Satuan</th>
+          <th>Jumlah</th>
+          <th>Vendor</th>
+          <th>keterangan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="val in value.cost_details" ng-init="sumDetail.sum[i]=sumDetail.sum[i]+(val.total*val.cost)">
+          <td><% val.cost_type.name %></td>
+          <td class="text-right"><% val.total %></td>
+          <td class="text-right"><% val.cost|number %></td>
+          <td class="text-right"><% val.cost*val.total|number %></td>
+          <td><strong><% val.vendor.name %></strong></td>
+          <td><% val.description %></td>
+        </tr>
+        <tr>
+          <td colspan="3"><strong>Jumlah Total :</strong></td>
+          <td class="text-right"><% sumDetail.sum[i]|number %></td>
+          <td colspan="2"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

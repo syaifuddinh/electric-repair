@@ -1,0 +1,28 @@
+<table class="table display compact nowrap table-borderless">
+  <tbody>
+    <tr>
+      <td style="width: 20%;" class="font-bold">Nama</td>
+      <td>: <% data.name %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Wilayah</td>
+      <td>: <% data.company.name %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Alamat</td>
+      <td>: <% data.address %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Telfon</td>
+      <td>: <span ng-bind="data.phone"></span> - <span ng-bind="data.phone2"></span></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Email</td>
+      <td>: <% data.email %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Status Driver</td>
+      <td>: <% data.driver_status_name %></td>
+    </tr>
+  </tbody>
+</table>

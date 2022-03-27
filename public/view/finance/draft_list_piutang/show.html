@@ -1,0 +1,168 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-fax"></i> Detail List</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:25%">Customer</td>
+                <td>: <span><% item.company.name %></span></td>
+              </tr>
+              <tr>
+                <td>No Invoice</td>
+                <td>: <span><% item.code %></span></td>
+              </tr>
+              <tr>
+                <td>Party</td>
+                <td>: <span ng-if="item.date_request"><% item.date_request|fullDate %></span></td>
+              </tr>
+              <tr>
+                <td>No AJU</td>
+                <td>: <span ng-if="item.date_receive"><% item.date_receive|fullDate %></span></td>
+              </tr>
+              <tr>
+                <td>B/L SS</td>
+                <td>: <span ng-if="item.date_receive"><% item.date_receive|fullDate %></span></td>
+              </tr>
+              <tr>
+                <td>Custome</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>PIB/EDI</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Handling DO</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Administrasi</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>SPJM</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Fee</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Total FF</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>PPN</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Subtotal FF</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Stripping</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>BCF 1.5</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Print BL</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Handling</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>SPJM / Redline</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Trucking</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>OS IDR</td>
+                <td>: <span><% item.company.address %></span></td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>: <span><% item.company.address %></span></td>
+              </tr>
+              <tr>
+                <td>Keterangan</td>
+                <td>: <span><% item.description %></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:25%">Status</td>
+                <td>: <span ng-bind-html="findJsonId(item.status,status).name"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-money"></i> Daftar Tagihan</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-striped">
+        <thead>
+          <tr>
+            <th>No Transaksi</th>
+            <th>Sumber Transaksi</th>
+            <th class="text-right">Jumlah Tagihan</th>
+            <th class="text-right">Ditagihkan</th>
+            <th class="text-right">Sisa Tagihan</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="val in detail">
+            <td><% val.code %></td>
+            <td><% val.type_transaction.name %></td>
+            <td class="text-right"><% val.total_bill|number %></td>
+            <td class="text-right"><% val.bill|number %></td>
+            <td class="text-right"><% val.leftover|number %></td>
+            <td><% val.description %></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right font-bold">TOTAL DITAGIHKAN : </td>
+            <td class="text-right"><% totalAll|number %></td>
+            <td colspan="2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.bill_receivable" class="btn btn-sm btn-warning">Kembali</a>
+      <a ng-if="item.status==1"  ng-show="roleList.includes('finance.debt.draft.detail.input_payment')" ui-sref="finance.bill_receivable.payment({id:item.id})" class="btn btn-sm btn-success"><i class="fa fa-fax"></i> Input Pembayaran</a>
+    </div>
+  </div>
+</div>

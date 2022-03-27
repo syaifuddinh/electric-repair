@@ -1,0 +1,144 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% $root.pageTitle %></h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3"><% $root.solog.label.general.branch %></label>
+              <div class="col-md-9">
+                 <branch-select-input ng-model="formData.company_id" ng-change="changeVehicle(formData.company_id)"></branch-select-input>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3"><% $root.solog.label.manifest.date %></label>
+              <div class="col-md-5">
+                <input type="text" datepick ng-model="formData.date_manifest" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">No. Reff</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.reff_no" class="form-control">
+              </div>
+            </div>
+            <span ng-hide='hide_source'>
+                <div class="form-group">
+                    <label class="col-md-3"><% $root.solog.label.general.source %></label>
+                    <div class="col-md-9">
+                        <div class="radio radio-inline" ng-repeat='(i, v) in sources'>
+                            <input type="radio" ng-model="formData.source" ng-value="i" >
+                            <label for=""><% v %></label>
+                        </div>
+                    </div>
+                </div>
+            </span>
+            <span ng-if='formData.source == "job_order"'>
+                <div class="form-group">
+                    <label class="col-md-3">Full / Campuran</label>
+                    <div class="col-md-9">
+                        <div class="radio radio-inline radio-primary">
+                            <input type="radio" ng-model="formData.is_full" ng-value="1">
+                            <label for="">Full</label>
+                        </div>
+                        <div class="radio radio-inline radio-primary">
+                            <input type="radio" ng-model="formData.is_full" ng-value="0">
+                            <label for="">Campuran/LCL</label>
+                        </div>
+                    </div>
+                </div>
+            </span>
+            <div class="form-group">
+              <label class="col-md-3"><% $root.solog.label.general.route %></label>
+              <div class="col-md-9">
+                <routes-select-input ng-model="formData.route_id" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3"><% $root.solog.label.general.description %></label>
+              <div class="col-md-9">
+                <!-- <summernote ng-model="formData.description" config="summConfig"></summernote> -->
+                <textarea ng-model="formData.description" rows="4" class="form-control"></textarea>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3"><% $root.solog.label.general.vehicle_type %></label>
+              <div class="col-md-9">
+                    <vehicle-types-select-input ng-model="formData.vehicle_type_id" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Driver</label>
+              <div class="col-md-9">
+                    <drivers-select-input ng-model="formData.driver_id" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Vehicle</label>
+              <div class="col-md-9">
+                <vehicles-select-input ng-model="formData.vehicle_id">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3"><% $root.solog.label.manifest.etd %></label>
+              <div class="col-md-5">
+                <div class="input-group">
+                  <input type="text" class="form-control text-center" ng-model="formData.etd_date" datepick>
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="text" clockpick clockpick-position="left" class="form-control text-center" ng-model="formData.etd_time">
+                  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3"><% $root.solog.label.manifest.eta %></label>
+              <div class="col-md-5">
+                <div class="input-group">
+                  <input type="text" class="form-control text-center" ng-model="formData.eta_date" datepick>
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="text" clockpick clockpick-position="left" class="form-control text-center" ng-model="formData.eta_time">
+                  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                </div>
+              </div>
+            </div>
+            <span ng-if='formData.source == "job_order"'>
+                <div class="form-group">
+                    <label class="col-md-3">Asal Keberangkatan</label>
+                    <div class="col-md-9">
+                        <select class="form-control" data-placeholder-text-single="'Choose Asal Keberangkatan'" chosen allow-single-deselect="false" ng-model="formData.from_id" ng-options="s.id as s.name for s in data.customer">
+                        <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </span>
+
+          </div>
+        </div>
+        <!-- <pre><% jStyle(formData) %></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <a ng-click='back()' class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+        <button type="submit" class="btn btn-sm btn-primary" ng-disabled="disBtn"><% $root.solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,535 @@
+<div class="col-md-12">
+  <form class="form-horizontal" ng-submit="submitForm()">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Data</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+          <div class="sk-rect1"></div>
+          <div class="sk-rect2"></div>
+          <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Branch</label>
+          <div class="col-md-9">
+            <select disabled class="form-control" ng-change="companyChange(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Gudang / Depo</label>
+          <div class="col-md-9">
+            <select class="form-control" disabled ng-change="warehouseChange(formData.warehouse_id)" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_id" ng-options="s.id as s.name for s in warehouses">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 ">Tanggal Terima</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.receive_date" datepick>
+            <div>
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model='formData.is_overtime' ng-true-value="1" ng-false-value="0"> Tagihkan lembur ?
+                </label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control text-center" clockpick clockpick-position="bottom" ng-model="formData.receive_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 ">Selesai Stripping</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center"  disabled>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control text-center"  disabled>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Pembayar</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="customerChange(formData.customer_id);getJobOrderPengiriman()" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in customers">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Job Order Pengiriman</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Job Order'" chosen allow-single-deselect="false" ng-model="formData.job_order_pengiriman_id" ng-options="s.id as s.code for s in job_orders">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3">Pengirim</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model='formData.sender'>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Penerima</label>
+          <div class="col-md-9">
+            <angucomplete id="ex1"
+              placeholder=""
+              pause="100"
+              selectedobject="receiver"
+              localdata="data.penerima"
+              searchfields="name"
+              titlefield="name"
+              minlength="0"
+              inputclass="form-control"/>
+          </div>
+        </div>
+        <div class="form-group hidden">
+          <label class="col-md-3">Jenis</label>
+          <div class="col-md-9">
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="export" ng-model="formData.is_export" ng-value="1">
+              <label for="export">Export</label>
+            </div>
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="local" ng-model="formData.is_export" ng-value="0">
+              <label for="local">Local</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3">Tujuan</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.city_to" ng-value='receiver.originalObject.address' class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3">No Surat Jalan Pengirim</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.reff_no" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jenis kendaraan</label>
+          <div class="col-md-9">
+            <select class="form-control" id="vehicle_type" data-placeholder-text-single="'Choose Jenis Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_type_id" ng-options="s.id as s.name for s in data.vehicle_type">
+                  <option value=""></option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group" ng-if="formData.packing_id == 6">
+            <label class="col-md-3"></label>
+            <div class="col-md-9">
+                <input type="text" ng-model="formData.package" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Driver Pengirim</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.driver" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Nopol</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.nopol" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3">Handphone</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.phone_number" class="form-control">
+          </div>
+        </div>
+        
+
+        <div class="form-group">
+        <label class="col-md-3">TTD Driver</label>
+        <div class="col-md-9" ng-show='edit_signature'>
+          <div style='border:1px solid #e5e6e7;height: 210px'>
+            <div class="signature" style="width: 100%;">
+              
+            </div>
+          </div>
+          <div class="btn-group"  style="margin-top: 2mm">
+            
+            <button type='button' class="btn btn-warning" ng-click='resetSignature();'>Reset</button>
+            <button type='button' class="btn btn-info" ng-click='edit_signature = !edit_signature;resetSignature()' >Cancel</button>
+          </div>
+        </div>
+        <div class="col-md-9" ng-show='!edit_signature'>
+          <div style='border:1px solid #e5e6e7;height: 210px'>
+              <img src="<% formData.ttd %>" alt="" class='img-responsive' style='height:55mm;width:auto'>
+          </div>
+
+          <div class="btn-group" style="margin-top: 2mm">
+              <button type='button' class="btn btn-warning" ng-click='edit_signature = !edit_signature' >Edit</button>
+          </div>
+        </div>
+
+
+        
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div>
+
+            <div class="text-right">
+              <button style="margin-bottom: 1mm" type="button" class="btn btn-sm btn-primary" ng-click="addItem();actionItem = 'Add'"><i class="fa fa-plus"></i> Add Barang</button>
+            </div>
+
+            <div style="overflow-x:scroll">
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th rowspan="2">#</th>
+                    <th rowspan="2">Rak</th>
+                    <th rowspan="2">Nama Barang</th>
+                    <th rowspan="2">Kemasan</th>
+                    <th rowspan="2">Kapasitas (Kg)</th>
+                    <th rowspan="2">Kapasitas (m3)</th>
+                    <th rowspan="2">Pengenaan</th>
+                    <th rowspan="2">Panjang</th>
+                    <th rowspan="2">Lebar</th>
+                    <th rowspan="2">Tinggi</th>
+                    <th rowspan="2">Berat</th>
+                    <th rowspan="2">Qty</th>
+                    <th rowspan="2">UOM 2</th>
+                    <th rowspan="2">Volume Total</th>
+                    <th rowspan="2">Berat Total</th>
+                    <th rowspan="2">Stok</th>
+                    <th colspan="2">Pallet</th>
+                    <th rowspan="2"></th>
+                  </tr>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Jumlah</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="(i,val) in detail">
+                    <td class="text-right"><% i+1 %>.</td>
+                    <td><% val.rack.code %></td>
+                    <td><% val.item_name %></td>
+                    <td><% val.kemasan %></td>
+                    <td class="text-right"><% val.rack.capacity_tonase | number %></td>
+                    <td class="text-right"><% val.rack.capacity_volume | number %></td>
+                    <td><% findJsonId(val.imposition,imposition).name %></td>
+                    <td class="text-right"><% val.long|number:3 %> cm</td>
+                    <td class="text-right"><% val.wide|number:3 %> cm</td>
+                    <td class="text-right"><% val.high|number:3 %> cm</td>
+                    <td class="text-right"><% val.weight|number:3 %> kg</td>
+                    <td class="text-right"><% val.qty|number %> <% val.piece_name %></td>
+                    <td class="text-right"><% val.qty_2|number %> <% val.piece_name_2 %></td>
+                    <td class="text-right"><% (val.qty * val.wide * val.high * val.long / 1000000)|number %> m<sup>3</sup></td>
+                    <td class="text-right"><% (val.qty * val.weight)|number %> kg</td>
+                    <td class="text-right"><% val.stock|number %></td>
+                    <td><% val.pallet.name %></td>
+                    <td><% val.pallet_qty %></td>
+                    <td class="text-center">
+                      <a ng-click="editItem(val)"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                      <a ng-if="i>0" ng-click="deleteItem(val.id)"><i class="fa fa-trash"></i></a>
+                    </td>
+                  </tr>
+                  <tfoot ng-show='detail.length == 0'>
+                      <tr>
+                          <td colspan='15' class="text-center">Tidak ada data</td>
+                      </tr>
+                  </tfoot>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="form-group pd-t5">
+        <label class="col-md-3">Keterangan</label>
+        <div class="col-md-9">
+            <textarea class='form-control' ng-model='formData.description' cols="30" rows="10"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-3">Lampiran</label>
+          <div class="col-md-9" id='attachment_container'>
+            
+            <div class="col-md-12">
+                <input type="file" name='files' id='files' style='display:none' accept="image/png, image/jpeg" multiple>
+                <label for="files" class='btn btn-primary btn-sm' style='margin-top:1.5mm'>
+                    <i class="fa fa-upload"></i> Upload lampiran
+                </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="ibox-footer">
+        <a ng-click="back()" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary submitButton" name="button"><% solog.label.general.save %></button>
+      </div>
+    </div>
+  </form>
+
+  <div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width: 92%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Item Barang</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitItem()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-7 col-sm-12">
+              <div class="form-group">
+                <label class="col-md-3">Pengenaan</label>
+                <div class="col-md-9">
+                  <div class="radio radio-inline radio-primary">
+                    <input type="radio" ng-model="detailData.imposition" ng-click='detailData.weight = 0' ng-value="1">
+                    <label for="kubikasi">Kubikasi</label>
+                  </div>
+                  <div class="radio radio-inline radio-primary">
+                    <input type="radio" id="tonase" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;' ng-value="2">
+                    <label for="tonase">Berat</label>
+                  </div>
+                  <div class="radio radio-inline radio-primary">
+                    <input type="radio" id="kubton" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;detailData.weight = 0' ng-value="3">
+                    <label for="kubton">Item</label>
+                  </div>
+                  <div class="radio radio-inline radio-p  rimary">
+                    <input type="radio" id="kubton" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;detailData.weight = 0' ng-model="detailData.imposition" ng-value="4">
+                    <label for="kubton">Borongan</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-3">Barang</label>
+                <div class="col-md-9">
+                  <div class="input-group" >
+                    <input type="text" ng-click="cariItem()" class="form-control" ng-model="detailData.item_name" ng-readonly='!detailData.is_exists || detailData.is_exists == 1'>
+                    <span class="input-group-addon" ng-click="detailData.is_exists = -1;detailData.item_id=null"><i class="fa fa-plus"></i></span>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="form-group">
+              <label class="col-md-3">Kemasan</label>
+              <div class="col-md-9">
+                <label for="karton" class="radio-inline">
+                    <input id='karton' type="radio" ng-model='detailData.kemasan' ng-value='"CASE"'> Case
+                </label>
+                <label for="peti" class="radio-inline">
+                    <input id='peti' type="radio" ng-model='detailData.kemasan' ng-value='"PETI"'> Peti
+                </label>
+                <label for="pallet" class="radio-inline">
+                    <input id='pallet' type="radio" ng-model='detailData.kemasan' ng-value='"PALLET"'> Pallet
+                </label>
+                <label for="bag" class="radio-inline">
+                    <input id='bag' type="radio" ng-model='detailData.kemasan' ng-value='"BAG"'> Bag
+                </label>
+                <label for="lainnya" class="radio-inline">
+                    <input id='lainnya' type="radio" ng-model='detailData.kemasan' ng-value='"LAINNYA"'> Lainnya
+                </label>
+
+                <input type="text" ng-model='detailData.kemasan_lainnya' ng-show='detailData.kemasan == "LAINNYA"' class='form-control mg-t1'>
+              </div>
+            </div>
+
+              <div class="form-group" ng-if='false'>
+                <label class="col-md-3">Barcode</label>
+                <div class="col-md-9">
+                  <input type="text" ng-model="detailData.barcode" ng-readonly='detailData.is_exists == 1' class="form-control">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-3">Dimensi & Berat</label>
+                <div class="col-md-4">
+                  <div class="input-group">
+                    <span class="input-group-addon font-bold">Panjang</span>
+                    <input type="text" class="form-control text-right" ng-model="detailData.long" placeholder="Panjang (cm)" only-num>
+                    <span class="input-group-addon">cm</span>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="input-group">
+                    <span class="input-group-addon font-bold">Lebar</span>
+                    <input type="text" class="form-control text-right" ng-model="detailData.wide" placeholder="Lebar (cm)" only-num>
+                    <span class="input-group-addon">cm</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3"></label>
+                <div class="col-md-4">
+                  <div class="input-group">
+                    <span class="input-group-addon font-bold">Tinggi</span>
+                    <input type="text" class="form-control text-right" ng-model="detailData.high" placeholder="Tinggi (cm)" only-num>
+                    <span class="input-group-addon">cm</span>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="input-group">
+                    <span class="input-group-addon font-bold">Berat</span>
+                    <input type="text" class="form-control text-right" ng-model="detailData.weight" placeholder="Berat (Kg)" only-num >
+                    <span class="input-group-addon">Kg</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-5 col-sm-12">
+
+              <div class="form-group">
+                <label class="col-md-3">Tipe Storage</label>
+                <div class="col-md-9">
+                  <label class="radio-inline">
+                    <input type="radio"  ng-model="detailData.storage_type" value='RACK' >Rak
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio"  ng-model="detailData.storage_type" value='HANDLING'>Langsung Stuffing
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" ng-show='detailData.storage_type == "RACK"'>
+                <label class="col-md-3">Bin Location</label>
+                <div class="col-md-9">
+                  <select class="form-control" data-placeholder-text-single="'Choose Rack / Bin'" chosen allow-single-deselect="false" ng-model="detailData.rack_id" ng-options="s.id as s.code for s in racks">
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-3">Qty</label>
+                <div class="col-md-5">
+                   <input type="text" class="form-control text-right" ng-model="detailData.qty" ng-change='validateDetail()' only-num>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-control" data-placeholder-text-single="'Choose Piece'" chosen allow-single-deselect="true" ng-model="detailData.piece_id" ng-options="s.id as s.name for s in piece">
+                      <option value=""></option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-3">UOM 2</label>
+                <div class="col-md-5">
+                   <input type="text" class="form-control text-right" ng-model="detailData.qty_2" ng-change='validateDetail()' only-num>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-control" data-placeholder-text-single="'Choose Piece'" chosen allow-single-deselect="true" ng-model="detailData.piece_id_2" ng-options="s.id as s.name for s in piece">
+                      <option value=""></option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-3">Pakai Pallet ?</label>
+                <div class="col-md-9">
+                  <input type="checkbox" ng-model="detailData.is_use_pallet" ng-true-value='1' ng-false-value='0' ng-click='switchPallet()'>
+                </div>
+              </div>
+
+              <div class="form-group" ng-show='detailData.is_use_pallet == 1'>
+                <label class="col-md-3">Pallet</label>
+                <div class="col-md-9">
+                  <div class="input-group" ng-click="cariPallet()" >
+                    <input type="text" class="form-control" ng-model="detailData.pallet_name" readonly>
+                    <span class="input-group-addon" ><i class="fa fa-search"></i></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" ng-show='detailData.is_use_pallet == 1'>
+                <label class="col-md-3">Jumlah Pallet</label>
+                <div class="col-md-9">
+                  <div class="input-group">
+
+                    <input type="text" class="form-control text-right" ng-model="detailData.pallet_qty" value="0" jnumber2 only-num>
+                    <span class="input-group-addon">Item</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-init='detailData = {};disBtn = false' ng-disabled="disBtn || !detailData.item_name ||   !detailData.qty || !detailData.storage_type || (!detailData.rack_id && detailData.storage_type == 'RACK' ) || (detailData.imposition == 1 && (!detailData.long || !detailData.wide || !detailData.high)) || (detailData.imposition == 2 && !detailData.weight)" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- modal master item-->
+<div class="modal fade" id="modalItemWarehouse" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Item List</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-striped" id="pallet_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Code</th>
+              <th>Nama</th>
+              <th class='hidden'>Barcode</th>
+              <th>Satuan</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pallet -->
+<div class="modal fade" id="modalPallet" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Daftar Pallet</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-striped" id="item_pallet_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode</th>
+              <th>Nama</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+

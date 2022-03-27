@@ -1,0 +1,83 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Harga Vendor</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-3 control-label" style="padding-top:0">Branch</label>
+          <div class="col-md-9">
+            <p><% item.company.name %></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label" style="padding-top:0">Vendor</label>
+          <div class="col-md-9">
+            <p><% item.vendor.name %></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label" style="padding-top:0">Jenis Biaya</label>
+          <div class="col-md-9">
+            <p><% item.cost_type_name %></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label" style="padding-top:0">Kelompok Biaya</label>
+          <div class="col-md-9">
+            <p><% item.cost_category == 1 ? 'Job Order' : (item.cost_category == 2 ? 'Trucking' : 'Container') %></p>
+          </div>
+        </div>
+        <hr>
+        <div class="form-group" ng-if="item.cost_category != 1">
+          <label class="col-md-3 control-label" style="padding-top:0">Route</label>
+          <div class="col-md-9">
+            <p><% item.route.name %></p>
+          </div>
+        </div>
+        
+        <div class="form-group" ng-if="item.cost_category == 2">
+          <label class="col-md-3 control-label" style="padding-top:0">Tipe kendaraan</label>
+          <div class="col-md-9">
+            <p><% item.vehicle_type.name %></p>
+          </div>
+        </div>
+        <div class="form-group" ng-if="item.cost_category == 3">
+          <label class="col-md-3 control-label" style="padding-top:0">Tipe Kontainer</label>
+          <div class="col-md-9">
+            <p><% item.container_type.name %></p>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label" style="padding-top:0">Biaya satuan</label>
+          <div class="col-md-9">
+            <p><% item.price_full|number %></p>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label" style="padding-top:0">Tanggal mulai berlaku</label>
+          <div class="col-md-9">
+            <p><% item.date|fullDate %></p>
+          </div>
+        </div>
+        
+        <!-- <div class="form-group">
+          <label class="col-md-3 control-label" style="padding-top:0">Keterangan</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.description">
+          </div>
+        </div> -->
+        <!-- <code><%type_1%></code> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="marketing.vendor_price" class="btn btn-sm btn-warning">Kembali</a>
+      </div>
+    </form>
+  </div>
+</div>

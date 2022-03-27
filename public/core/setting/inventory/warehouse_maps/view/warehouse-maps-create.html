@@ -1,0 +1,85 @@
+<form class='form-horizontal'>
+    <div class="form-group">
+          <label class="col-md-1 control-label"><% $root.solog.label.general.row %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.row" only-num>
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-1 control-label"><% $root.solog.label.general.column %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.column" only-num>
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-1 control-label"><% $root.solog.label.general.level %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.level" only-num>
+          </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+            <button class='btn btn-sm btn-success' ng-click='submitForm()' ng-disabled='disBtn'><% $root.solog.label.general.generate %></button>
+        </div>
+    </div>
+</form>
+
+<hr>
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class='text-center'>Front</h2>
+        </div>
+    </div>
+    <div class="row middle">
+        <div class="col-md-1">
+            <h2>Left</h2>
+        </div>
+        <div class="col-md-10">
+            <table  class='w-full' border='1'>
+                <tr ng-repeat="(x, row) in rows">
+                    <td ng-repeat='(y, column) in row.columns' class='pd-10'>
+                        <div class='w-full column-reverse' border='1' class='column-reverse'>
+                            <div ng-repeat='(z, level) in column.levels' class='border-1 pd-5'>
+                                <h3 class='text-center'>
+                                    <a ng-click='openRack(level.rack_id)'>
+                                        <%  level.code %>
+                                    </a>
+                                </h3>
+                                <p class='text-center'>
+                                    <small>
+                                        Filled with <% level.qty_item %> items
+                                    </small>
+                                </p>
+                                <div>
+                                    <div class="row mg-t3">
+                                        <div class="col-md-12">
+                                            <small>
+                                                <b>
+                                                    <% $root.solog.label.general.rack %>        
+                                                </b>
+                                            </small>
+                                        </div>
+                                        <div class="col-md-12 mg-t1">
+                                            <racks-select-input ng-model='rows[x].columns[y].levels[z].rack_id' ng-change='setMap(level.rack_id, level.id, x, y, z)' warehouse-id='warehouse_id'/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-1">
+            <h2>Right</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class='text-center'>Behind</h2>
+        </div>
+    </div>
+</div>

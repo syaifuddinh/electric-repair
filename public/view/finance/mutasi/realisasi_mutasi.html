@@ -1,0 +1,69 @@
+<div class="col-md-12">
+    <div class="ibox" ng-show="isFilter">
+        <div class="ibox-title">
+            <h5>Filter</h5>
+        </div>
+        <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+            <div class="ibox-content">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Branch Asal</label>
+                    <div class="col-md-9">
+                    <select ng-change='searchData()' class="form" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.source_company_id" ng-options="c.id as c.name for c in data.company">
+                        <option value=""></option>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Branch Tujuan</label>
+                    <div class="col-md-9">
+                    <select ng-change='searchData()' class="form" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.dest_company_id" ng-options="c.id as c.name for c in data.company">
+                        <option value=""></option>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Periode</label>
+                    <div class="col-md-9">
+                        <div class="input-daterange input-group" style="width:100%;">
+                            <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+                            <span class="input-group-addon">to</span>
+                            <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ibox-footer">
+                <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+<!--                <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button>-->
+            </div>
+        </form>
+    </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Realisasi Mutasi</h5>
+      <div class="ibox-tools">
+          <button type="button" class="btn btn-success btn-sm mg-r1" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Tanggal</th>
+            <th>Branch Asal</th>
+            <th>Branch Tujuan</th>
+            <th>Kas/Bank Asal</th>
+            <th>Kas/Bank Tujuan</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

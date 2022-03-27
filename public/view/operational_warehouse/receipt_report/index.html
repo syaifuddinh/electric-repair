@@ -1,0 +1,75 @@
+<div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5><% solog.label.general.filter %></h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="form-group">
+          <label class="col-md-3 control-label"><% solog.label.general.warehouse %></label>
+          <div class="col-md-9">
+            <warehouses-select-input ng-model='formData.warehouse_id' ng-change='searchData()'></warehouses-select-input>
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-md-3 control-label"><% solog.label.general.customer %></label>
+          <div class="col-md-9">
+            <customer-select-input ng-change='searchData()' ng-model='formData.customer_id'></customer-select-input>
+          </div>
+      </div>
+
+<div class="form-group">
+  <label class="col-md-3 control-label"><% solog.label.general.period %></label>
+  <div class="col-md-9">
+    <div class="input-daterange input-group" style="width:100%;">
+      <input type="text"  ng-change='searchData()' class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+      <span class="input-group-addon">to</span>
+      <input type="text"  ng-change='searchData()' class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+    </div>
+  </div>
+</div>
+
+ <div class="form-group">
+    <label class="col-md-3 control-label">Tampilkan item tidak nol ?</label>
+    <div class="col-md-1">
+      <input type="checkbox" ng-change='searchData()' ng-model='formData.is_zero' ng-true-value="1" ng-false-value="0"> 
+    </div>
+    <label class="col-md-5 control-label">Tampilkan barang yang penerimaan barangnya tidak dibatalkan ?</label>
+    <div class="col-md-1">
+      <input type="checkbox" ng-change='searchData()' ng-model='formData.is_not_cancel' ng-true-value="1" ng-false-value="0"> 
+    </div>
+  </div>
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()"><% solog.label.general.reset %></a>      
+      <span id="export_button"></span>
+    </div>
+  </form>
+</div>
+
+<div class="ibox">
+  <div class="ibox-title">
+    <h5><% solog.label.moving_item_report.title %></h5>
+    <div class="ibox-tools">
+        <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> <% solog.label.general.filter %></button>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <table class="table display compact nowrap table-bordered" id="datatable" style="width:100%;">
+      <thead>
+        <tr>
+          <th>No. BSTB</th>
+          <th><% solog.label.general.date %></th>
+          <th><% solog.label.general.customer %></th>
+          <th><% solog.label.general.warehouse %></th>
+          <th><% solog.label.general.rack %></th>
+          <th><% solog.label.item.name %></th>
+          <th><% solog.label.general.ingoing_qty %></th>
+          <th><% solog.label.general.outgoing_qty %></th>
+          <th><% solog.label.general.stock %></th>
+          <th><% solog.label.general.description %></th>
+        </tr>
+      </thead>
+      </tbody>
+    </table>
+  </div>
+</div>

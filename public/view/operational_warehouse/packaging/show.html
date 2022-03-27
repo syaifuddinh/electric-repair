@@ -1,0 +1,132 @@
+<style>
+    th {
+        text-align:center;
+        vertical-align: middle;
+    }
+</style>
+<div class="col-md-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Detail</h5>
+            <div class="ibox-tools">
+                <button ui-sref='operational_warehouse.packaging.edit({id:formData.id})'  class="btn btn-sm btn-info"><i class="fa fa-pencil"></i> Edit</button>
+                <button ng-click='approve()' class="btn btn-sm btn-success" ng-disabled='disBtn'> Approve</button>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table display compact nowrap table-borderless">
+                        <tbody>
+                            <tr>
+                                <td style="width:25%;"><% solog.label.general.code %></td>
+                                <td>: <span><% formData.code %></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%;"><% solog.label.general.branch %></td>
+                                <td>: <span><% formData.company_name %></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%;"><% solog.label.general.warehouse %></td>
+                                <td>: <span><% formData.warehouse_name %></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%;">Date</td>
+                                <td>: <span><% formData.date %></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%;">Status</td>
+                                <td>: <span ng-class="formData.is_approved == 0 ? 'label label-warning' : (formData.is_approve == 1 ? 'label label-primary' : 'label label-danger')"><% formData.is_approve == 0 ? 'Draft' : 'Approved' %></span></td>
+                            </tr>
+                            <tr>
+                                <td><% solog.label.general.created_by %></td>
+                                <td>: <span><% formData.creator_name %></span></td>
+                            </tr>
+                            <tr>
+                                <td><% solog.label.general.created_at %></td>
+                                <td>: <span><% formData.created_at %></span></td>
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                <td>: <span><% formData.description %></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <hr>
+                </div>
+                <div>
+                    <div class="col-md-12">
+                        <div>
+                            <h3 class='pull-left' >Old Items</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <table class='table display compact nowrap table-bordered'>
+                            <thead>
+                                <tr>
+                                    <th>Good Receipt</th>
+                                    <th>Item Name</th>
+                                    <th>Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if='formData.old_items.length == 0'>
+                                    <td colspan="3" class='text-center'>No Data</td>
+                                </tr>
+                                <tr ng-repeat='(i, val) in formData.old_items'>
+                                    <td><% val.warehouse_receipt_code %></td>
+                                    <td><% val.item_name %></td>
+                                    <td class='text-right'>
+                                        <% val.qty %>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+                <div>
+                    <div class="col-md-12">
+                        <hr>
+                        
+                        <div>
+                            <h3 class='pull-left' >New Items</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <table class='table display compact nowrap table-bordered'>
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if='formData.new_items.length == 0'>
+                                    <td colspan="2" class='text-center'>No Data</td>
+                                </tr>
+                                <tr ng-repeat='(i, val) in formData.new_items'>
+                                    <td><% val.item_name %></td>
+                                    <td class='text-right'>
+                                        <% val.qty %>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="ibox-footer">
+            <a ui-sref="operational_warehouse.packaging" class="btn btn-sm btn-warning">Back</a>
+        </div>
+    </div>
+</div>

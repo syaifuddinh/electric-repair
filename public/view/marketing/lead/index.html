@@ -1,0 +1,87 @@
+<div class="ibox" ng-show='is_filter'>
+  <div class="ibox-content">
+    <div class="row form-horizontal">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="col-md-3">Branch</label>
+          <div class="col-md-9">
+                <branch-select-input ng-change="filter()" ng-model="filterData.company_id" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Lead name</label>
+          <div class="col-md-9">
+            <input ng-change="filter()" type="text" ng-model="filterData.name" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Source</label>
+          <div class="col-md-9">
+            <select ng-change="filter()" class="form-control" data-placeholder-text-single="'Choose Source'" chosen allow-single-deselect="true" ng-model="filterData.lead_source_id" ng-options="s.id as s.name for s in data.source">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="col-md-3">Status</label>
+          <div class="col-md-9">
+            <select ng-change="filter()" class="form-control" data-placeholder-text-single="'Choose Status'" chosen allow-single-deselect="true" ng-model="filterData.lead_status_id" ng-options="s.id as s.status for s in data.status">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Stage</label>
+          <div class="col-md-9">
+            <select ng-change="filter()" class="form-control" data-placeholder-text-single="'Choose Stage'" chosen allow-single-deselect="true" ng-model="filterData.step" ng-options="s.id as s.name for s in step">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  <div class="ibox-footer">
+    <button class="btn btn-warning" ng-click='reset_filter()'>Reset</button>
+<!--    <button class="btn btn-primary" ng-click='filter()'>Cari</button>-->
+    <!-- <button type='button' ng-click='exportExcel()' class="pull-right btn btn-default font-bold"><i class="fa fa-file-excel-o"></i> Export</button> -->
+  </div>  
+</div>
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>Leads</h5>
+    <div class="ibox-tools">
+      <a ng-click='is_filter = !is_filter' class="btn btn-success btn-sm font-bold"><i class="fa fa-filter"></i> Filter</a>
+      <a ng-show="roleList.includes('marketing.leads.create')" ui-sref="marketing.lead.create" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</a>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable" style="width:100%;">
+      <thead>
+        <tr>
+          <th>Branch</th>
+          <th>Date</th>
+          <th>Lead Name</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Source</th>
+          <th>Status</th>
+          <th>Stage</th>
+          <th style="width:7%;"></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>

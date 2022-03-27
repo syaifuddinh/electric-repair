@@ -1,0 +1,22 @@
+<div class="col-md-12">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" id="info_tab" ng-click='openInfo()'>
+                <% solog.label.general.info %> 
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" id="receipt_tab" ng-click='openReceipt()'>
+                <% solog.label.warehouse_receipt.title %>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id='info_detail' class='tab-item'>
+            <voyage-schedules-show id="id"  />
+        </div>        
+        <div id='receipt_detail' class='tab-item'>
+            <warehouse-receipts-table voyage-schedule-id='id' add-route='"operational.voyage_schedule.create_receipt"' add-params="{id : id}" />
+        </div>        
+    </div>
+</div>

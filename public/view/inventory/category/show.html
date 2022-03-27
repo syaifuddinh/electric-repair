@@ -1,0 +1,105 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Item Category</h5>
+      <div class="ibox-tools">
+        <a class="btn btn-sm btn-primary" ng-show="roleList.includes('inventory.category.edit')" ui-sref="inventory.category.edit({id:item.id})" ><span class='fa fa-edit'></span> Edit</a>
+        <a class="btn btn-sm btn-danger" ng-show="roleList.includes('inventory.category.delete')" ng-click="deletes(item.id)" ><span class='fa fa-trash'></span></a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td style="width:20%;">Main Category</td>
+            <td style="width:2%;">:</td>
+            <td><% item.parent %></td>
+          </tr>
+          <tr>
+            <td>Code</td>
+            <td>:</td>
+            <td><% item.code %></td>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td><% item.name %></td>
+          </tr>
+          <tr>
+            <td>Is Tire ?</td>
+            <td>:</td>
+            <td>
+              <div class="checkbox checkbox-primary checkbox-inline">
+                <input type="checkbox" disabled ng-model="item.is_tire" ng-true-value="1" ng-false-value="0" id="isTire">
+                <label for="isTire"></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Is Asset ?</td>
+            <td>:</td>
+            <td>
+              <div class="checkbox checkbox-primary checkbox-inline">
+                <input type="checkbox" disabled ng-model="item.is_asset" ng-true-value="1" ng-false-value="0" id="isAsset">
+                <label for="isAsset"></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Is Service  ?</td>
+            <td>:</td>
+            <td>
+              <div class="checkbox checkbox-primary checkbox-inline">
+                <input type="checkbox" disabled ng-model="item.is_jasa" ng-true-value="1" ng-false-value="0" id="isJasa">
+                <label for="isJasa"></label>
+              </div>
+            </td>
+          </tr>
+              <tr ng-if='settings.general.is_use_depo'>
+                <td>Is Container Part ?</td>
+                <td>:</td>
+                <td>
+                  <div class="checkbox checkbox-primary checkbox-inline">
+                    <input type="checkbox" disabled ng-model="item.is_container_part" ng-true-value="1" ng-false-value="0" id="isContainerPart">
+                    <label for="isContainerPart"></label>
+                  </div>
+                </td>
+              </tr>
+              <tr ng-if='settings.general.is_use_depo'>
+                <td>Is Container Yard ?</td>
+                <td>:</td>
+                <td>
+                  <div class="checkbox checkbox-primary checkbox-inline">
+                    <input type="checkbox" disabled ng-model="item.is_container_yard" ng-true-value="1" ng-false-value="0" id="isContainerYard">
+                    <label for="isContainerYard"></label>
+                  </div>
+                </td>
+              </tr>
+          <tr>
+            <td>Is Pallet ?</td>
+            <td>:</td>
+            <td>
+              <div class="checkbox checkbox-primary checkbox-inline">
+                <input type="checkbox" disabled ng-model="item.is_pallet" ng-true-value="1" ng-false-value="0" id="isPallet">
+                <label for="isPallet"></label>
+              </div>
+            </td>
+          </tr>
+          <tr ng-if='item.is_jasa == 0'>
+            <td><% solog.label.general.default_rack %></td>
+            <td>:</td>
+            <td><% item.rack_code %></td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td>:</td>
+            <td><% item.description %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ng-click='backward()' class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+    </div>
+  </div>
+</div>

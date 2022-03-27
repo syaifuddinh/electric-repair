@@ -1,0 +1,55 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+    <div class="modal-body">
+      <div class="form-group required">
+        <label class="col-md-3 control-label"><% $root.solog.label.general.name %></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" required ng-model="formData.name" placeholder="" ng-change='show()'>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-md-3 control-label"><% $root.solog.label.additional_fields.for_feature %></label>
+        <div class="col-md-9">
+            <solog-select ng-model='formData.type_transaction_id' title='$root.solog.label.general.feature' ng-change='showTypeTransaction()' rows='type_transactions'></solog-select>
+        </div>
+      </div>
+      <div class="form-group required">
+            <label class="col-md-3 control-label"><% $root.solog.label.general.type %></label>
+            <div class="col-md-9">
+                <solog-select ng-model='formData.field_type_id' title='$root.solog.label.general.type' rows='field_types'></solog-select>
+            </div>
+      </div>
+      <div class="form-group">
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model='formData.show_in_index' ng-true-value='1' ng-true-value='0'> 
+                    <span class='inline-block mg-l2'>
+                        Show in table at index page ?
+                    </span>
+                </label>
+                <span ng-if='type_transaction.slug == "jobOrder"'>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-model='formData.show_in_job_order_summary' ng-true-value='1' ng-true-value='0'> 
+                        <span class='inline-block mg-l2'>
+                            Show in job order summary ?
+                        </span>
+                    </label> 
+                    <br>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-model='formData.show_in_operational_progress' ng-true-value='1' ng-true-value='0'> 
+                        <span class='inline-block mg-l2'>
+                            Show in operational progress ?
+                        </span>
+                    </label>
+                    <br>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-model='formData.show_in_manifest' ng-true-value='1' ng-true-value='0'> 
+                        <span class='inline-block mg-l2'>
+                            Show in manifest / packing list ?
+                        </span>
+                    </label>
+                </span>
+            </div>
+      </div>
+    </div>
+ </form>

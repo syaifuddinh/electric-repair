@@ -1,0 +1,133 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table display compact nowrap table-borderless">
+      <tr>
+        <td>
+          <h4>Asuransi Vehicle</h4>
+        </td>
+        <td class="text-right">
+          <a ng-show="roleList.includes('vehicle.vehicle.detail.detail.assurance.create')" ng-click="creates()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</a>
+        </td>
+      </tr>
+    </table>
+    <table class="table display compact nowrap table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Asuransi</th>
+          <th>Jenis</th>
+          <th>Tgl Aktif</th>
+          <th>Tgl Akhir</th>
+          <th>Premi</th>
+          <th>TJH3</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="val in data.detail">
+          <td><% val.insurance.name %></td>
+          <td><% val.type_name %></td>
+          <td><% val.start_date|fullDate %></td>
+          <td><% val.end_date|fullDate %></td>
+          <td><% val.premi|number %></td>
+          <td><% val.tjh %></td>
+          <td><% val.active_name %></td>
+          <td class="text-center">
+            <a ng-show="roleList.includes('vehicle.vehicle.detail.detail.assurance.edit')" ng-click="edits(val.id)"><i class="fa fa-edit"></i></a>&nbsp
+            <a ng-show="roleList.includes('vehicle.vehicle.detail.detail.assurance.delete')" ng-click="deletes(val.id)"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:50%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id=""><%modalTitle%></h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitForm()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3">Asuransi</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Asuransi'" chosen allow-single-deselect="false" ng-model="formData.insurance_id" ng-options="s.id as s.name+', '+s.address for s in data.insurance">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">No Polis</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.polis_no">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Tgl Mulai</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" datepick ng-model="formData.start_date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Tgl Selesai</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" datepick ng-model="formData.end_date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Pembayaran</label>
+            <div class="col-md-3">
+              <select class="form-control" chosen allow-single-deselect="false" ng-model="formData.payment" ng-options="s.id as s.name for s in payment">
+                <option value=""></option>
+              </select>
+            </div>
+            <div class="col-md-6" ng-if="formData.payment==1">
+              <select class="form-control" chosen allow-single-deselect="false" ng-model="formData.account_id" ng-options="s.id as s.name for s in data.account">
+                <option value=""></option>
+              </select>
+            </div>
+            <div ng-if="formData.payment==2">
+              <div class="col-md-3">
+                <input type="text" class="form-control" jnumber2 only-num ng-model="formData.termin">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Jenis Asuransi</label>
+            <div class="col-md-5">
+              <select class="form-control" data-placeholder-text-single="'Choose Jenis Asuransi'" chosen allow-single-deselect="false" ng-model="formData.type" ng-options="s.id as s.name for s in type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Premi</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" jnumber2 only-num ng-model="formData.premi">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">TJH3</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.tjh">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Aktif</label>
+            <div class="col-md-9">
+              <input type="checkbox" ng-model="formData.is_active" ng-true-value="1" ng-false-value="0"> Masih Berlaku
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button ng-show="!isEdit" type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+          <button ng-show="isEdit" ng-disabled="disBtn" class="btn btn-sm btn-primary" ng-click="updateForm()">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

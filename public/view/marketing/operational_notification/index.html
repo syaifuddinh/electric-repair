@@ -1,0 +1,23 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <!-- <div class="ibox-title">
+      <h5>Daftar Notifikasi</h5>
+    </div> -->
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-borderless">
+        <tbody>
+          <tr ng-repeat="val in data">
+            <td style="padding: 20px;"><i class="fa fa-comments fa-2x"></i></td>
+            <td style="padding: 20px;"><p><h4><% val.title %></h4> <span ng-bind="val.des"></span> <br> <span class="font-italic" style="font-size:10px;"><% val.date|timeago %></span></p></td>
+            <td style="padding: 20px;"><a ng-click="goTo(val)"><i class="fa fa-paper-plane"></i></a> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

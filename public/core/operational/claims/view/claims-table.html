@@ -1,0 +1,67 @@
+<div class="ibox" ng-show="isFilter">
+    <div class="ibox-title">
+      <h5><% $root.solog.label.general.filter %></h5>
+    </div>
+    <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+        <div class="ibox-content">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Cabang</label>
+                <div class="col-md-9">
+                    <select class="form" data-placeholder-text-single="'Semua Cabang'" chosen allow-single-deselect="true" ng-model="formData.company_id" ng-options="c.id as c.name for c in data.company"  ng-change='filter()'>
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Customer</label>
+                <div class="col-md-9">
+                    <select class="form" data-placeholder-text-single="'Semua Customer'" chosen allow-single-deselect="true" ng-model="formData.customer_id" ng-options="c.id as c.name for c in data.customers" ng-change='filter()'>
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Status</label>
+                <div class="col-md-9">
+                    <label class="radio-inline">
+                        <input type="radio" ng-model='formData.status' ng-value='' ng-change='filter()'> Semua
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model='formData.status' ng-value='1' ng-change='filter()'> Draft
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model='formData.status' ng-value='2' ng-change='filter()'> Disetujui
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Periode</label>
+                <div class="col-md-9">
+                    <div class="input-daterange input-group" style="width:100%;">
+                        <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="" ng-change='filter()'>
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="" ng-change='filter()'>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <div class="ibox-footer">
+        <a class="btn btn-sm btn-warning" ng-click="resetFilter()"><% $root.solog.label.general.reset %></a>
+      </div>
+    </form>
+</div>
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><% pageTitle %></h5>
+        <div class="ibox-tools">
+            <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+            <button class="btn btn-sm btn-primary" ng-click='add()'><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></button>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <solog-datatable options="options" id="claims_datatable"></solog-datatable>
+    </div>
+</div>

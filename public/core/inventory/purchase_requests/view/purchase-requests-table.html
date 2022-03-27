@@ -1,0 +1,53 @@
+<div class="col-md-8" ng-show='is_filter'>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-filter"></i> <% $root.solog.label.general.filter %></h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3"><% $root.solog.label.general.branch %></label>
+        <div class="col-md-9">
+            <branch-select-input ng-model="filterData.company_id" ng-change="filter()" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3"><% $root.solog.label.general.period %></label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control" ng-model="filterData.start_date" datepick ng-change="filter()"/>
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control" ng-model="filterData.end_date" datepick ng-change="filter()"/>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3"></label>
+        <div class="col-md-9">
+          <button class="btn btn-warning" ng-click='reset_filter()'>
+            <% $root.solog.label.general.reset %>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% $root.solog.label.general.purchase_request %></h5>
+      <div class="ibox-tools">
+          <a ng-click='is_filter = !is_filter' class="btn btn-success btn-sm font-bold"><i class="fa fa-filter"></i> <% $root.solog.label.general.filter %></a>
+        <a ng-show="$root.roleList.includes('inventory.purchase_request.create')" class="btn btn-sm btn-primary" ng-click='add()'><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></a>
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable"></table>
+    </div>
+  </div>
+</div>

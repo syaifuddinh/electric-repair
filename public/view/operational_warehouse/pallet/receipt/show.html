@@ -1,0 +1,97 @@
+<form class="form-horizontal" ng-submit="submitForm()" name="frm">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Penerimaan Barang</h5>
+      <div class="ibox-tools">
+        <a ui-sref="operational_warehouse.pallet_receipt.create({id:transaction_id,type:source_type_id})" ng-if="item.status<2" class="btn btn-sm btn-primary"><i class="fa fa-download"></i> Add Penerimaan</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td>Wilayah</td>
+                <td>: <% item.company.name %></td>
+              </tr>
+              <tr>
+                <td>Sumber Transaksi</td>
+                <td>: <% findJsonId(source_type_id,source).name %></td>
+              </tr>
+              <tr>
+                <td>No. Transaksi</td>
+                <td>: <% item.code %></td>
+              </tr>
+              <!-- <tr>
+                <td>Tgl. PO</td>
+                <td>: <% item.purchase_order.po_date|fullDate %></td>
+              </tr>
+              <tr>
+                <td>Supplier</td>
+                <td>: <% item.purchase_order.supplier.name %></td>
+              </tr> -->
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <div ng-repeat="(i,val) in list">
+            <h5>Penerimaan #<% i+1 %></h5>
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td style="width:25%;">No. Surat Jalan</td>
+                  <td><%val.delivery_no%></td>
+                </tr>
+                <tr>
+                  <td>Tgl Terima</td>
+                  <td><%val.receive_date%></td>
+                </tr>
+                <tr>
+                  <td>Penerima</td>
+                  <td><%val.receive_name%></td>
+                </tr>
+                <tr>
+                  <td>Keterangan</td>
+                  <td><%val.description%></td>
+                </tr>
+              </tbody>
+            </table>
+            <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Barang</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Item</th>
+            <th class='hidden'>Barcode</th>
+            <th>Jenis</th>
+            <th style="width:10%;">Diterima</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i, value) in detail">
+            <td><% i+1 %></td>
+            <td><% value.item.name %></td>
+            
+            <td><% value.item.category.name %></td>
+            <td class="text-right"><% value.qty|number %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="operational_warehouse.pallet_receipt" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</form>

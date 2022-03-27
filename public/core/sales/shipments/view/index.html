@@ -1,0 +1,12 @@
+<div class="col-md-12"> 
+    <manifests-table 
+        hide-type='1' 
+        code-column-name='"No. Shipment"' 
+        add-route='"sales_order.shipment.create"' 
+        detail-route='"sales_order.shipment.show"' 
+        source="'sales_order'"
+        add-button-allowed="$root.roleList.includes('sales.shipment.add')"
+        detail-button-allowed="$root.roleList.includes('sales.shipment.detail')"
+        delete-button-allowed="$root.roleList.includes('sales.shipment.delete')"
+    />
+</div>

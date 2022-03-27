@@ -1,0 +1,27 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Cash Count</h5>
+      <div class="ibox-tools">
+          <a href="<%baseUrl+'/excel/cash_count_export'%>" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i>
+            Export</a>
+        <a ng-show="roleList.includes('finance.cash_count.create')" class="btn btn-sm btn-primary" ui-sref="finance.cash_count.create"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>Branch</th>
+            <th>Tanggal</th>
+            <th>Jumlah Saldo Akhir</th>
+            <th>Keterangan</th>
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

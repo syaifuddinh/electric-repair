@@ -1,0 +1,283 @@
+<div >
+    <table class="table display compact nowrap table-borderless" ng-if="(item.service_type_id!=6&&item.service_type_id!=7) || item.show_add_button">
+        <tbody>
+            <tr>
+                <td><h4><i class="fa fa-cubes"></i> Item</h4></td>
+                <td class="text-right">
+                    <span ng-if="formData.status_slug">
+                        <span ng-if="formData.status_slug != 'approved' && formData.status_slug != 'rejected'">
+                            <button ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.detail.create')" ng-if="!hasInvoice" type="button" class="btn btn-sm btn-primary" ng-click="$root.job_order.addItem()"><i class="fa fa-plus"></i> Add Item</button>
+                        </span>
+                    </span>
+                    <span ng-if="!formData.status_slug">
+                        <button ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.detail.create')" ng-if="!hasInvoice" type="button" class="btn btn-sm btn-primary" ng-click="$root.job_order.addItem()"><i class="fa fa-plus"></i> Add Item</button>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table display compact nowrap table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th ng-if="item.service_type_id!=7"><% $root.solog.label.job_order.item_name %></th>
+                <th ng-if="item.service_type_id == 15"><% $root.solog.label.general.receive_date %></th>
+                <th ng-if="item.service_type_id == 15"><% $root.solog.label.general.load_date %></th>
+                <th ng-if="item.service_type_id == 15"><% $root.solog.label.general.duration %>(<% $root.solog.label.general.day %>)</th>
+                <th ng-if="item.service_type_id == 15"><% $root.solog.label.general.free_storage_day %></th>
+                <th ng-if="item.service_type_id == 15"><% $root.solog.label.general.over_storage_day %></th>
+                <th ng-if="item.service_type_id!=7"><% $root.solog.label.general.unit %></th>
+                <th ng-if="item.service_type_id==3 || item.service_type_id==2"><% $root.solog.label.general.no_reff %></th>
+                <th ng-if="item.service_type_id==3 || item.service_type_id==2"><% $root.solog.label.manifest.code %></th>
+                <th ng-if="item.service_type_id==1 || item.service_type_id==12 || item.service_type_id==13 || item.service_type_id==15"><% $root.solog.label.general.imposition %> </th>
+                <th ng-if="item.service_type_id==1 || item.service_type_id==12 || item.service_type_id==13 || item.service_type_id==15"><% $root.solog.label.general.minimum %> </th>
+                <th>Qty</th>
+                <th ng-if="item.service_type_id==7"><% $root.solog.label.general.unit %></th>
+                <th ng-if="item.service_type_id!=6&&item.service_type_id!=7"><% $root.solog.label.general.actual_weight_total %></th>
+                <th ng-if="item.service_type_id==1">Volumetric Weight (Kg)</th>
+                <th ng-if="item.service_type_id == 1">P x L x T (cm)</th>
+                <th ng-if="item.service_type_id!=6&&item.service_type_id!=7"><% $root.solog.label.general.volume_total %></th>
+                <th ng-if="item.service_type_id!=6&&item.service_type_id!=7">Transported</th>
+                <th>Stock</th>
+                <th><% $root.solog.label.general.description %></th>
+                <th ng-if="item.service_type_id==6||item.service_type_id==7">Price</th>
+                <th ng-if="item.service_type_id==6||item.service_type_id==7">Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if='$root.job_order.detail.length == 0'>
+                <td class="text-center" colspan='9'><% $root.solog.label.general.no_data %></td>
+            </tr>
+            <tr ng-repeat="(i,val) in $root.job_order.detail">
+                <td class="text-center">
+                    <div class='w-10'>
+                        <a ng-click="$root.job_order.editItem(val)" ng-if="!hasInvoice && isShipment"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                        <a ng-if="!hasInvoice" ng-click="$root.job_order.deleteItem(val.id)"><i class="fa fa-trash"></i></a>
+                    </div>
+                </td>
+                <td ng-if="item.service_type_id!=7"><% val.item_name %></td>
+                <td ng-if="item.service_type_id==15"><% val.receive_date %></td>
+                <td ng-if="item.service_type_id==15"><% val.load_date %></td>
+                <td ng-if="item.service_type_id==15" class='text-right'><% val.duration %></td>
+                <td ng-if="item.service_type_id==15" class='text-right'><% val.free_storage_day %></td>
+                <td ng-if="item.service_type_id==15" class='text-right'><% val.over_storage_day %></td>
+                <td ng-if="item.service_type_id!=7"><% val.piece_name %></td>
+                <td ng-if="item.service_type_id==3 || item.service_type_id==2"><% val.no_reff %></td>
+                <td ng-if="item.service_type_id==3 || item.service_type_id==2"><% val.no_manifest %></td>
+                <td ng-if="item.service_type_id == 1 || item.service_type_id==12 || item.service_type_id==13 || item.service_type_id==15"><% findJsonId(val.imposition,imposition).name %></td>
+                <td ng-if="item.service_type_id == 1 || item.service_type_id==12 || item.service_type_id==13 || item.service_type_id==15" class="text-right"><% val.minimum %></td>
+                <td class="text-right"><% val.qty|number %></td>
+                <td ng-if="item.service_type_id==7"><% val.piece.name %></td>
+                <td class="text-right" ng-if="item.service_type_id!=6&&item.service_type_id!=7"><% val.weight|number %></td>
+                <td class="text-right" ng-if="item.service_type_id!=6&&item.service_type_id==1"><% val.volumetric_weight|number %></td>
+                <td class="text-right" ng-if="item.service_type_id == 1"><% val.long %> x <% val.wide %> x <% val.high %></td>
+                <td class="text-right" ng-if="item.service_type_id!=6&&item.service_type_id!=7"><% val.volume|number %></td>
+                <td class="text-right" ng-if="item.service_type_id!=6&&item.service_type_id!=7"><% (val.transported_item || 0)|number %></td>
+                <td class="text-right"><% val.stock|number %></td>
+                <td><% val.description %></td>
+                <td class="text-right" ng-if="item.service_type_id==6||item.service_type_id==7"><% val.price|number %></td>
+                <td class="text-right" ng-if="item.service_type_id==6||item.service_type_id==7"><% val.total_price|number %></td>
+            </tr>
+            <tr ng-if="detail.length==1">
+                <td style="border:0px;"><small class="font-italic">Minimal harus ada 1 barang</small></td>
+            </tr>
+        </tbody>
+        <tfoot ng-if="item.show_total_price">
+            <tr>
+                <td class="text-center" colspan='7'>
+                    <b>
+                        Total Price
+                    </b>
+                </td>
+                <td class="text-right"><% item.total_price | number %></td>
+            </tr>
+        </tfoot>
+    </table>
+    
+</div>
+
+<!-- modal item -->
+<div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id=""><% job_order.itemTitle %></h4>
+            </div>
+            <form class="form-horizontal">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-md-3">Source</label>
+                        <div class="col-md-9">
+                            <label for="" class="radio-inline">
+                                <input type="radio" ng-model='$root.itemData.is_warehouse' ng-change='$root.job_order.allowAppend()' ng-value='0'> Non Warehouse
+                            </label>
+                            <label for="" class="radio-inline">
+                                <input type="radio" ng-model='$root.itemData.is_warehouse' ng-change='$root.job_order.allowAppend()' ng-value='1'> Warehouse
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="item.service_type_id==3 || item.service_type_id==2">
+                        <label class="col-md-3"><% $root.solog.label.general.no_reff %></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="$root.itemData.reff_no">
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="item.service_type_id==3 || item.service_type_id==2">
+                        <label class="col-md-3"><% $root.solog.label.manifest.code %></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="$root.itemData.manifest_no">
+                        </div>
+                    </div>
+                                                            
+                    <div class="form-group" ng-if='$root.itemData.is_warehouse == 1'>
+                        <label class="col-md-3">Item / Commodity </label>
+                        <div class="col-md-9">
+                            <item-warehouses-modal-input  
+                                customer-id='customer_id' 
+                                ng-model='$root.itemData.item_id' 
+                                is-pallet="$root.job_order.is_pallet"
+                                is-merchandise="is_merchandise"
+                                show-sale-price="show_sale_price"
+                            />
+                            <b class='text-primary pull-right'><% ($root.itemData.volume || 0) | number:3 %> m<sup>3</sup></b>
+                            <b class='text-primary pull-right mg-r2'><% ($root.itemData.weight || 0) | number %> kg</b>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" ng-if='$root.itemData.is_warehouse == 1 && $root.itemData.item_id'>
+                        <label class="col-md-3">Gudang / Rak</label>
+                        <div class="col-md-9">
+                            <% $root.itemData.warehouse_name %> / <% $root.itemData.rack_code %>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group" ng-if='$root.itemData.is_warehouse == 0'>
+                        <label class="col-md-3">Item / Commodity</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="$root.itemData.item_name">
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="hasLCL">
+                        <label class="col-md-3"><% $root.solog.label.general.imposition %></label>
+                        <div class="col-md-9">
+                            <div class="radio radio-primary radio-inline" ng-repeat="(i,val) in imposition">
+                                <input type="radio" ng-model="$root.itemData.imposition" ng-value="val.id" ng-disabled='currentImposition && currentImposition != val.id'>
+                                <label for=""><% val.name %></label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group"  ng-if='$root.itemData.is_warehouse == 1'>
+                        <label class="col-md-3"><% $root.solog.label.general.stock %></label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="$root.itemData.stock_existing" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.qty %></label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="$root.itemData.total_item" ng-change='$root.job_order.adjustSizeTotal();job_order.adjustStock()'>
+                        </div>
+                        <div class="col-md-4">
+                            <units-select-input ng-model="$root.itemData.piece_id" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.actual_weight_total %></label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="$root.itemData.total_tonase"  ng-readonly='$root.itemData.is_warehouse == 1 || $root.itemData.weight_type == 2'>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if='item.service_type_id == 1'>
+                        <label class="col-md-3">Volumetric Weight (Kg)</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="$root.itemData.volumetric_weight" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if='item.service_type_id == 1'>
+                        <label class="col-md-3">P x L x T (cm)</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                    <input type="text"  ng-change="$root.job_order.adjustSizeTotal()" class="form-control mg-r1" jnumber2 only-num ng-model="$root.itemData.long">
+                                    <div class="input-group-addon">
+                                        <span class='inline-block'> x </span>
+                                    </div>
+                                    <input type="text"  ng-change="$root.job_order.adjustSizeTotal()" class="form-control" jnumber2 only-num ng-model="$root.itemData.wide">
+                                    <div class="input-group-addon">
+                                        <span class='inline-block'> x </span>
+                                    </div>
+                                    <input type="text"  ng-change="$root.job_order.adjustSizeTotal()" class="form-control" jnumber2 only-num ng-model="$root.itemData.high">
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.volume_total %></label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" only-num ng-model="$root.itemData.total_volume"  ng-readonly='$root.itemData.is_warehouse == 1 || item.service_type_id == 1' ng-change="$root.job_order.totalVolumeChange()">
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if='item.service_type_id == 15'>
+                        <label class="col-md-3"><% $root.solog.label.general.load_date %></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="$root.itemData.load_date" datepick>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.description %></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="$root.itemData.description">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <button type="button" ng-click='$root.job_order.submitItem(1)' ng-disabled="$root.disBtn" class="btn btn-primary">Save and exit</button>
+                        <button type="button" ng-click='$root.job_order.submitItem(0)' ng-disabled="$root.disBtn" class="btn btn-success">Save and continue</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- modal master item-->
+<div class="modal fade" id="modalItemWarehouse" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Item List</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" id="item_warehouse_datatable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Penerimaan barang</th>
+                            <th>Gudang</th>
+                            <th>Rak</th>
+                            <th>Barang</th>
+                            <th class='hidden'>Barcode</th>
+                            <th>Pengenaan</th>
+                        </tr>
+                    </thead>
+                </table>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

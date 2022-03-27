@@ -1,0 +1,166 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-md-3">Branch</label>
+            <div class="col-md-9">
+              <select class="form-control" ng-change="companyChange(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Customer</label>
+            <div class="col-md-9">
+              <select class="form-control" ng-change="qtyDiv=false;qty=0;" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in data.customer">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Nama Pekerjaan</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Tanggal</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" ng-model="formData.date" datepick>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Dasar Tarif</label>
+            <div class="col-md-9">
+              <div class="radio radio-primary radio-inline">
+                <input type="radio" id="tarif_1" ng-change="changeType(formData.type_tarif,formData)" ng-model="formData.type_tarif" ng-value="1">
+                <label for="tarif_1">Kontrak</label>
+              </div>
+              <div class="radio radio-primary radio-inline">
+                <input type="radio" id="tarif_2" ng-change="changeType(formData.type_tarif,formData)" ng-model="formData.type_tarif" ng-value="2">
+                <label for="tarif_2">Umum</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-if="formData.type_tarif==1">
+            <label class="col-md-3">Item Kontrak</label>
+            <div class="col-md-9">
+              <!-- <select class="form-control" ng-change="changeTypeKontrak(formData.quotation_detail_id)" data-placeholder-text-single="'Choose Item Kontrak'" chosen allow-single-deselect="false" ng-model="formData.quotation_detail_id" ng-options="s.id as s.name group by s.group for s in quotation_details">
+                <option value=""></option>
+              </select> -->
+              <div class="input-group" ng-click="cariKontrak()">
+                <input placeholder="Cari Kontrak" type="text" class="form-control" readonly ng-model="formData.contract_code">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-if="formData.type_tarif==2 && showPL">
+            <label class="col-md-3">Tarif Umum</label>
+            <div class="col-md-9">
+              <div class="input-group" ng-click="cariTarif()">
+                <input placeholder="Cari Tarif Umum" type="text" class="form-control" readonly ng-model="formData.price_list_code">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-if="qtyDiv">
+            <label class="col-md-3"><% qtyTitle %></label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" ng-model="formData.qty" jnumber2 only-num>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-12">
+          <hr>
+          <table class="table display compact nowrap table-bordered table-striped" id="appendTable" style="width:100%">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Layanan</th>
+                <th>Route</th>
+                <th>Komoditas</th>
+                <th>Tipe Vehicle</th>
+                <th>Tipe Kontainer</th>
+                <th>Pengenaan</th>
+                <th>Harga</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- <pre><%jStyle(formData)%></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="marketing.work_order" class="btn btn-sm btn-warning">Kembali</a>
+      <button type="submit" ng-disabled="disBtn" ng-click="submitForm()" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+<!-- modal kontrak -->
+<div class="modal fade" id="modalContract" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Kontrak</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" style="width:100%;" id="contract_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Nama</th>
+              <th>No. Quotation</th>
+              <th>No. Kontrak</th>
+              <th>Tanggal Berakhir</th>
+              <th>Customer</th>
+              <th>Stage</th>
+              <th>Sales</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal price list -->
+<div class="modal fade" id="modalPriceList" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Tarif Umum</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" style="width:100%;" id="price_list_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode</th>
+              <th>Route</th>
+              <th>Nama Tarif</th>
+              <th>Komoditas</th>
+              <th>Satuan</th>
+              <th>Layanan</th>
+              <th>Tipe</th>
+              <th>Moda</th>
+              <th>Vehicle</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>

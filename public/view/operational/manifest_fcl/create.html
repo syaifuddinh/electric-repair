@@ -1,0 +1,112 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Add Packing List</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">Branch</label>
+              <div class="col-md-9">
+                <select class="form-control" ng-change="changeVehicle(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Tanggal Packing List</label>
+              <div class="col-md-5">
+                <input type="text" datepick ng-model="formData.date_manifest" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">No. Reff</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.reff_no" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Full/Campuran</label>
+              <div class="col-md-9">
+                <div class="radio radio-inline radio-primary">
+                  <input type="radio" id="fcl" ng-model="formData.is_full" ng-value="1">
+                  <label for="fcl">Full</label>
+                </div>
+                <div class="radio radio-inline radio-primary">
+                  <input type="radio" id="lcl" ng-model="formData.is_full" ng-value="0">
+                  <label for="lcl">Campuran/LCL</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Route</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Route'" chosen allow-single-deselect="false" ng-model="formData.route_id" ng-options="s.id as s.name for s in data.route">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Keterangan</label>
+              <div class="col-md-9">
+                <!-- <textarea ng-model="formData.description" id="summernote"></textarea> -->
+                <!-- <summernote ng-model="formData.description" config="summConfig"></summernote> -->
+                <textarea ng-model="formData.description" rows="4" class="form-control"></textarea>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">No. Kontainer</label>
+              <div class="col-md-9">
+                <div class="input-group" ng-click="cariContainer()">
+                  <input type="text" class="form-control" ng-model="formData.container_no" readonly>
+                  <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <pre><% jStyle(formData) %></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational.manifest_fcl" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" class="btn btn-sm btn-primary" ng-disabled="disBtn">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal fade" id="containerModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Kontainer</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="container_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>No Kontainer</th>
+              <th>Kode Booking</th>
+              <th>Tipe</th>
+              <th>Kapal</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

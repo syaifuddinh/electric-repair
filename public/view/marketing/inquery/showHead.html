@@ -1,0 +1,19 @@
+<div class="col-md-12">
+  <div class="tabs-container">
+    <div class="tabs-left">
+      <ul class="nav nav-tabs">
+        <li ng-show="roleList.includes('marketing.quotation.detail.detail_info')" ui-sref-active="active"><a ui-sref="marketing.inquery.show.detail"><i class="fa fa-cogs"></i> Info</a></li>
+        <!-- <li ng-show="roleList.includes('marketing.quotation.detail.negotiation_price')" ui-sref-active="active"><a ui-sref="marketing.inquery.show.offer"><i class="fa fa-handshake-o"></i> Negosiasi Harga</a></li> -->
+        <li ng-show="roleList.includes('marketing.quotation.detail.operational_cost')" ui-sref-active="active"><a ui-sref="marketing.inquery.show.cost"><i class="fa fa-money"></i> Operational Cost</a></li>
+        <li ng-show="roleList.includes('marketing.quotation.detail.document')" ui-sref-active="active"><a ui-sref="marketing.inquery.show.document"><i class="fa fa-files-o"></i> Documents</a></li>
+      </ul>
+      <div class="tab-content active">
+        <div ng-if="state.current.name=='marketing.inquery.show'?state.go('marketing.inquery.show.detail',{id:params.id},{'location':'replace'}):''"></div>
+        <div class="panel-body">
+          <div ui-view="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

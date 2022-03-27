@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-md-2">
+    <div class="ibox-content product-box">
+      <div ng-if="!item.file_name">
+        <img class="" style="width: 100%;" src="<%baseUrl+'/img/driver_profiles.jpg'%>" alt="">
+      </div>
+      <div ng-if="item.file_name">
+        <img class="" style="width: 100%;" src="<%baseUrl+'/'+item.file_name%>" alt="">
+      </div>
+    </div>
+    <button type="button" class="btn btn-xs btn-default btn-block font-bold" ng-click="changeProfile()"><i class="fa fa-picture-o"></i> Change File...</button>
+    <button type="button" class="btn btn-xs btn-warning btn-block" ng-click="goBack()" name="button"><i class="fa fa-arrow-left"></i> Kembali</button>
+  </div>
+  <div class="col-md-10">
+    <div class="tabs-container">
+      <div class="">
+        <ul class="nav nav-tabs">
+          <span ng-if="states.current.name=='driver.driver.show'" ng-init="states.go('driver.driver.show.info',{id:statesParams.id},{location:false})" ></span>
+          <li ui-sref-active="active"><a ui-sref="driver.driver.show.info"><i class="fa fa-user"></i> Personal Info</a></li>
+          <li ng-show="roleList.includes('driver.driver.detail.vehicle')" ui-sref-active="active"><a ui-sref="driver.driver.show.vehicle"><i class="fa fa-truck"></i> Vehicle</a></li>
+          <li ng-show="roleList.includes('driver.driver.detail.history')" ui-sref-active="active"><a ui-sref="driver.driver.show.history"><i class="fa fa-clock-o"></i> History Job</a></li>
+          <!-- <li ui-sref-active="active"><a ui-sref="driver.driver.show.absence"><i class="fa fa-calendar"></i> Absensi</a></li> -->
+        </ul>
+        <div class="tab-content active">
+          <div class="panel-body">
+            <div ui-view="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="modal fade" id="changePictModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Unggah Foto Profil</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitProfile()" id="uploadForm" method="post">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="">File</label>
+            <input type="file" name="file" class="form-control" placeholder="">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary"><i class="fa fa-upload"></i> Unggah</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

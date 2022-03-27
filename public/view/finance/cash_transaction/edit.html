@@ -1,0 +1,254 @@
+\<form class="form-horizontal" name="myForm" ng-submit="submitForm()" id="submitForm">
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Edit Transaksi Kas / Bank</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" name="company_id" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" data-placeholder="Choose Header Akun" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal Transaksi</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" datepick ng-model="formData.date_transaction" value="<%dateNow%>">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tipe Transaksi</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="change_cash_bank(formData.type)" data-placeholder-text-single="'Choose Tipe Transaksi'" chosen allow-single-deselect="false" ng-model="formData.type" ng-options="s.id as s.name for s in type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Keluar/Masuk</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Jenis'" chosen allow-single-deselect="false" ng-model="formData.jenis" ng-disabled="isDisable" ng-options="s.id as s.name for s in in_out">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <!-- <div class="form-group required">
+          <label class="col-md-3 control-label">Kode Reff</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.reff">
+          </div>
+        </div> -->
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Kas/Bank</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Jenis Kas/Bank'" chosen allow-single-deselect="false" ng-model="formData.cash_bank" ng-options="s.id as s.name for s in cash_bank">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.description">
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Kas Keluar/Masuk</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Jenis</label>
+        <div class="col-md-9">
+          <input type="radio" ng-model="detail.jenis" ng-value="1"> Biaya / Pendapatan <br>
+          <input type="radio" ng-model="detail.jenis" ng-value="2"> Piutang Karyawan
+        </div>
+      </div>
+      <!--div class="form-group">
+        <label class="col-md-3 control-label">Vendor</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="false" ng-model="detail.vendor_id" ng-options="s.name for s in data.vendor">
+            <option value=""></option>
+          </select>
+        </div>
+      </div-->
+      <div class="form-group">
+          <label class="col-md-3 control-label">Biaya</label>
+          <div class="col-md-9">
+                <div class="input-group" ng-click='showCostModal()'>
+                    <input type="text" class="form-control" ng-model='detail.name' readonly>
+                    <div class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </div>
+                </div>
+          </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3 control-label">Akun</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Akun'" chosen allow-single-deselect="false" ng-model="detail.account_id" ng-options="s.account_name for s in data.account">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Jumlah</label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" jnumber2 only-num ng-model="detail.amount">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Keterangan</label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" ng-model="detail.description">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">File</label>
+        <div class="col-md-9">
+            <input type="file" class="custom-file-input" placeholder="Choose File" id="detail_file">
+        </div>
+      </div>
+    </div>
+    <div class="ibox-footer">
+      <button type="button" ng-click="append()" ng-disabled="!detail.jenis || !detail.amount" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add ke Tabel</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Jurnal</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th>Kode PL / JO</th>
+            <th>Biaya</th>
+            <th>Akun</th>
+            <th style="width: 20%;">File</th>
+            <th style="width: 20%;">Keterangan</th>
+            <th style="width: 20%;">Nominal</th>
+            <th style="width: 5%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i,val) in data.detail" id="row-<% i %>">
+            <td ng-click="showCostModal(1, i)"><% formData.detail[i].code %></td>
+            <td ng-click="showCostModal(1, i)"><% formData.detail[i].name %></td>
+            <td>
+              <select class="form-control" data-placeholder-text-single="'Choose Akun'" chosen allow-single-deselect="false" ng-model="formData.detail[i].account_id" ng-options="s.id as s.account_name for s in data.account">
+                <option value=""></option>
+              </select>
+            </td>
+            <td><% formData.detail[i].filename %></td>
+            <td>
+              <input type="text" class="form-control" ng-model="formData.detail[i].description">
+            </td>
+            <td>
+              <input type="text" class="form-control" ng-change="hitungAmount()" jnumber2 only-num ng-model="formData.detail[i].amount">
+            </td>
+            <td>
+              <a ng-click='deleteAppend(i)'><span class='fa fa-trash'></span></a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="5">Total</th>
+            <th><input type="text" class="form-control" readonly jnumber2 only-num ng-model="totalAmount"></th>
+            <th></th>
+          </tr>
+        </tfoot>
+      </table>
+      <!-- <pre><% jStyle(formData) %></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.cash_transaction" class="btn btn-sm btn-warning">Kembali</a>
+      <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn || isNaN(totalAmount) || totalAmount<1" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+</form>
+
+
+<!-- modal -->
+<div class="modal fade" id="costModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Daftar Biaya</h4>
+    </div>
+        <div class="modal-body">
+            <ul class="nav nav-tabs nav-justified">
+              <li id='job_order_cost_btn'><a ng-click='openJobOrderCost()'>Biaya Job Order</a></li>
+              <li id='manifest_cost_btn'><a ng-click='openManifestCost()'>Biaya Packing List</a></li>
+            </ul>
+    
+            <div class="tab-content">
+              <div id="job_order_cost" class="pd-top-3">
+                    <table class='table context-menu' id="job_order_cost_datatable">
+                        <thead>
+                            <tr>
+                                <th>No. Job Order</th>
+                                <th>Biaya</th>
+                                <th>Vendor</th>
+                                <th>Qty</th>
+                                <th>Harga Satuan</th>
+                                <th>Harga Total</th>
+                            </tr>
+                        </thead>
+                    </table>
+              </div>
+              <div id="manifest_cost">
+                    <table class='table context-menu' id="manifest_cost_datatable">
+                        <thead>
+                            <tr>
+                                <th>No. Packing List</th>
+                                <th>Biaya</th>
+                                <th>Vendor</th>
+                                <th>Qty</th>
+                                <th>Harga Satuan</th>
+                                <th>Harga Total</th>
+                            </tr>
+                        </thead>
+                    </table>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+      </div>
+  
+</div>
+</div>
+</div>

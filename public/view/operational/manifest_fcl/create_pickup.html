@@ -1,0 +1,92 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Pengangkutan</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-3">No Packing List / Manifest</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.code_manifest" disabled>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tanggal Angkut</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.pick_date" datepick>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control clockpick text-center" ng-model="formData.pick_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Estimasi Selesai</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.finish_date" datepick>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control clockpick text-center" ng-model="formData.finish_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Asal</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeCustomer1(formData.pick_id)" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.pick_id" ng-options="s.id as s.name for s in data.customer">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Alamat Pengambilan</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Alamat Pengambilan'" chosen allow-single-deselect="false" ng-model="formData.pick_address_id" ng-options="s.id as s.name for s in contact_address1">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tujuan</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeCustomer2(formData.end_id)" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.end_id" ng-options="s.id as s.name for s in data.customer">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Alamat Tujuan</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Alamat Tujuan'" chosen allow-single-deselect="false" ng-model="formData.end_address_id" ng-options="s.id as s.name for s in contact_address2">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Komoditas Utama</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.commodity_name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Driver</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeDriver(formData.driver_id)" data-placeholder-text-single="'Choose Driver'" chosen allow-single-deselect="false" ng-model="formData.driver_id" ng-options="s.id as s.name+', '+s.address for s in data.driver">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Vehicle</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_id" ng-options="s.id as s.name for s in vehicles">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

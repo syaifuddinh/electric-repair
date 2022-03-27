@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table display compact nowrap table-borderless">
+      <tr>
+        <td>
+          <h4>Info Vehicle</h4>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <table class="table display compact nowrap table-borderless">
+      <tbody>
+        <tr>
+          <td>Kode</td>
+          <td>: <% item.code %></td>
+        </tr>
+        <tr>
+          <td>Nopol</td>
+          <td class="font-bold">: <% item.nopol %></td>
+        </tr>
+        <tr>
+          <td>Wilayah</td>
+          <td>: <% item.company.name %></td>
+        </tr>
+        <tr>
+          <td>Kepemilikan</td>
+          <td>: <% item.vehicle_owner.name %></td>
+        </tr>
+        <tr>
+          <td>Pemilik</td>
+          <td>: <% item.supplier.name %></td>
+        </tr>
+        <tr>
+          <td>Model</td>
+          <td>: <% item.vehicle_variant.name %></td>
+        </tr>
+        <tr>
+          <td>Tipe kendaraan</td>
+          <td>: <% item.vehicle_variant.vehicle_type.name %></td>
+        </tr>
+        <tr>
+          <td>No. Rangka</td>
+          <td>: <% item.chassis_no %></td>
+        </tr>
+        <tr>
+          <td>No. Mesin</td>
+          <td>: <% item.machine_no %></td>
+        </tr>
+        <tr>
+          <td>Warna</td>
+          <td>: <% item.color %></td>
+        </tr>
+        <tr>
+          <td>Tanggal Pembuatan</td>
+          <td>: <% item.date_manufacture|fullDate %></td>
+        </tr>
+        <tr>
+          <td>Mulai Operasi</td>
+          <td>: <% item.date_operation|fullDate %></td>
+        </tr>
+        <tr>
+          <td>Status Vehicle</td>
+          <td>: <% item.active_name %></td>
+        </tr>
+        <tr>
+          <td>Alasan Tidak Aktif</td>
+          <td>: <% item.not_active_reason %></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <table class="table display compact nowrap table-borderless">
+      <tbody>
+        <tr>
+          <td>No. STNK</td>
+          <td>: <% item.stnk_no %></td>
+        </tr>
+        <tr>
+          <td>Nama STNK</td>
+          <td>: <% item.stnk_name %></td>
+        </tr>
+        <tr>
+          <td>Masa Berakhir STNK</td>
+          <td>: <% item.stnk_date|fullDate %></td>
+        </tr>
+        <tr>
+          <td>Alamat STNK</td>
+          <td>: <% item.stnk_address %></td>
+        </tr>
+        <tr>
+          <td>No. BPKB</td>
+          <td>: <% item.bpkb_no %></td>
+        </tr>
+        <tr>
+          <td>Tgl. KIR Berakhir</td>
+          <td>: <% item.kir_date|fullDate %></td>
+        </tr>
+        <tr>
+          <td>KM Inisial</td>
+          <td>: <% item.initial_km|number %> KM</td>
+        </tr>
+        <tr>
+          <td>Tgl KM Inisial</td>
+          <td>: <% item.initial_km_date|fullDate %></td>
+        </tr>
+        <tr>
+          <td>KM Akhir</td>
+          <td>: <% item.last_km|number %> KM</td>
+        </tr>
+        <tr>
+          <td>Tgl KM Akhir</td>
+          <td>: <% item.last_km_date|fullDate %></td>
+        </tr>
+        <tr>
+          <td>Rata-rata KM Tempuh</td>
+          <td>: <% item.daily_distance|number %> KM</td>
+        </tr>
+        <tr>
+          <td>No. GPS</td>
+          <td>: <% item.gps_no %></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

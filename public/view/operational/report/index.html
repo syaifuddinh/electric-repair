@@ -1,0 +1,128 @@
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="ibox">
+        <div class="ibox-content form-horizontal">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+          <div class="form-group">
+            <label class="col-md-3">Tipe Laporan</label>
+            <div class="col-md-9">
+              <select class="form-control" ng-change="changeReport(formData)" data-placeholder-text-single="'Choose Laporan'" chosen allow-single-deselect="false" ng-model="formData.report_id" ng-options="s.id as s.name for s in reports">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if='formData.report_id != 12 AND formData.report_id != 13'>
+            <label class="col-md-3">Branch</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Semua Branch'" chosen allow-single-deselect="true" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="in_array(formData.report_id,[1,2,11])">
+            <label class="col-md-3">Golongan Layanan</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Semua Golongan Layanan'" chosen allow-single-deselect="true" ng-model="formData.service_id" ng-options="s.id as s.name for s in data.service">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if='formData.report_id != 12 AND formData.report_id != 13'>
+            <label class="col-md-3">Customer</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Semua Customer'" chosen allow-single-deselect="true" ng-model="formData.customer_id" ng-options="s.id as s.name for s in data.customer">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="in_array(formData.report_id,[2])">
+            <label class="col-md-3">Route</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Semua Route'" chosen allow-single-deselect="true" ng-model="formData.route_id" ng-options="s.id as s.name for s in data.trayek">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="in_array(formData.report_id,[2,10])">
+            <label class="col-md-3">Tipe Vehicle</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Semua Tipe Vehicle'" chosen allow-single-deselect="true" ng-model="formData.vehicle_type_id" ng-options="s.id as s.name for s in data.vehicle_type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="in_array(formData.report_id,[2,4,6,10])">
+            <label class="col-md-3">No. WO</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.code_wo" placeholder="Semua No. WO">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-3">Periode</label>
+            <div class="col-md-9">
+              <div class="input-daterange input-group" style="width:100%;">
+                <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+                <span class="input-group-addon">to</span>
+                <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="ibox-footer">
+          <div class="btn-group">
+
+            <button type="button" ng-click="export_pdf()" class="btn btn-sm font-bold btn-danger"><i class="fa fa-file-pdf-o"></i> Export PDF</button>
+
+            <button type="button" ng-click="export()" class="btn btn-sm font-bold btn-primary"><i class="fa fa-file-excel-o"></i> Export Excel</button>
+
+            <button type="button" class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</button>
+            <button type="button" class="btn btn-sm btn-success" ng-click="showPreview()">Show</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12" ng-show='isPreview'>
+      <div class="ibox">
+          <div class='ibox-content' id="preview_box"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="costListModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Rincian Biaya</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-striped table-hover" id="costListTable">
+          <thead>
+            <tr>
+              <th>Nama Biaya</th>
+              <th>Sumber Biaya</th>
+              <th>Biaya</th>
+              <th>Qty</th>
+              <th>Total Biaya</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

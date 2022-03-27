@@ -1,0 +1,72 @@
+<div class="col-md-12">
+
+    <div class="ibox" ng-show="isFilter">
+        <div class="ibox-title">
+            <h5>Filter Vehicle</h5>
+        </div>
+        <form class="form-horizontal ng-valid ng-dirty ng-valid-parse">
+        <div class="ibox-content">
+            <div class="form-group">
+                <label class="col-md-1 control-label">Branch</label>
+                <div class="col-md-5">
+                    <select class="form" data-placeholder-text-single="'Semua Branch'" chosen allow-single-deselect="true" ng-model="formData.company_id" ng-options="c.id as c.name for c in data.company">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+           
+            <div class="form-group">
+                <label class="col-md-1 control-label">Status</label>
+                <div class="col-md-5">
+                    <select class="form" data-placeholder-text-single="'Semua Status'" chosen allow-single-deselect="true" ng-model="formData.is_active" >
+                        <option value=""></option>
+                        <option value="1">Aktif</option>
+                        <option value="0">Tidak Aktif</option>
+                    </select>
+                </div>
+            </div>
+           
+        </div>
+        <div class="ibox-footer">
+            <button class="btn btn-warning" ng-click='reset_filter()'>Reset</button>
+            <button class="btn btn-primary" ng-click='refresh_table()'>Cari</button>
+            <a ng-click="export_excel()" class="btn btn-default font-bold"><i class="fa fa-file-excel-o"></i> Export Excel</a>
+            <a ng-click="export_pdf()" class="btn btn-default font-bold"><i class="fa fa-file-pdf-o"></i> Export PDF</a>
+        </div>
+    </form>
+    </div>
+    
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Paket</h5>
+      <div class="ibox-tools">
+        <div class="btn-group">
+            <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+            <a class="btn btn-sm btn-primary" ui-sref="marketing.combined_price.create"><i class="fa fa-plus"></i> Add</a>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>Branch</th>
+            <th>Kode</th>
+            <th>Nama</th>
+            <th>Total Layanan</th>
+            <th>Status</th>
+            <th style="width:10%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

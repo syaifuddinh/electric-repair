@@ -1,0 +1,280 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Layanan</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="dom_switch(formData.service_id,formData.company_id,isedit);cariTarif()" data-placeholder-text-single="'Choose Layanan'" chosen allow-single-deselect="false" ng-model="formData.service_id" ng-options="s.id as s.name+' ('+s.service_type.name+')' group by s.service_type.name for s in data.service">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <hr>
+      <div class="form-group" ng-if="div_trayek">
+        <label class="col-md-3 control-label">Route</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="cariTarif();cariTemplate()" data-placeholder-text-single="'Choose Route'" chosen allow-single-deselect="false" ng-model="formData.route_id" ng-options="s.id as s.name for s in data.route">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_komoditas">
+        <label class="col-md-3 control-label">Komoditas</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="cariTarif()" data-placeholder-text-single="'Choose Komoditas'" chosen allow-single-deselect="false" ng-model="formData.commodity_id" ng-options="s.id as s.name for s in data.commodity">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_rack">
+        <label class="col-md-3 control-label">Penempatan</label>
+        <div class="col-md-3">
+          <select class="form-control" ng-change="cariTarif()" data-placeholder-text-single="'Choose Rack/Bin Penempatan'" chosen allow-single-deselect="false" ng-model="formData.rack_id" ng-options="s.id as s.name for s in data.rack">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_moda">
+        <label class="col-md-3 control-label">Moda</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="cariTarif()" data-placeholder-text-single="'Choose Moda'" chosen allow-single-deselect="false" ng-model="formData.moda_id" ng-options="s.id as s.name for s in data.moda">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_armada">
+        <label class="col-md-3 control-label">Armada</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="cariTarif();cariTemplate()" data-placeholder-text-single="'Choose Tipe Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_type_id" ng-options="s.id as s.name for s in data.vehicle_type">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_container">
+        <label class="col-md-3 control-label">Tipe Kontainer</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="cariTarif();cariTemplate()" data-placeholder-text-single="'Choose Tipe Kontainer'" chosen allow-single-deselect="false" ng-model="formData.container_type_id" ng-options="s.id as s.size+' '+s.code+' - '+s.name for s in data.container_type">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div ng-if="div_tarif_min">
+        <!-- <div class="form-group">
+          <label class="col-md-3 control-label">Tipe Pengenaan</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="cariTarif()" data-placeholder-text-single="'Choose Tipe Pengenaan'" chosen allow-single-deselect="false" ng-model="formData.imposition" ng-options="s.id as s.name for s in imposition">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Tarif</label>
+          <div class="col-md-4">
+            <input type="text" jnumber2 only-num ng-model="formData.price_imposition" class="form-control">
+          </div>
+          <label class="col-md-1 control-label">Minimal</label>
+          <div class="col-md-4">
+            <input type="text" jnumber2 only-num ng-model="formData.min_imposition" class="form-control">
+          </div>
+        </div> -->
+        <div class="form-group" ng-if="service.service_type_id == 1">
+          <label class="col-md-3 control-label">Tipe Minimum</label>
+          <div class="col-md-9">
+            <div class="radio radio-primary radio-inline">
+              <input type="radio" id="radiomintype1" ng-model="formData.min_type" ng-value="1" ng-change="minTypeChange()">
+              <label for="radiomintype1">Single</label>
+            </div>
+            <div class="radio radio-primary radio-inline">
+              <input type="radio" id="radiomintype2" ng-model="formData.min_type" ng-value="2" ng-change="minTypeChange()">
+              <label for="radiomintype2">Multiple</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group required" ng-if="service.service_type_id == 1 && formData.min_type == 1">
+              <label class="col-md-3 control-label">Tarif Tonase (per Kg)</label>
+              <div class="col-md-4">
+                <input type="text" jnumber2 only-num ng-model="formData.price_tonase" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">Min (Kg)</label>
+              <div class="col-md-3">
+                <input type="text" jnumber2 only-num ng-model="formData.min_tonase" class="form-control">
+              </div>
+            </div>
+            <div class="form-group required" ng-if="service.service_type_id == 1 && formData.min_type == 1">
+              <label class="col-md-3 control-label">Tarif Kubikasi (per m3)</label>
+              <div class="col-md-4">
+                <input type="text" jnumber2 only-num ng-model="formData.price_volume" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">Min (m<sup>3</sup>)</label>
+              <div class="col-md-3">
+                <input type="text" jnumber2 only-num ng-model="formData.min_volume" class="form-control">
+              </div>
+            </div>
+            <div class="form-group required" ng-if="service.service_type_id == 1 && formData.min_type == 1">
+              <label class="col-md-3 control-label">Tarif Item</label>
+              <div class="col-md-4">
+                <input type="text" jnumber2 only-num ng-model="formData.price_item" class="form-control">
+              </div>
+              <label class="col-md-2 control-label">Min (Item)</label>
+              <div class="col-md-3">
+                <input type="text" jnumber2 only-num ng-model="formData.min_item" class="form-control">
+              </div>
+            </div>
+      </div>
+      <div class="form-group" ng-if="div_satuan">
+        <label class="col-md-3 control-label">Satuan</label>
+        <div class="col-md-4">
+          <select class="form-control" data-placeholder-text-single="'Choose Satuan'" chosen allow-single-deselect="false" ng-model="formData.piece_id" ng-options="s.id as s.name for s in data.piece">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_tarif">
+        <label class="col-md-3 control-label">Tarif</label>
+        <div class="col-md-2 control-label">
+          <span>Penawaran</span>
+        </div>
+        <div class="col-md-4">
+          <input type="text" jnumber2 only-num class="form-control" ng-model="formData.price_inquery_full">
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_cost_template">
+        <label class="col-md-3 control-label">Template Biaya</label>
+        <div class="col-md-9">
+          <select class="form-control" no-results-text="'Tidak ada biaya yang cocok!'" data-placeholder-text-single="'Choose Template Biaya'" chosen allow-single-deselect="false" ng-model="formData.cost_template" ng-options="s.id as s.name for s in cost_template">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group" ng-if="div_storage_tonase">
+        <label class="col-md-3 control-label">Tarif Storage Tonase</label>
+        <div class="col-md-4">
+          <input type="text" jnumber2 only-num class="form-control" ng-model="formData.price_inquery_tonase">
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_storage_volume">
+        <label class="col-md-3 control-label">Tarif Storage Kubikasi</label>
+        <div class="col-md-4">
+          <input type="text" jnumber2 only-num class="form-control" ng-model="formData.price_inquery_volume">
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_handling_tonase">
+        <label class="col-md-3 control-label">Tarif Handling Tonase</label>
+        <div class="col-md-4">
+          <input type="text" jnumber2 only-num class="form-control" ng-model="formData.price_inquery_handling_tonase">
+        </div>
+      </div>
+      <div class="form-group" ng-if="div_handling_volume">
+        <label class="col-md-3 control-label">Tarif Handling Kubikasi</label>
+        <div class="col-md-4">
+          <input type="text" jnumber2 only-num class="form-control" ng-model="formData.price_inquery_handling_volume">
+        </div>
+      </div>
+
+      <div class="form-group" ng-show="service.service_type_id == 1 && formData.min_type == 2">
+        <hr>
+        <div class="col-md-12">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td><h4><i class="fa fa-money"></i> Tarif Minimum</h4></td>
+                <td class="text-right">
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="addMinMultipleDetail()"><i class="fa fa-plus"></i> Add</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table display compact nowrap table-bordered">
+            <thead>
+              <tr>
+                <th>Harga Per Kg</th>
+                <th>Minimal (Kg)</th>
+                <th>Harga Per M3</th>
+                <th>Minimal (M3)</th>
+                <th>Harga Per Item</th>
+                <th>Minimal (Item)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-show='formData.minimal_detail.length == 0'>
+                  <td colspan='7' class='text-center'>Tidak ada data</td>
+              </tr>
+              <tr ng-repeat="(i,val) in formData.minimal_detail">
+                <td class="text-right"><span><% val.price_per_kg %></span></td>
+                <td class="text-right"><span><% val.min_kg %></span></td>
+                <td class="text-right"><span><% val.price_per_m3 %></span></td>
+                <td class="text-right"><span><% val.min_m3 %></span></td>
+                <td class="text-right"><span><% val.price_per_item %></span></td>
+                <td class="text-right"><span><% val.min_item %></span></td>
+                <td class="text-center">
+                  <span>
+                    <a ng-click="editMinMultipleDetail(i)" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;
+                    <a ng-click="deleteMinMultipleDetail(i)" data-toggle="tooltip" title="Hapus"><i class="fa fa-trash"></i></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="marketing.contract.amandemen" class="btn btn-sm btn-warning">Kembali</a>
+      <button type="button" ng-click="submitForm()" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalMinMultipleDetail" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width: 80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Data Minimum Harga</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <!-- -- -->
+        <div class="row">
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Tarif Tonase (per Kg)</label>
+            <div class="col-md-4">
+              <input type="text" jnumber2 only-num ng-model="price_tonase" class="form-control">
+            </div>
+            <label class="col-md-2 control-label">Min (Kg)</label>
+            <div class="col-md-3">
+              <input type="text" jnumber2 only-num ng-model="min_tonase" class="form-control">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Tarif Kubikasi (per m3)</label>
+            <div class="col-md-4">
+              <input type="text" jnumber2 only-num ng-model="price_volume" class="form-control">
+            </div>
+            <label class="col-md-2 control-label">Min (m<sup>3</sup>)</label>
+            <div class="col-md-3">
+              <input type="text" jnumber2 only-num ng-model="min_volume" class="form-control">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Tarif Item</label>
+            <div class="col-md-4">
+              <input type="text" jnumber2 only-num ng-model="price_item" class="form-control">
+            </div>
+            <label class="col-md-2 control-label">Min (Item)</label>
+            <div class="col-md-3">
+              <input type="text" jnumber2 only-num ng-model="min_item" class="form-control">
+            </div>
+          </div>
+        </div>
+        <!-- -- -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="submitFormMinMultipleDetail()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

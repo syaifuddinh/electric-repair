@@ -1,0 +1,38 @@
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>Previlage <% previlageName %></h5>
+  </div>
+  <form ng-submit="submitForm()" id="previlageForm">
+    <div class="ibox-content">
+      <!-- <h5><% previlageName %></h5> -->
+      <table class="table display compact nowrap table-bordered">
+        <thead>
+          <tr>
+            <th>Nama Previlage</th>
+            <th style="width: 10%;" class="text-center">
+              <div class="checkbox checkbox-inline checkbox-primary">
+                <input type="checkbox" ng-model="all" ng-show="formData.detail.length>0" ng-change="alls(all)" ng-true-value="1" ng-false-value="0">
+                <label for=""></label>                
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i,item) in data.role">
+            <td><span ng-repeat="n in [].constructor(item.deep) track by $index">&nbsp;&nbsp;</span><span ng-class="{'font-bold':in_array(item.deep,[1,2])}"><%item.name%></span></td>
+            <td class="text-center">
+              <div class="checkbox checkbox-primary checkbox-inline">
+                <!-- <input type="checkbox" id="<%item.id%>" name="role_id[]" ng-checked="data.previlage.indexOf(item.id)!==-1" value="<%item.id%>"> -->
+                <input type="checkbox" id="<% item.id %>" ng-checked="data.previlage.indexOf(item.id)!==-1" ng-model="formData.detail[i].include" value="<%item.id%>" name="role_id[]" ng-true-value="1" ng-false-value="0">
+                <label for="<%item.id%>"></label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <button type="submit" class="btn btn-sm btn-primary btn-sm" >Save</button>
+    </div>
+  </form>
+</div>

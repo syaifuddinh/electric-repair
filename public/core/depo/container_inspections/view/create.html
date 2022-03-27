@@ -1,0 +1,80 @@
+<div class="col-md-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5><% $root.solog.label.general.create %></h5>
+        </div>
+        <form class="form-horizontal">
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                </div>
+                
+                <div class="form-group required">
+                    <label class="col-md-1 control-label"><% solog.label.general.date %></label>
+                    <div class="col-md-11">
+                        <input type="text" class="form-control" ng-model="formData.date" datepick>
+                    </div>
+                </div>
+                
+                <div class="form-group required">
+                    <label class="col-md-1 control-label"><% solog.label.general.checker %></label>
+                    <div class="col-md-11">
+                        <pegawai-select-input ng-model="formData.checker_id" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-1 control-label"><% solog.label.general.description %></label>
+                    <div class="col-md-11">
+                        <textarea class='form-control' ng-model='formData.description'></textarea>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class='mg-b9 mg-b2'>
+                        <button type='button' ng-click='addDetail()' class='btn btn-sm btn-success pull-right'><% solog.label.general.add %> <% solog.label.general.item %></button>
+                    </div>
+                    <div class='pd-t10'>
+                        <table class="table display compact nowrap table-bordered" id="appendTable">
+                            <thead>
+                                <tr>
+                                    <th><% solog.label.general.container_part %></th>
+                                    <th><% solog.label.general.condition %></th>
+                                    <th style="width:5%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if='formData.detail.length == 0'>
+                                    <td class="text-center" colspan='3'><% solog.label.general.no_data %></td>
+                                </tr>
+                                <tr ng-repeat='(i, v) in formData.detail'>
+                                    <td>
+                                        <item-modal-input ng-model='formData.detail[i].container_part_id' hide-button='1' is-container-part='1' />
+                                    </td>
+                                    <td>
+                                        <item-conditions-select-input ng-model='formData.detail[i].item_condition_id' />
+                                    </td>
+                                    <td class='text-center'>
+                                        <a ng-click='delete(v.id)'>
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="ibox-footer">
+                <div class="btn-group">
+                    <a ng-click='backward()' class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+                    <button type="button" ng-click='submitForm()' ng-disabled="disBtn" class="btn btn-sm btn-primary"><% $root.solog.label.general.save %></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

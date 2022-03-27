@@ -1,0 +1,13 @@
+<span ng-hide='hide_input'>
+    <div class="input-group" ng-click="cariItem()">
+        <input type="text" readonly class="form-control" ng-model="item_name">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+    </div>
+</span>
+<span ng-hide='hide_button'>
+    <button type='button' class='btn btn-sm btn-success' ng-click="cariItem()"><% button_label %></button>
+</span>
+
+<solog-modal id='item_modal' title='"Items"' hide-save='1' width-percent='80'>
+    <item-table is-multiple='is_multiple' is-container-part='is_container_part' is-container-yard='is_container_yard' hide-action='1' hide-sale-price='1' hide-purchase-price='1' input-mode='1'></item-table>
+</solog-modal>

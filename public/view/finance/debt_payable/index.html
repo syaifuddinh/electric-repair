@@ -1,0 +1,77 @@
+<div class="col-md-12">
+  <div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5>Filter Pembayaran Hutang</h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% solog.label.general.branch %></label>
+        <div class="col-md-9">
+          <branch-select-input ng-change='searchData()' ng-model="formData.company_id" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Periode</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+            <span class="input-group-addon">to</span>
+            <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+          </div>
+        </div>
+      </div>
+    
+      <div class="form-group">
+        <label class="col-md-3 control-label">Status</label>
+        <div class="col-md-9">
+          <select ng-change='searchData()' class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" data-placeholder-text-single="'Semua Status'" chosen="" allow-single-deselect="true" ng-model="formData.status">
+            <option value="" class="" selected="selected"></option>
+            <option value='1'>Belum Terbayar</option>
+            <option value='2'>Terbayar</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+<!--      <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button>-->
+      <a class="btn btn-default btn-sm font-bold" ng-click="exportExcel()"><i class="fa fa-file-excel-o"></i> Export All</a>
+    </div>
+  </form>
+</div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Pembayaran Hutang</h5>
+      <div class="ibox-tools">
+          <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+        <a class="btn btn-sm btn-primary"  ng-show="roleList.includes('finance.credit.draft.create')" ui-sref="finance.debt_payable.create"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Tanggal</th>
+            <th>Branch</th>
+            <!-- <th>Customer</th> -->
+            <th>Kode Invoice</th>
+            <th>Keterangan</th>
+            <th>Status</th>
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

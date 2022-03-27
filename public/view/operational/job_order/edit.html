@@ -1,0 +1,284 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Edit Job Order</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td style="width:25%;">Customer</td>
+                  <td>: <span class="font-bold"><% item.customer.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Kontrak</td>
+                  <td>: <span class="font-bold"><% item.quotation.no_contract %></span></td>
+                </tr>
+                <tr>
+                  <td>Layanan</td>
+                  <td>: <span class="font-bold" ng-if="item.service_id"><% item.service.name %> (<% item.service.service_type.name %>)</span></td>
+                </tr>
+                <tr>
+                  <td>Tanggal Input</td>
+                  <td>: <span class="font-bold" ng-if="item.created_at"><% item.created_at|fullDateTime %></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="mg-l1">
+                <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 2) && formData.moda_id == 2'>
+                  <label class="col-md-3">No BL</label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" ng-model="formData.no_bl">
+                  </div>
+                </div>
+                <div class="form-group  ">
+                  <label class="col-md-3">No AJU</label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" ng-model="formData.aju_number">
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 mg-l1">
+                <div class="form-group" ng-repeat='v in additional_fields'>
+                    <label class="col-md-3"><% v.name %></label>
+                    <div class="col-md-9">
+                        <custom-field ng-model='formData.additional[v.slug]' type='v.type_field' />
+                    </div>
+                </div>
+          </div>
+
+          <div class="col-md-12"><hr></div>
+          <div class="col-md-6 mg-l1">
+            <div class="form-group" ng-if="!in_array(item.service_type_id,[6,7])">
+              <label class="col-md-3"><% solog.label.general.shipper %></label>
+              <div class="col-md-7">
+                <select class="form-control" data-placeholder-text-single="'Choose Pengirim'" chosen allow-single-deselect="false" ng-model="formData.sender_id" ng-options="s.id as s.name for s in contact_address">
+                  <option value=""></option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button type="button" ng-click="addAddress()" class="btn btn-sm btn-block btn-success"><i class="fa fa-plus"></i></button>
+              </div>
+
+            </div>
+            <div class="form-group" ng-if="!in_array(item.service_type_id,[7])">
+              <label class="col-md-3"><% solog.label.general.consignee %></label>
+              <div class="col-md-7">
+                <select class="form-control" data-placeholder-text-single="'Choose Penerima'" chosen allow-single-deselect="false" ng-model="formData.receiver_id" ng-options="s.id as s.name for s in contact_address">
+                  <option value=""></option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button type="button" ng-click="addAddress()" class="btn btn-sm btn-block btn-success"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="form-group" ng-if="!in_array(item.service_type_id,[6,7])">
+              <label class="col-md-3">Route</label>
+              <div class="col-md-9">
+                <span><% item.trayek.name %></span>
+              </div>
+            </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[1,3,4])">
+              <label class="col-md-3">Armada</label>
+              <div class="col-md-9">
+                <span><% item.vehicle_type.name %></span>
+              </div>
+            </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[2])">
+              <label class="col-md-3">Tipe Kontainer</label>
+              <div class="col-md-9">
+                <span><% item.container_type.full_name %></span>
+              </div>
+            </div>
+            <div class="form-group" ng-if="!in_array(item.service_type_id,[6,7])">
+              <label class="col-md-3"><% solog.label.general.commodity %></label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Commodity'" chosen allow-single-deselect="false" ng-model="formData.commodity_id" ng-options="s.id as s.name for s in data.commodity">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">Agent Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.agent_name">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">No AWB</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.awb_number">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">Flight Code</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.flight_code">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">Flight Route</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.flight_route">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">Flight Date</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.flight_date" datepick>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">Cargo Ready Date</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.cargo_ready_date" datepick>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">House AWB</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.house_awb">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">HS Code</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.hs_code">
+                            </div>
+                        </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[6])">
+              <label class="col-md-3">Nama Dokumen</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.document_name">
+              </div>
+            </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[6])">
+              <label class="col-md-3">Nama Barang</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.item_name">
+              </div>
+            </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[6,7])">
+              <label class="col-md-3">Jumlah</label>
+              <div class="col-md-9">
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="formData.qty">
+                  <span class="input-group-addon"><% item.piece.name %></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[6,7])">
+              <label class="col-md-3">Tanggal</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" ng-model="formData.shipment_date" datepick>
+              </div>
+            </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[7])">
+              <label class="col-md-3">No. WO/PO Customer</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.wo_customer">
+              </div>
+            </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[7])">
+              <label class="col-md-3">No Reff</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.reff_no">
+              </div>
+            </div>
+            <div class="form-group" ng-if="in_array(item.service_type_id,[7])">
+              <label class="col-md-3"><% solog.label.general.description %></label>
+              <div class="col-md-9">
+                <textarea class="form-control" ng-model="formData.description" rows="4"></textarea>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div ng-if="!in_array(item.service_type_id,[6,7])">
+              <div class="form-group">
+                <label class="col-md-3">No. WO/PO Customer</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" ng-model="formData.wo_customer">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">Shipment Date</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" ng-model="formData.shipment_date" datepick>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">Keterangan</label>
+                <div class="col-md-9">
+                  <textarea class="form-control" ng-model="formData.description" rows="4"></textarea>
+                </div>
+              </div>
+            </div>
+            <div ng-if="in_array(item.service_type_id,[6])">
+              <div class="form-group">
+                <label class="col-md-3">No Reff</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" ng-model="formData.reff_no">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">No Dokumen</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" ng-model="formData.docs_no">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">No Reff Dokumen</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" ng-model="formData.docs_reff_no">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">Nama Kapal</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" ng-model="formData.vessel_name" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">No. Voyage</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" ng-model="formData.voyage_no" >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-3">Keterangan</label>
+                <div class="col-md-9">
+                  <textarea class="form-control" ng-model="formData.description" rows="4"></textarea>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational.job_order" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>

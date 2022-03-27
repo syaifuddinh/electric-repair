@@ -1,0 +1,119 @@
+<div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5>Filter Laporan KPI Invoice</h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" ng-submit="filter_invoice_jual()">
+    <div class="ibox-content">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Customer</label>
+        <div class="col-md-9">
+          <select class="form" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in data.customer">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Periode</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.tgl_awal" datepick="">
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.tgl_akhir" datepick="">
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="reset_filter()">Reset</a>
+      <button type="submit" id='cari_data' class="btn btn-sm btn-primary">Cari</button>
+      <a href="" class="btn btn-default btn-sm font-bold" ng-click='export()'><i class="fa fa-file-excel-o"></i> Export</a>
+    </div>
+  </form>
+</div>
+
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>Laporan KPI Invoice</h5>
+    <div class="ibox-tools">
+      <button type="button" name="button" ng-click="woGabunganPrint()" class="btn btn-sm btn-default font-bold"><i class="fa fa-files-o"></i> Cetak WO Gabungan</button>
+      <a class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> filter</a>
+      <a ng-show="roleList.includes('operational.invoice_customer.create')" class="btn btn-sm btn-primary" ui-sref="operational.invoice_jual.create"><i class="fa fa-plus"></i> Add</a>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-bordered" id="datatable">
+      <thead>
+        <tr>
+          <th>No. JO</th>
+          <th>No. Invoice</th>
+          <th>Pembuat JO</th>
+          <th>Tanggal penyelesaian</th>
+          <th>Tanggal target pembuatan invoice</th>
+          <th>No. BL</th>
+          <th>Total</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal fade" id="woGabunganModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cetak WO Gabungan</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">Customer</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="true" ng-model="woData.customer_id" ng-change="changeCustomer(woData.customer_id)" ng-options="s.id as s.name for s in customer_list">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jenis WO Gabungan</label>
+          <div class="col-md-4">
+            <select class="form-control" data-placeholder-text-single="''" chosen allow-single-deselect="false" ng-model="woData.type_wo" ng-options="s.id as s.name for s in type_wo">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <table class="table display compact nowrap table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>No. Invoice</th>
+                  <th>PO Customer</th>
+                  <th>Tanggal</th>
+                  <th>No AJU</th>
+                  <th>No BL</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="bodyWo">
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="printWo()" class="btn btn-primary">Cetak</button>
+      </div>
+    </div>
+  </div>
+</div>

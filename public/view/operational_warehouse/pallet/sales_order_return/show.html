@@ -1,0 +1,82 @@
+<div class="col-md-12">
+    
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" id="info_tab" ng-click='openInfo()'>
+                <% $root.solog.label.general.detail %> 
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" id="receipt_tab" ng-click='openReceipt()'>
+                <% $root.solog.label.warehouse_receipt.title %> 
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id='info_detail' class='tab-item'>
+            <form class="form-horizontal" ng-submit="submitForm()" id="submitForm">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <table class="table display compact nowrap table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td style="width:30%;"><% solog.label.general.branch %></td>
+                                    <td>: <% item.company_name %></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30%;"><% solog.label.general.customer %></td>
+                                    <td>: <% item.customer_name %></td>
+                                </tr>
+                                <tr>
+                                    <td>No. Transaction</td>
+                                    <td>: <% item.code %></td>
+                                </tr>
+                                <tr>
+                                    <td>Date</td>
+                                    <td>: <% item.date_transaction|fullDate %></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td>: <% item.status_name %></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <h5 class="mg-b2">Item Detail</h5>
+                        <table class="table display compact nowrap table-bordered" id="appendTable">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th class='hidden'>Barcode</th>
+                                    <th>Type</th>
+                                    <th>Qty in sales</th>
+                                    <th>Qty Return</th>
+                                    <th>Received Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="value in detail">
+                                    <td><% value.name %></td>
+
+                                    <td><% value.category_name %></td>
+                                    <td class="text-right" style="width:8%;"><% value.qty_in_sales|number %></td>
+                                    <td class="text-right" style="width:8%;"><% value.qty|number %></td>
+                                    <td class="text-right" style="width:8%;"><% value.received_qty|number %></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="ibox-footer">
+                        <a ui-sref="operational_warehouse.pallet_sales_order_return" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id='receipt_detail' class='tab-item'>
+            <warehouse-receipts-table sales-order-return-id="id" add-route='"operational_warehouse.pallet_sales_order_return.create_receipt"'  add-params="{id : id}"  />
+        </div>
+    </div>
+</div>

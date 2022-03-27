@@ -1,0 +1,32 @@
+<div class="ibox-content">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Cara Bayar</th>
+            <th>No. Reff</th>
+            <th class="text-right" style="width:20%;">Jumlah Bayar</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="val in payment">
+            <td><% findJsonId(val.payment_type,payment_type).name %></td>
+            <td><% val.payment_type?val.cash_account.name:val.cek_giro.code %></td>
+            <td class="text-right"><% val.total|number %></td>
+            <td><% val.description %></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-right font-bold">Dibayar: </td>
+            <td class="text-right"><% totalPayment|number %></td>
+            <td colspan=""></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-right font-bold">Kurang/Lebih Bayar: </td>
+            <td class="text-right"><% leftOver|number %></td>
+            <td colspan=""></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+    </div>

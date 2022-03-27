@@ -1,0 +1,183 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Data</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label"><% solog.label.general.branch %></label>
+            <div class="col-md-9">
+              <branch-select-input ng-model="formData.company_id" />
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Tanggal</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label"><% solog.label.general.supplier %></label>
+            <div class="col-md-9">
+              <supplier-select-input ng-model="formData.contact_id" />
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Termin</label>
+            <div class="col-md-3">
+              <select class="form-control" data-placeholder-text-single="'Choose Termin'" chosen allow-single-deselect="false" ng-model="formData.type_bayar" ng-options="s.id as s.name for s in termin">
+                <option value=""></option>
+              </select>
+            </div>
+            <div class="col-md-6" ng-if="formData.type_bayar==1">
+              <select class="form-control" data-placeholder-text-single="'Choose Akun Kas'" chosen allow-single-deselect="false" ng-model="formData.cash_account_id" ng-options="s.id as s.name for s in data.cash_account">
+                <option value=""></option>
+              </select>
+            </div>
+            <div class="col-md-3" ng-if="formData.type_bayar==2">
+              <div class="input-group">
+                <input type="text" class="form-control" jnumber2 only-num ng-model="formData.termin">
+                <span class="input-group-addon">Hari</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Keterangan</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.description">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Detail Pembelian</h5>
+        </div>
+        <div class="ibox-content">
+          <div class="form-group">
+            <label class="col-md-3 control-label">Kode Asset</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" ng-model="detail.code" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Nama Asset</label>
+            <div class="col-md-9">
+              <input type="text"  id="name" class="form-control" ng-model="detail.name" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Kelompok Asset</label>
+            <div class="col-md-6">
+              <select class="form-control" ng-change="assetGroupChange(detail.asset_group_id)" allow-single-deselect="true" chosen  data-placeholder="Choose Akun" ng-model="detail.asset_group_id" ng-options="s.id as s.name for s in data.asset_group">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Tipe Asset</label>
+            <div class="col-md-6">
+              <select class="form-control" allow-single-deselect="false" chosen  data-placeholder="Choose Akun" ng-model="detail.asset_type" ng-options="s.id as s.name for s in type_asset">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Harga Beli</label>
+            <div class="col-md-5">
+              <input type="text" jnumber2 only-num class="form-control" ng-model="detail.price" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Nilai Residu</label>
+            <div class="col-md-5">
+              <input type="text"  jnumber2 only-num class="form-control" ng-model="detail.residu" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Umur Ekonomis /Th</label>
+            <div class="col-md-4">
+              <input type="text" jnumber2 only-num class="form-control" ng-model="detail.umur_ekonomis" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Keterangan</label>
+            <div class="col-md-9">
+              <input type="text" id="desc" class="form-control" ng-model="detail.description">
+            </div>
+          </div>
+        </div>
+        <div class="ibox-footer">
+          <!-- <%detail%><br> -->
+          
+            <div class="btn-group">
+                <span ng-if='!detail.id'>
+                    <button type='button' ng-click="appendTable()" ng-model="appendTableBtn" ng-disabled="!detail.code || !detail.name" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add ke Tabel</button>
+                </span>
+                <span ng-if='detail.id'>
+                    <button type='button' ng-click="updateTable()" ng-disabled="!detail.code || !detail.name" class="btn btn-sm btn-success"> Simpan</button>
+                    <button type='button' ng-click="cancelEdit()" class="btn btn-sm btn-danger"> Batal</button>
+                </span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Daftar Item Asset Tetap</h5>
+        </div>
+        <div class="ibox-content">
+          <!-- <pre><%formData.detail%></pre><br> -->
+          <table class="table display compact nowrap table-bordered table-stripped" id="appendTable">
+            <thead>
+              <tr>
+                <th>Nama Asset</th>
+                <th>Kode</th>
+                <th>Keterangan</th>
+                <th>Nilai Residu</th>
+                <th width="25%">Harga</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="aset in formData.detail">
+                <td><% aset.name %></td>
+                <td><% aset.code %></td>
+                <td><% aset.description %></td>
+                <td class="text-right"><% aset.residu | number %></td>
+                <td class="text-right"><% aset.price | number %></td>
+                <td class='text-center'>
+                    <a ng-click='edit(aset.id)'><span class='fa fa-edit'></span></a>&nbsp;
+                    <a ng-click='deleteAppend($index)'><span class='fa fa-trash'></span>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="4" style="text-align: right;">Total Pembelian</th>
+                <th>
+                  <input type="text" class="form-control text-right" jnumber2 only-num ng-model="formData.total_bayar" readonly>
+                </th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="ibox-footer">
+          <a ui-sref="finance.pembelian_asset" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+          <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn || formData.amount<=0 || formData.lebih_bayar<0" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

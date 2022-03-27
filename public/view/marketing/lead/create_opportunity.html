@@ -1,0 +1,69 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% inq_name %></h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <!-- <div class="form-group">
+              <label class="col-md-3">Branch</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div> -->
+            <div class="form-group">
+              <label class="col-md-3">Customer</label>
+              <div class="col-md-9">
+                <span class="font-bold"><% formData.name %></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Tgl <% inq_name %></label>
+              <div class="col-md-4">
+                <input type="text" ng-model="formData.date_opportunity" datepick class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Stage</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Customer Stage'" chosen allow-single-deselect="false" ng-model="formData.customer_stage_id" ng-options="s.id as s.name for s in data.stage">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">Sales <% inq_name %></label>
+              <div class="col-md-9">
+                <sales-select-input ng-model="formData.sales_id" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Keterangan <% inq_name %></label>
+              <div class="col-md-9">
+                <textarea ng-model="formData.description_opportunity" rows="4" class="form-control"></textarea>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="marketing.lead" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>

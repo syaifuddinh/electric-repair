@@ -1,0 +1,139 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Tarif</h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+      <!-- start -->
+      <div class="form-group">
+        <label class="col-md-3 font-bold">No Kontrak</label>
+        <div class="col-md-9">
+            : <a ui-sref='marketing.contract.show({id:data.header.id})'><% data.header.no_contract %></a>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Branch</label>
+        <div class="col-md-9">
+          <span>: <% data.header.company.name %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Layanan</label>
+        <div class="col-md-9">
+          <span class="font-bold">: <% data.service.name %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Customer</label>
+        <div class="col-md-9">
+          <span class="font-bold">: <% data.header.customer.name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==1||data.service_type_id==2||data.service_type_id==3||data.service_type_id==4">
+        <label class="col-md-3 font-bold">Route</label>
+        <div class="col-md-9">
+          <span>: <% data.route.name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==1||data.service_type_id==3||data.service_type_id==4">
+        <label class="col-md-3 font-bold">Tipe Armada</label>
+        <div class="col-md-9">
+          <span>: <% data.vehicle_type.name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==5">
+        <label class="col-md-3 font-bold">Komoditas</label>
+        <div class="col-md-9">
+          <span>: <% data.commodity.name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==1">
+        <label class="col-md-3 font-bold">Moda</label>
+        <div class="col-md-9">
+          <span>: <% data.moda.name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==4||data.service_type_id==6||data.service_type_id==7">
+        <label class="col-md-3 font-bold">Satuan</label>
+        <div class="col-md-9">
+          <span>: <% data.piece_name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==2">
+        <label class="col-md-3 font-bold">Tipe Kontainer</label>
+        <div class="col-md-9">
+          <span>: <% data.container_type.full_name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==5">
+        <label class="col-md-3 font-bold">Rack / Penempatan</label>
+        <div class="col-md-9">
+          <span>: <% data.rack.name %></span>
+        </div>
+      </div>
+      <div ng-if="data.service_type_id==1">
+        <div class="form-group" ng-if="data.imposition==2">
+          <label class="col-md-3 font-bold">Tarif Tonase (per Kg)</label>
+          <div class="col-md-4">
+            <span>: <% data.price_tonase|number %></span>
+          </div>
+          <div class="col-md-5">
+            <span>Minimal : <% data.min_tonase|number %></span>
+          </div>
+        </div>
+        <div class="form-group" ng-if="data.imposition==1">
+          <label class="col-md-3 font-bold">Tarif Kubikasi (per m3)</label>
+          <div class="col-md-4">
+            <span>: <% data.price_volume|number %></span>
+          </div>
+          <div class="col-md-5">
+            <span>Minimal : <% data.min_volume|number %></span>
+          </div>
+        </div>
+        <div class="form-group" ng-if="data.imposition==3">
+          <label class="col-md-3 font-bold">Tarif per Item</label>
+          <div class="col-md-4">
+            <span>: <% data.price_item|number %></span>
+          </div>
+          <div class="col-md-5">
+            <span>Minimal : <% data.min_item|number %></span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id!=1">
+        <label class="col-md-3 font-bold">Tarif</label>
+        <div class="col-md-9">
+          <span>: <% data.price_contract_full|number %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==5">
+        <label class="col-md-3 font-bold">Tarif Storage Tonase</label>
+        <div class="col-md-9">
+          <span>: <% data.price_contract_tonase|number %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==5">
+        <label class="col-md-3 font-bold">Tarif Storage Kubikasi</label>
+        <div class="col-md-9">
+          <span>: <% data.price_contract_volume|number %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==5">
+        <label class="col-md-3 font-bold">Tarif Handling Tonase</label>
+        <div class="col-md-9">
+          <span>: <% data.price_contract_handling_tonase|number %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service_type_id==5">
+        <label class="col-md-3 font-bold">Tarif Storage Volume</label>
+        <div class="col-md-9">
+          <span>: <% data.price_contract_handling_volume|number %></span>
+        </div>
+      </div>
+      <!-- end -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="marketing.contract_price" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</div>

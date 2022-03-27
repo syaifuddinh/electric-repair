@@ -1,0 +1,161 @@
+<div class="col-md-8">
+  <div class="ibox">
+    
+    <div class="ibox-title">
+      <h5>Cash Count</h5>
+      <div class="ibox-tools">
+        <a class="btn btn-sm btn-primary" ng-if='item.status == 0' data-toggle='modal' data-target='#modalValidation' ng-show="roleList.includes('finance.cash_count.validation')"> Validasi</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-borderless">
+        <tr>
+          <td style="width:25%;">Branch</td>
+          <td><span><% item.company.name %></span></td>
+        </tr>
+        <tr>
+        <tr>
+          <td>Status</td>
+          <td><span class="label label-<% statusClass %>"><% status %></span></td>
+        </tr>
+        <tr ng-if='item.status == 1'>
+          <td>Disetujui Oleh</td>
+          <td><% item.approved_by_name %></td>
+        </tr>
+        <tr>
+          <td>Tanggal Transaksi</td>
+          <td><span ng-if="item.date_transaction"><% item.date_transaction|fullDate %></span></td>
+        </tr>
+        <tr>
+          <td>Petugas</td>
+          <td><span><% item.officer_name %></span></td>
+        </tr>
+        <tr>
+          <td>Saldo Awal</td>
+          <td><span><% item.saldo_awal|number %></span></td>
+        </tr>
+        <tr>
+          <td>BKK Hari Ini</td>
+          <td><span><% item.bkk_hari_ini|number %></span></td>
+        </tr>
+        <tr>
+          <td>BKM Hari Ini</td>
+          <td><span><% item.bkm_hari_ini|number %></span></td>
+        </tr>
+        <tr>
+          <td>Saldo Akhir</td>
+          <td><span><% item.saldo_akhir|number %></span></td>
+        </tr>
+        <tr>
+          <td>Total Kas Fisik</td>
+          <td><span><% item.total_cash_fisik|number %></span></td>
+        </tr>
+        <tr>
+          <td>Total Kasbon</td>
+          <td><span><% item.total_kasbon|number %></span></td>
+        </tr>
+        <!-- <tr>
+          <td>Talangan Kasir</td>
+          <td><span><% item.bailout|number %></span></td>
+        </tr> -->
+        <tr>
+          <td>Keterangan</td>
+          <td><span><% item.description %></span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Perhitungan</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-striped">
+        <thead>
+          <tr>
+            <th>Nominal</th>
+            <th class="text-right">Jumlah</th>
+            <th class="text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="val in detail">
+            <td>Rp. <% val.nominal|number %></td>
+            <td class="text-right"><% val.qty|number %></td>
+            <td class="text-right">Rp. <% val.total|number %></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-right">TOTAL PERHITUNGAN</td>
+            <td class="text-right">Rp. <% totalAll|number %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+     
+
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Kasbon</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table table-bordered" id="kas_bon_datatable">
+            <thead>
+              <tr>
+                <th>No. Kasbon</th>
+                <th>Branch</th>
+                <th>Karyawan</th>
+                <th>Tanggal</th>
+                <th>Jml Kasbon</th>
+                <th>Keperluan</th>
+                <th>Status</th>
+                <th>Total approve</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+    </div>
+      <div class="ibox-footer">
+      <a ui-sref="finance.cash_count" class="btn btn-sm btn-warning">Kembali</a>
+      
+    </div>
+
+  </div>
+</div>
+
+<div class="modal fade" id="modalValidation" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Validasi</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3 control-label">Username</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.username">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Password</label>
+          <div class="col-md-9">
+            <input type="password" class="form-control" ng-model="formData.password">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="submitValidation()" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

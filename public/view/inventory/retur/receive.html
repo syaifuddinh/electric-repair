@@ -1,0 +1,106 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="col-md-12">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Penerimaan Retur Barang</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td>Kode Retur</td>
+                  <td>: <% item.code %></td>
+                </tr>
+                <tr>
+                  <td>Kode Penerimaan</td>
+                  <td>: <% item.receipt_list.receipt.code %></td>
+                </tr>
+                <tr>
+                  <td>Tgl. Retur</td>
+                  <td>: <% item.date_transaction|fullDate %></td>
+                </tr>
+                <tr>
+                  <td>Supplier</td>
+                  <td>: <% item.supplier.name %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Gudang Penerimaan</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_id" ng-options="s.id as s.name for s in warehouse">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">No. Surat Jalan</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.delivery_no" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Tgl Penerimaan</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formData.date_receipt" datepick class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Nama Penerima</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.receiver" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Keterangan</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.description" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <hr>
+            <table class="table display compact nowrap table-bordered">
+              <thead>
+                <tr>
+                  <th>Nama Item</th>
+                  <th>Part Number</th>
+                  <th>Kategori</th>
+                  <th style="width:10%;">Qty Retur</th>
+                  <th style="width:10%;">Qty Diterima</th>
+                  <th style="width:15%;">Qty Penerimaan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="(i,value) in detail">
+                  <td><% value.item.name %></td>
+                  <td><% value.item.part_number %></td>
+                  <td><% value.item.category.name %></td>
+                  <td class="text-right"><% value.qty_retur|number %></td>
+                  <td class="text-right"><% value.receive|number %></td>
+                  <td>
+                    <input type="text" class="form-control text-center input-sm" ng-change="cekLebih(formData.detail[i].qty_retur,formData.detail[i].receive,formData.detail[i].qty_terima)" jnumber2 only-num ng-model="formData.detail[i].qty_terima">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="inventory.retur.show({id:item.id})" class="btn btn-sm btn-warning">Kembali</a>
+        <button ng-show="roleList.includes('inventory.retur.detail.create')" type="submit" class="btn btn-sm btn-primary" ng-disabled="disBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+</form>

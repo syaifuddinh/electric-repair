@@ -1,0 +1,90 @@
+<form class="form-horizontal" ng-submit="submitForm()" id="submitForm">
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Stock Detail</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-6">
+                    <table class="table display compact nowrap table-borderless">
+                        <tbody>
+                            <tr>
+                                <td style="width:30%;">Customer</td>
+                                <td>: <% item.customer_name %></td>
+                            </tr>
+                            <tr>
+                                <td>No. TTB</td>
+                                <td>: <% item.no_surat_jalan %></td>
+                            </tr>
+                            <tr>
+                                <td>Shipper</td>
+                                <td>: <% item.sender || '-' %></td>
+                            </tr>
+                            <tr>
+                                <td>Consignee</td>
+                                <td>: <% item.receiver %></td>
+                            </tr>
+                            <tr>
+                                <td>Tujuan</td>
+                                <td>: <% item.city_to %></td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal masuk</td>
+                                <td>: <% item.receive_date|fullDate %></td>
+                            </tr>
+                            <tr>
+                                <td>Keterangan</td>
+                                <td>: <% item.description %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <table class="table display compact nowrap table-borderless">
+                        <tbody>
+                            <tr>
+                                <td style="width:30%;">Panjang</td>
+                                <td>: <% item.long %> cm</td>
+                            </tr>
+                            <tr>
+                                <td>Lebar</td>
+                                <td>: <% item.wide %> cm</td>
+                            </tr>
+                            <tr>
+                                <td>Tinggi</td>
+                                <td>: <% item.height %> cm</td>
+                            </tr>
+                            <tr>
+                                <td>Berat</td>
+                                <td>: <% item.tonase %> kg</td>
+                            </tr>
+                            <tr>
+                                <td>Stok sisa</td>
+                                <td>: <% item.qty %></td>
+                            </tr>
+                            <tr>
+                                <td>Satuan</td>
+                                <td>: <% item.piece_name %></td>
+                            </tr>
+                            <tr>
+                                <td>Kub/Ton</td>
+                                <td>: <% item.long * item.wide * item.height | number %> m<sup>3</sup></td>
+                            </tr>
+                            <tr>
+                                <td>Total Kub/Ton</td>
+                                <td>: <% item.long * item.wide * item.height * item.qty | number %> Ton</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+            <div class="ibox-footer">
+              <a ui-sref="operational_warehouse.stocklist" class="btn btn-sm btn-warning">Kembali</a>
+            </div>
+        </div>
+    </div>
+
+</form>

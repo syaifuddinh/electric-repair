@@ -1,0 +1,342 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail</h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <!-- start -->
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Code</label>
+        <div class="col-md-9">
+          <span>: <% data.code %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Branch</label>
+        <div class="col-md-9">
+          <span>: <% data.company.name %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Service Name</label>
+        <div class="col-md-9">
+          <span class="font-bold">: <% data.service.name %> ( <% data.service_type.name %> )</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 font-bold">Name</label>
+        <div class="col-md-9">
+          <span>: <% data.name %></span>
+        </div>
+      </div>
+      <hr>
+      <div class="form-group" ng-if="data.service.service_type_id==1||data.service.service_type_id==2||data.service.service_type_id==3||data.service.service_type_id==4">
+        <label class="col-md-3 font-bold">Route</label>
+        <div class="col-md-9">
+          <span>: <% data.route.name %></span>
+        </div>
+      </div>
+
+      <div class="form-group" ng-if="data.service.service_type_id==1 || data.service.service_type_id==3">
+        <label class="col-md-3 font-bold">Moda</label>
+        <div class="col-md-9">
+          <span>: <% data.moda.name %></span>
+        </div>
+      </div>
+
+      <div class="form-group" ng-if="(data.service.service_type_id==1 && data.moda_id != 3)||data.service.service_type_id==3||data.service.service_type_id==4">
+        <label class="col-md-3 font-bold">Armada</label>
+        <div class="col-md-9">
+          <span>: <% data.vehicle_type.name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service.service_type_id==5">
+        <label class="col-md-3 font-bold">Komoditas</label>
+        <div class="col-md-9">
+          <span>: <% data.commodity.name %></span>
+        </div>
+      </div>
+      
+      <div class="form-group" ng-if="(data.service.service_type_id==4||data.service.service_type_id==6||data.service.service_type_id==7) && data.price_type!='paket'">
+        <label class="col-md-3 font-bold">Unit</label>
+        <div class="col-md-9">
+          <span>: <% data.piece_name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service.service_type_id==2 || (data.service.service_type_id==1 && data.moda_id != 3)">
+        <label class="col-md-3 font-bold">Container Type</label>
+        <div class="col-md-9">
+          <span>: <% data.container_type.full_name %></span>
+        </div>
+      </div>
+        <div class="form-group" ng-if='data.service.service_type_id == 12 || data.service.service_type_id == 13'>
+          <label class="col-md-3 font-bold">Handling Type</label>
+          <div class="col-md-4">
+            <span>: <% data.handling_type_name %></span>
+          </div>
+        </div>
+      <div class="form-group" ng-if="data.service.service_type_id==5">
+        <label class="col-md-3 font-bold">Gudang</label>
+        <div class="col-md-9">
+          <span>: <% data.warehouse.name %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service.service_type_id==1">
+        <label class="col-md-3 font-bold">Tipe Minimum</label>
+        <div class="col-md-9">
+          <span>: <% (data.min_type == 1) ? 'Single' : 'Multiple' %></span>
+        </div>
+      </div>
+      <div ng-if="data.service.service_type_id==1 || ( (data.service.service_type_id == 12 || data.service.service_type_id == 13) && data.handling_type == 1)">
+        <div class="form-group" ng-if="data.min_type == 1">
+          <label class="col-md-3 font-bold">Tarif Tonase (per Kg)</label>
+          <div class="col-md-4">
+            <span>: <% data.price_tonase|number %></span>
+          </div>
+          <div class="col-md-5">
+            <span>Minimal : <% data.min_tonase|number %></span>
+          </div>
+        </div>
+        <div class="form-group" ng-if="data.min_type == 1">
+          <label class="col-md-3 font-bold">Tarif Kubikasi (per m<sup>3</sup>)</label>
+          <div class="col-md-4">
+            <span>: <% data.price_volume|number %></span>
+          </div>
+          <div class="col-md-5">
+            <span>Minimal : <% data.min_volume|number %></span>
+          </div>
+        </div>
+        <div class="form-group" ng-if="data.min_type == 1">
+          <label class="col-md-3 font-bold">Tarif per Item</label>
+          <div class="col-md-4">
+            <span>: <% data.price_item|number %></span>
+          </div>
+          <div class="col-md-5">
+            <span>Minimal : <% data.min_item|number %></span>
+          </div>
+        </div>
+        <div class="form-group" ng-if='(data.service.service_type_id==1 && data.moda_id != 3)'>
+          <label class="col-md-3 font-bold">Tarif Borongan</label>
+          <div class="col-md-4">
+            <span>: <% data.price_borongan|number %></span>
+          </div>
+          <div class="col-md-5">
+            <span>Minimal : <% data.min_borongan|number %></span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" ng-if="(data.service.service_type_id != 5 && data.service.service_type_id != 1 && data.service.service_type_id != 15) || ((data.service.service_type_id == 13 && data.service.service_type_id == 12) && data.handling_type == 2)">
+        <label class="col-md-3 font-bold">Price</label>
+        <div class="col-md-9">
+          <span>: <% data.price_full|number %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service.is_wh_rent == 1">
+        <label class="col-md-3 font-bold">Free storage (hari)</label>
+        <div class="col-md-9">
+          <span>: <% data.free_storage_day   %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service.is_wh_rent == 1">
+        <label class="col-md-3 font-bold">Tarif harian</label>
+        <div class="col-md-9">
+          <span>: <% data.over_storage_price|number %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service.service_type_id==5">
+        <label class="col-md-3 font-bold">Tarif Storage Tonase</label>
+        <div class="col-md-9">
+          <span>: <% data.price_tonase|number %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service.service_type_id==5">
+        <label class="col-md-3 font-bold">Tarif Storage Kubikasi</label>
+        <div class="col-md-9">
+          <span>: <% data.price_volume|number %></span>
+        </div>
+      </div>
+<hr>
+<div ng-show="data.service.service_type_id == 1 && data.min_type == 2">
+  <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <tr>
+        <td><h4><i class="fa fa-money"></i> Tarif Minimum</h4></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table display compact nowrap table-bordered">
+    <thead>
+      <tr>
+        <th>Harga Per Kg</th>
+        <th>Minimal (Kg)</th>
+        <th ng-if='(data.service.service_type_id==1 && data.moda_id != 3)'>Harga Per M3</th>
+        <th ng-if='(data.service.service_type_id==1 && data.moda_id != 3)'>Minimal (M3)</th>
+        <th ng-if='(data.service.service_type_id==1 && data.moda_id != 3)'>Harga Per Item</th>
+        <th ng-if='(data.service.service_type_id==1 && data.moda_id != 3)'>Minimal (Item)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-show='dataMinDetail.length == 0'>
+          <td colspan='7' class='text-center'><% solog.label.general.no_data %></td>
+      </tr>
+      <tr ng-repeat="(i,val) in dataMinDetail">
+        <td class="text-right"><span><% val.price_per_kg %></span></td>
+        <td class="text-right"><span><% val.min_kg %></span></td>
+        <td  ng-if='(data.service.service_type_id==1 && data.moda_id != 3)' class="text-right"><span><% val.price_per_m3 %></span></td>
+        <td ng-if='(data.service.service_type_id==1 && data.moda_id != 3)' class="text-right"><span><% val.min_m3 %></span></td>
+        <td  ng-if='(data.service.service_type_id==1 && data.moda_id != 3)' class="text-right"><span><% val.price_per_item %></span></td>
+        <td  ng-if='(data.service.service_type_id==1 && data.moda_id != 3)' class="text-right"><span><% val.min_item %></span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+    <div>
+      <table class="table display compact nowrap table-borderless">
+        <tbody>
+          <tr>
+            <td><h4><i class="fa fa-money"></i> Cost</h4></td>
+            <td class="text-right">
+
+              <button type="button" ng-show="roleList.includes('marketing.price.price_list.detail.add_cost')" class="btn btn-sm btn-primary" ng-click="addCost()"><i class="fa fa-plus"></i> Add</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table display compact nowrap table-bordered">
+        <thead>
+          <tr>
+            <th><% solog.label.cost.name %></th>
+            <th><% solog.label.general.vendor %></th>
+            <th>Jenis</th>
+            <th>Standar Biaya</th>
+            <th><% solog.label.general.qty %></th>
+            <th>Total</th>
+            <th><% solog.label.general.description %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-show='cost_detail.length == 0'>
+              <td colspan='8' class='text-center'><% solog.label.general.no_data %></td>
+          </tr>
+          <tr ng-repeat="(i,val) in cost_detail">
+            <td><span><% val.cost_type_name %></span></td>
+            <td><span><% val.vendor_name %></span></td>
+            <td><span><% findJsonId(val.type,type_cost).name %></span></td>
+            <td class="text-right"><span><% val.price|number %></span></td>
+            <td class="text-right"><span><% val.qty|number %></span></td>
+            <td class="text-right"><span><%  val.total_price |number %></span></td>
+            <!-- <td class="text-right"><span ng-if="val.cost_type.is_bbm"><% (val.qty|number)+' lt @ '+(val.price|number) %></span></td> -->
+            <td><span><% val.description %></span></td>
+            <td class="text-center">
+              <span>
+                <a ng-click="editCost(val.id)" data-toggle="tooltip" title="Edit Biaya"><i class="fa fa-edit"></i></a>&nbsp;
+                <a ng-click="deleteCost(val.id)" data-toggle="tooltip" title="Hapus Biaya"><i class="fa fa-trash"></i></a>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+      <!-- <div class="form-group" ng-if="data.service.service_type_id==5">
+        <label class="col-md-3 font-bold">Tarif Handling Tonase</label>
+        <div class="col-md-9">
+          <span>: <% data.price_handling_tonase|number %></span>
+        </div>
+      </div>
+      <div class="form-group" ng-if="data.service.service_type_id==5">
+        <label class="col-md-3 font-bold">Tarif Storage Volume</label>
+        <div class="col-md-9">
+          <span>: <% data.price_handling_volume|number %></span>
+        </div>
+      </div> -->
+      <!-- end -->
+
+    </div>
+    <div class="ibox-footer">
+      <div class="btn-group">
+
+          <a ui-sref="marketing.price_list" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+          <a ui-sref="marketing.price_list.edit({id:data.id})" class="btn btn-sm btn-success"><% solog.label.general.edit %></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal biaya -->
+<div class="modal fade" id="modalCost" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><% titleCost %></h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitCost()">
+        <div class="modal-body">
+          <!-- <div class="form-group">
+            <label class="col-md-3">Tipe Biaya</label>
+            <div class="col-md-9">
+              <div class="radio radio-inline radio-primary">
+                <input type="radio" ng-model="costData.type" ng-value="1" id="oper">
+                <label for="oper">Operasional</label>
+              </div>
+              <div class="radio radio-inline radio-primary">
+                <input type="radio" ng-model="costData.type" ng-value="2" id="reim">
+                <label for="reim">Reimburse/Talangan</label>
+              </div>
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label class="col-md-3"><% solog.label.cost.name %></label>
+            <div class="col-md-9">
+              <select class="form-control" ng-change="changeCT(costData.cost_type)" data-placeholder-text-single="'Choose Biaya'" chosen allow-single-deselect="false" ng-model="costData.cost_type" ng-options="s.id as s.name+getDesc(s.description) group by s.parent.name for s in cost_type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3"><% solog.label.general.vendor %></label>
+            <div class="col-md-9">
+                <vendor-select-input ng-model="costData.vendor_id" ng-change='searchVendorPrice()'></vendor-select-input>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-3"></label>
+            <div class="col-md-4">
+              <label>Biaya Satuan</label>
+              <input type="text" ng-disabled="costData.cost_type_f.is_bbm" jnumber2 only-num class="form-control" ng-change="calcCTTotalPrice()" ng-model="costData.price">
+            </div>
+            <div class="col-md-5">
+              <label>Jumlah</label>
+              <input type="text" ng-change="calcCTTotalPrice()" jnumber2 only-num class="form-control" ng-model="costData.qty" placeholder="jumlah">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Total Biaya</label>
+            <div class="col-md-9">
+              <input type="text" disabled jnumber2 only-num class="form-control" ng-model="costData.total_price">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 "><% solog.label.general.description %></label>
+            <div class="col-md-9">
+              <textarea rows="4" class="form-control" ng-model="costData.description"></textarea>
+            </div>
+          </div>
+          <!-- <pre><% jStyle(costData) %></pre> -->
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn || !costData.total_price" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

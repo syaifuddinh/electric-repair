@@ -1,0 +1,219 @@
+<table class="table table-borderless">
+    <tbody>
+        <tr>
+            <td class="text-right">
+                <a href="<% baseUrl+'/marketing/work_order/print/'+stateParams.id %>" target="_blank" class="btn btn-sm btn-default font-bold"><i class="fa fa-file-pdf-o"></i> Print Work Order</a>
+                <button ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.create')" ng-if='!hasInvoice' type="button" ng-click="addFromPrice()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-striped" style="width:100%;overflow-x:auto;">
+    <thead>
+        <tr>
+            <th>Service</th>
+            <th>Route</th>
+            <th>Commodity</th>
+            <th>Vehicle Type</th>
+            <th>Container Type</th>
+            <th>Charge In</th>
+            <th>Price</th>
+            <th ng-if='item.is_job_packet != 1'>Qty JO</th>
+            <th ng-if='item.is_job_packet != 1'>Status</th>
+            <th ng-if='using_qty.value == 1'>Qty</th>
+            <th style="width:15%;">Description</th>
+            <th style="width:7%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="(i,val) in detail" ng-if='val.quotation_detail_id'>
+            <td><% val.quotation_detail.service.name %></td>
+            <td><% val.quotation_detail.route.name %></td>
+            <td>
+                <% val.quotation_detail.commodity.name %>
+
+                <span ng-if='item.is_job_packet == 1'>
+                    <div ng-if='val.use_container'>
+                        Qty kontainer = <b><% val.qty %></b>
+                    </div>
+                </span>
+            </td>
+            <td><% val.quotation_detail.vehicle_type.name %></td>
+            <td><% val.quotation_detail.container_type.full_name %></td>
+            <td><% imposition_name_arr[i] %></td>
+            <td class="text-right"><% val.penawaran %></td>
+            <td ng-if='item.is_job_packet != 1' class="text-right"><% val.total_jo?val.total_jo:0|number %></td>
+            <td ng-if='item.is_job_packet != 1'><span ng-bind-html="status_proses[i]"></span></td>
+            <td ng-if='using_qty.value == 1'><% val.qty|number %></td>
+            <td><% val.description %></td>
+            <td class="text-center">
+                <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.done')" ng-click="cancelDone(val.id)" ng-if="val.is_done==1"><i class="fa fa-times"></i></a>
+                &nbsp;
+                <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.done')" ng-click="approveDetail(val)" ng-if="val.is_done==0 && item.is_job_packet != 1"><i class="fa fa-check"></i></a>
+                &nbsp;
+                <a ng-show="roleList.includes('operational.job_order.create')" ui-sref='operational.job_order.create.work_order({work_order_detail_id:val.id})' title='Create job order' ng-if="val.is_done==0"><i class="fa fa-plus"></i></a>
+                &nbsp;
+                <!-- <a ng-click="rejectDetail(val.id)" ng-if="val.is_done==1"><i class="fa fa-times"></i></a> -->
+                <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.edit_description')" ng-click="editDetail(val)" ng-if="val.is_done==0"><i class="fa fa-edit"></i></a>
+                &nbsp;
+                <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.delete')" ng-if="!val.total_jo && val.is_done==0" ng-click="deletes(val.id)"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        <tr ng-repeat="(i,val) in detail" ng-if='val.price_list_id'>
+            <td><% val.price_list.name + ' / ' + val.price_list.service.name %></td>
+            <td><% val.price_list.route.name %></td>
+            <td>
+                <% val.price_list.commodity.name %>
+                <span ng-if='item.is_job_packet == 1'>
+                    <div ng-if='val.use_container'>
+                        Qty kontainer = <b><% val.qty %></b>
+                    </div>
+                </span>
+            </td>
+            <td><% val.price_list.vehicle_type.name %></td>
+            <td><% val.price_list.container_type.name %></td>
+            <td><% imposition_name_arr[i] %></td>
+            <td class="text-right" ng-bind-html='val.penawaran'></td>
+            <td ng-if='item.is_job_packet != 1' class="text-right"><% val.total_jo?val.total_jo:0|number %></td>
+            <td ng-if='item.is_job_packet != 1'><span ng-bind-html="status_proses[i]"></span></td>
+            <td ng-if='using_qty.value == 1'><% val.qty|number %></td>
+            <td><% val.description %></td>
+            <td class="text-center">
+                <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.done')" ng-click="cancelDone(val.id)" ng-if="val.is_done==1"><i class="fa fa-times"></i></a>
+                &nbsp;
+                <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.done')" ng-click="approveDetail(val)" ng-if="val.is_done==0 && item.is_job_packet != 1"><i class="fa fa-check"></i></a>
+                &nbsp;
+                <a ng-show="roleList.includes('operational.job_order.create')" ui-sref='operational.job_order.create.work_order({work_order_detail_id:val.id})' title='Create job order' ng-if="val.is_done==0"><i class="fa fa-plus"></i></a>
+                &nbsp;
+                <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.edit_description')" ng-click="editDetail(val)" ng-if="val.is_done==0"><i class="fa fa-edit"></i></a>
+                &nbsp;
+                <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.delete')" ng-if="val.is_done==0" ng-click="deletes(val.id)"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!-- modal -->
+<div class="modal fade" id="quotationDataModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add Detail Work Order</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="priceDataModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add Detail Work Order</h4>
+            </div>
+            <div class="modal-body">
+                <div class='mg-b5'>
+                    <label for="price_list_container" class='btn btn-sm <% is_price_list == 1 ? "btn-primary" : "" %>'>
+                        <input type="radio" id='price_list_container' class='hidden' ng-model='is_price_list' ng-value='1'>
+                        <b>
+                            Tarif Umum
+                        </b>
+                    </label>
+
+                    <label for="quotation_detail_container" class='btn btn-sm <% is_price_list != 1 ? "btn-primary" : "" %>'>
+                        <input type="radio" class='hidden' id='quotation_detail_container' ng-model='is_price_list' ng-value='0'>
+                        <b>
+                            Tarif Kontrak
+                        </b>
+                    </label>
+                </div>
+
+                <div ng-show='is_price_list == 1'>
+                    <table class="table table-bordered" id="price_list_datatable" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Kode</th>
+                                <th>Route</th>
+                                <th>Nama Tarif</th>
+                                <th>Komoditas</th>
+                                <th>Layanan</th>
+                                <th>Moda</th>
+                                <th>Vehicle</th>
+                                <th>Kontainer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div ng-show='is_price_list != 1'>
+                    <table class="table table-bordered" id="quotation_datatable" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>No. Kontrak</th>
+                                <th>Layanan</th>
+                                <th>Route</th>
+                                <th>Komoditas</th>
+                                <th>Tipe Vehicle</th>
+                                <th>Tipe Kontainer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal keterangan -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Edit Keterangan</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-3">Keterangan</label>
+                    <div class="col-md-9">
+                        <textarea ng-model="editData.description" rows="4" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group required" ng-if='using_qty.value == 1 || (item.is_job_packet == 1 && (editData.use_container || editData.service_type_id == 3))'>
+                    <label class="col-md-3">
+                        <span ng-if='!editData.use_container'>
+                            Qty
+                        </span>
+                        <span ng-if='editData.use_container'>
+                            Jumlah Kontainer
+                        </span>
+                    </label>
+                    <div class="col-md-9">
+                        <input type="text" jnumber2 only-num ng-model="editData.qty" class="form-control text-right">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" ng-disabled='disBtn' ng-click="submitEdit()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

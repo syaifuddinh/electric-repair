@@ -1,0 +1,21 @@
+<div class="sk-container">
+  <div class="sk-spinner sk-spinner-wave">
+    <div class="sk-rect1"></div>
+    <div class="sk-rect2"></div>
+    <div class="sk-rect3"></div>
+  </div>
+  <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <tr>
+        <td class="text-right btn-area">
+          <button ng-show="$root.roleList.includes('operational_rack.setting.rack.create')" type="button" ng-click="add()" class="btn btn-sm btn-primary mg-r1"><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <solog-datatable options='options' id='datatable' created-row='createdRow'></solog-datatable>
+</div>
+
+<solog-modal title='modalTitle' on-submit='submitForm()'>
+      <racks-create form-data='formData'></racks-create>
+</solog-modal>

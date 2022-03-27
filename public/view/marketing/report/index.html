@@ -1,0 +1,69 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3">Tipe Laporan</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="reportChange(formData)" data-placeholder-text-single="'Choose Laporan'" chosen allow-single-deselect="false" ng-model="formData.report_id" ng-options="s.id as s.name for s in reports">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" >
+        <label class="col-md-3">Branch</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Semua Branch'" chosen allow-single-deselect="true" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="in_array(formData.report_id,[3])">
+        <label class="col-md-3">Golongan Layanan</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Semua Layanan'" chosen allow-single-deselect="true" ng-model="formData.service_group_id" ng-options="service.id as service.name for service in data.service_group">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="in_array(formData.report_id,[1,3])">
+        <label class="col-md-3">Customer</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Semua Customer'" chosen allow-single-deselect="true" ng-model="formData.customer_id" ng-options="s.id as s.name for s in data.customer">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="in_array(formData.report_id,[2])">
+        <label class="col-md-3">Tahun</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Semua Tahun'" chosen allow-single-deselect="false" ng-model="formData.year" ng-options="s.id as s.name for s in year">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" ng-if="in_array(formData.report_id,[1,3,4])">
+        <label class="col-md-3">Periode</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control" ng-model="formData.start_date" datepick/>
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control" ng-model="formData.end_date" datepick />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="ibox-footer">
+      <button type="button" ng-click="printHtml()" class="btn btn-sm font-bold btn-default"><i class="fa fa-eye"></i> Show Report</button>
+      <button type="button" ng-click="submitForm()" class="btn btn-sm font-bold btn-primary"><i class="fa fa-file-excel-o"></i> Export Excel</button>
+      <button type="button" ng-click="resetFilter(formData)" class="btn btn-sm font-bold btn-warning"><i class="fa fa-times"></i> Reset</button>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content" id="content">
+
+    </div>
+  </div>
+</div>

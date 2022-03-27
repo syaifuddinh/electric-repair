@@ -1,0 +1,24 @@
+<div class='sk-container'>
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <h4>Format Penomoran Transaksi</h4>
+    <table class="table display compact nowrap table-bordered table-striped">
+        <thead>
+            <tr>
+            <th>No.</th>
+            <th>Nama Transaksi</th>
+            <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(key, value) in masterPenomoran">
+            <td><% key+1 %></td>
+            <td><% value.name %></td>
+            <td class="text-center"><a ui-sref="setting.company.show.info.numbering.detail({id:mainItem.id,idFormat:value.id})" data-toggle='tooltip' title='Show Detail Penomoran Branch'><i class="fa fa-folder-o"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

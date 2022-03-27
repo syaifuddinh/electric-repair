@@ -1,0 +1,124 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Add Saldo Awal Asset</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Branch</label>
+            <div class="col-md-6">
+              <branch-select-input ng-model="formData.company_id" />
+            </div>
+          </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Kode</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" ng-model="formData.code" >
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Nama Asset</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.name" >
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Kelompok Asset</label>
+          <div class="col-md-6">
+            <select class="form-control" ng-change="assetGroupChange(formData.asset_group_id)" allow-single-deselect="false" chosen data-placeholder="Choose Akun" ng-model="formData.asset_group_id" ng-options="s.id as s.name for s in data.asset_group">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tipe Asset</label>
+          <div class="col-md-6">
+            <select class="form-control" allow-single-deselect="false" chosen data-placeholder="Choose Metode" ng-model="formData.asset_type" ng-options="s.id as s.name for s in type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <!-- <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+          </div>
+        </div> -->
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal Perolehan</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" datepick ng-model="formData.date_purchase">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Harga Beli</label>
+          <div class="col-md-5">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="formData.purchase_price" >
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Nilai Residu</label>
+          <div class="col-md-5">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="formData.residu_price" >
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Umur Ekonomis /Th</label>
+          <div class="col-md-4">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="formData.umur_ekonomis" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Metode Depresiasi</label>
+          <div class="col-md-6">
+            <select class="form-control" allow-single-deselect="false" chosen data-placeholder="Choose Metode" ng-model="formData.method" ng-options="s.id as s.name for s in method">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Akun Asset</label>
+          <div class="col-md-5">
+            <select class="form-control" allow-single-deselect="false" chosen  data-placeholder="Choose Akun" ng-model="formData.account_asset_id" ng-options="s.id as s.code+' - '+s.name group by s.parent for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Akun Akumulasi Asset</label>
+          <div class="col-md-5">
+            <select class="form-control" allow-single-deselect="false" chosen  data-placeholder="Choose Akun" ng-model="formData.account_accumulation_id" ng-options="s.id as s.code+' - '+s.name group by s.parent for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Akun Depresiasi Asset</label>
+          <div class="col-md-5">
+            <select class="form-control" allow-single-deselect="false" chosen  data-placeholder="Choose Akun" ng-model="formData.account_depreciation_id" ng-options="s.id as s.code+' - '+s.name group by s.parent for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.description" >
+          </div>
+        </div>
+        <hr>
+        <a ui-sref="finance.saldoawal_asset" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>

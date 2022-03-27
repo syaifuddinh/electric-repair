@@ -1,0 +1,99 @@
+<style>
+    body tr td {
+        vertical-align: middle !important;
+    }
+</style>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Data</h5>
+      <div class="ibox-tools">
+        <div class="btn-group">
+            <button type="button" ng-show='item.status_approve == 1' class="btn btn-success btn-sm " ng-click="approve()"> Approve</button>
+            <!-- <button type="button" ng-show='item.status_approve == 0' class="btn btn-primary btn-sm " ng-click="posting()"> Approve dan setujui jurnal</button> -->
+            <!-- <button type="button" ng-show='item.status_approve != 4 && item.status_approve != 0' class="btn btn-danger btn-sm " ng-click="abort_journal()"> Cancelkan posting</button> -->
+        </div>
+        <!-- <a href="<%baseUrl+'/excel/joborder_export'%>" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i> Export Excel</a> -->
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact table-borderless">
+        <tbody>
+          <tr>
+            <td style="width:20%;">Branch</td>
+            <td>: <span><% item.company.name %></span></td>
+          </tr>
+          <tr>
+            <td>No Invoice</td>
+            <td>: <span><% item.code %></span></td>
+          </tr>
+          <tr>
+            <td>Tgl Invoice</td>
+            <td>: <span ng-cloak><% item.date_invoice|fullDate %></span></td>
+          </tr>
+          <tr>
+            <td>Tgl Penerimaan</td>
+            <td>: <span ng-cloak><% item.date_receive|fullDate %></span></td>
+          </tr>
+          <tr>
+            <td>Vendor</td>
+            <td>: <span class="font-bold"><% item.vendor.name %></span></td>
+          </tr>
+          <tr>
+            <td style="display:flex">Keterangan</td>
+            <td><div style='display:inline-block;vertical-align:top'>:</div> <div style='display:inline-block;' class="font-bold" ng-bind-html="item.description"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Tagihan</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>No Reff</th>
+            <th>Keterangan</th>
+            <th class="text-right">Sub Total</th>
+            <th class="text-right">PPN</th>
+            <th class="text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="val in detail">
+            <td><% val.reff_no %></td>
+            <td rowspan='<% rowspan %>'><% val.description %></td>
+            <td class='text-right'><% val.total|number %></td>
+            <td class='text-right'><% val.ppn|number %></td>
+            <td class='text-right'><% val.total+val.ppn|number %></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th class="text-right" colspan="4">Total</th>
+            <th style="border-top:1px solid black;border-bottom:2px solid black;" class="text-right"><% item.total|number %></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="ibox-footer">
+      <a ng-click='backward()' class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+    </div>
+  </div>
+</div>

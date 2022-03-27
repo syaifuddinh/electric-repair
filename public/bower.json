@@ -1,0 +1,38 @@
+{
+  "name": "public",
+  "authors": [
+    "Fajar Fuad <fajarfuad5@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-numeric-directive": "*",
+    "angular-resource": "^1.7.5",
+    "angular-loading-bar": "^0.9.0",
+    "algolia-autocomplete.js": "^0.32.0",
+    "angular-ui-router": "^1.0.20",
+    "angular-ui-switch": "^0.1.1",
+    "angular-sanitize": "^1.7.5",
+    "angular-summernote": "^0.8.1",
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "ng-timeago": "^0.0.2",
+    "froala-wysiwyg-editor": "^2.9.1",
+    "ngInfiniteScroll": "^1.3.4",
+    "summernote": "^0.8.11",
+    "jquery-confirm2": "craftpip/jquery-confirm#^3.3.4",
+    "oclazyload": "^1.1.0",
+    "angular-cookies": "^1.7.8",
+    "chart.js": "chartjs#^2.8.0"
+  }
+}

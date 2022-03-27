@@ -1,0 +1,185 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="col-md-12">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Detail Kasbon</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td>Kode</td>
+                  <td>: <span><% item.code %></span></td>
+                </tr>
+                <tr>
+                  <td>Branch</td>
+                  <td>: <span><% item.company.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Karyawan</td>
+                  <td>: <span><% item.employee.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Tanggal Kasbon</td>
+                  <td>: <span><% item.date_transaction|fullDate %></span></td>
+                </tr>
+                <tr>
+                  <td>Tangga Jatuh Tempo</td>
+                  <td>
+                      <span>: <% item.due_date|fullDate %></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dibuat Oleh</td>
+                  <td>: <span><% item.creates.name %></span></td>
+                </tr>
+                <tr ng-if="item.status>1">
+                  <td>Disetujui Oleh</td>
+                  <td>: <span><% item.approves.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Keperluan</td>
+                  <td>: <span><% item.description %></span></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td>Jumlah Kasbon</td>
+                  <td>:
+                    <% item.total_cash_advance|number %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Disetujui</td>
+                  <td><span ng-if="item.status>1">: <% item.total_approve|number %></span>
+                    <input ng-if="item.status==1" type="text" jnumber2 only-num ng-model="formData.total_approve" class="form-control">
+                  </td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>: <% findJsonId(item.status,status).name %></td>
+                </tr>
+                <tr ng-if="item.status==7">
+                  <td>Ditolak Oleh</td>
+                  <td>: <span><% item.cancels.name %></span></td>
+                </tr>
+                <tr ng-if="item.status==7">
+                  <td>Alasan Penolakan</td>
+                  <td>: <span><% item.cancel_description %></span></td>
+                </tr>
+                <tr ng-if="item.status>=3 && item.status<=5">
+                    <td>Jumlah Reapprove</td>
+                    <td>: <span><% data.reapprovals.count %></span></td>
+                </tr>
+                <tr ng-if="item.status>=3 && item.status<=5">
+                    <td>Di Reapprove oleh</td>
+                    <td>: <span><% data.reapprovals.by %></span></td>
+                </tr>
+                <tr ng-if="item.status>=3">
+                    <td>Kode Transaksi Kas</td>
+                    <td>: <a ng-click="gotoCash(item.cash_transactions.id)"><span><% item.cash_transactions.code %></span></a></td>
+                </tr>
+                <tr ng-if="item.status>=3">
+                    <td>Transaksi Kas</td>
+                    <td>: <% cash_transaction_amount | number %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="finance.kas_bon" class="btn btn-sm btn-warning">Kembali</a>
+        <!-- Karyawan -->
+        <button type="button"
+            ng-show="roles.isAdmin || roles.isOther"
+            ng-if="item.status<3"
+            ng-click="edit()"
+            ng-disabled="disBtn"
+            class="btn btn-sm btn-primary">Edit</button>
+        <button type="button"
+            ng-show="(roles.isAdmin || roles.isOther) && canCreateKas"
+            ng-if="item.status==5"
+            ng-click="reapproval()"
+            ng-disabled="disBtn"
+            class="btn btn-sm btn-success">Ajukan Re-Approval</button>
+        <a type="button"
+            ui-sref="finance.kas_bon.createkas({id:item.id})"
+            ng-show="(roles.isAdmin || roles.isOther) && canCreateKas"
+            ng-if="item.status==3 || item.status==5"
+            ng-disabled="disBtn || item.create_by != created_user_id"
+            class="btn btn-sm btn-success">Buat Transaksi Kas</a>
+
+        <!-- Kasir -->
+        <button type="button"
+            ng-show="roles.isAdmin || roles.isKasir"
+            ng-if="item.status==2"
+            ng-disabled="disBtn"
+            ng-click="activate()"
+            class="btn btn-sm btn-success">Uang Keluar</button>
+        <button type="button" 
+            ng-show="roles.isAdmin || roles.isKasir"
+            ng-if="item.status<=3"
+            ng-disabled="disBtn"
+            ng-click="close()"
+            class="btn btn-sm btn-danger">Cancel</button>
+        <button type="button"
+            ng-show="(roles.isAdmin || roles.isKasir) && canFinish"
+            ng-if="item.status>=3 && item.status<=5"
+            ng-disabled="disBtn"
+            ng-click="close()"
+            class="btn btn-sm btn-success">Selesai</button>
+
+        <!-- Supervisor -->
+        <button type="button" 
+            ng-show="roles.isAdmin || roles.isManager"
+            ng-if="item.status==1"
+            ng-click="cancelModal()" 
+            class="btn btn-sm btn-danger">Tolak</button>
+        <button type="submit"
+            ng-show="roles.isAdmin || roles.isManager"
+            ng-if="item.status==1"
+            ng-disabled="disBtn" 
+            class="btn btn-sm btn-success">Save dan Setujui</button>
+        <button type="button"
+            ng-show="roles.isAdmin || roles.isManager"
+            ng-if="item.status==4"
+            ng-disabled="disBtn"
+            ng-click="reapprove()"
+            class="btn btn-sm btn-primary">Re-Approval</button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="modalTolak" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:30%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Tolak Kasbon</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="">Alasan Penolakan</label>
+          <textarea class="form-control" rows="8" ng-model="cancelData.cancel_description"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="cancel()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-borderless">
+        <tbody>
+          <tr>
+            <td style="width: 30%;"><% solog.label.contract.code %></td>
+            <td>: <% data.no_contract %></td>
+          </tr>
+          <tr>
+            <td><% solog.label.general.branch %></td>
+            <td>: <% data.company.name %></td>
+          </tr>
+          <tr>
+            <td><% solog.label.general.customer %></td>
+            <td>: <% data.customer.name %></td>
+          </tr>
+          <tr>
+            <td><% solog.label.contract.date %></td>
+            <td>: <% data.date_start_contract|fullDate %> <span ng-if="data.date_start_contract>data.date_end_contract" class="badge badge-danger">Expired</span></td>
+          </tr>
+          <tr>
+            <td><% solog.label.general.date_end %></td>
+            <td>: <% data.date_end_contract|fullDate %></td>
+          </tr>
+          <tr>
+            <td>Tipe Tagihan</td>
+            <td>: <% data.bill_type_name %></td>
+          </tr>
+          <tr>
+            <td>Periode Pengiriman</td>
+            <td>: <% data.send_type_name %></td>
+          </tr>
+          <tr ng-if="data.bill_type==2">
+            <td>Pengenaan</td>
+            <td>: <% findJsonId(data.imposition,imposition).name %></td>
+          </tr>
+          <tr ng-if="data.bill_type==2">
+            <td>Harga Borongan</td>
+            <td>: <% data.price_full_contract|number %></td>
+          </tr>
+          <tr>
+            <td><% solog.label.contract.status %></td>
+            <td>: <span ng-bind-html="findJsonId(data.is_active,is_active).name"></span></td>
+          </tr>
+          <tr>
+            <td><% solog.label.general.sales %></td>
+            <td>: <% data.sales.name %></td>
+          </tr>
+          <tr>
+            <td>Komisi Sales</td>
+            <td>: <% data.sales_commision %> %</td>
+          </tr>
+          <tr>
+            <td><% solog.label.general.description %></td>
+            <td>: <span ng-bind-html="data.description_contract"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="marketing.contract" class="btn btn-warning btn-sm"><% solog.label.general.back %></a>
+      <a ng-show="roleList.includes('marketing.quotation.detail.detail_info.print')" target="_blank" href="<%baseUrl+'/pdf/print_quotation/'+data.id%>" class="btn btn-sm btn-default"><i class="fa fa-file-pdf-o"></i> Cetak Penawaran</a>
+      <a ng-show="roleList.includes('marketing.contract.edit')" ng-if="data.is_active" ui-sref="marketing.contract.edit({id:data.id})" class="btn btn-success btn-sm"><i class="fa fa-edit"></i>&nbsp;<% solog.label.general.edit %></a>
+      <a ng-show="roleList.includes('marketing.contract.contract_stopped')" ng-if="data.is_active" ng-click="stopContract()" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;<% solog.label.contract.stop %></a>
+      <!-- <a ui-sref="marketing.contract.amandemen({id:data.id})" class="btn btn-primary btn-sm"><i class="fa fa-fax"></i>&nbsp;Amandemen Kontrak</a> -->
+      <a ng-show="roleList.includes('marketing.contract.amandement')" ng-if="data.is_active" ng-click="amandemen()" class="btn btn-primary btn-sm"><i class="fa fa-fax"></i>&nbsp;<% solog.label.contract.amandemen %></a>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="col-md-12">
+  <div class="tabs-container">
+    <div class="">
+      <ul class="nav nav-tabs">
+        <li ng-show="roleList.includes('marketing.contract.quotation_item')" ui-sref-active="active"><a ui-sref="marketing.contract.show.item" ui-sref-opts="{location:false}"><i class="fa fa-cogs"></i> <% solog.label.service.title %></a></li>
+        <li ng-show="roleList.includes('marketing.contract.quotation_item')" ui-sref-active="active"><a ui-sref="marketing.contract.show.barang" ui-sref-opts="{location:false}"><i class="fa fa-briefcase"></i> <% solog.label.item.title %></a></li>
+        <li ng-show="roleList.includes('marketing.contract.cost')" ui-sref-active="active"><a ui-sref="marketing.contract.show.cost" ui-sref-opts="{location:false}"><i class="fa fa-money"></i> <% solog.label.cost.title %></a></li>
+        <li ng-show="roleList.includes('marketing.contract.document')" ui-sref-active="active"><a ui-sref="marketing.contract.show.document" ui-sref-opts="{location:false}"><i class="fa fa-files-o"></i> <% solog.label.general.files %> </a></li>
+        <li ng-show="roleList.includes('marketing.contract.job_order_history')" ui-sref-active="active"><a ui-sref="marketing.contract.show.history" ui-sref-opts="{location:false}"><i class="fa fa-history"></i> <% solog.label.job_order.history %> </a></li>
+      </ul>
+      <div class="tab-content active">
+        <!-- <div ng-if="state.current.name=='marketing.inquery.show'?state.go('marketing.inquery.show.detail',{id:params.id}):''"></div> -->
+        <div ng-if="state.current.name=='marketing.contract.show'" ng-init="state.go('marketing.contract.show.item',{id:stateParams.id},{location:false})"></div>
+        <div ui-view="">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal stop Kontrak -->
+<div class="modal fade" id="modalStop" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Hentikan Kontrak</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="desc">Alasan Penghentian</label>
+          <textarea class="form-control" rows="8" ng-model="stopData.description_stop_contract" id="desc" cols="80"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="submitStop()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+[
+  {"deep":6,"name":"Pengajuan Biaya","slug":"operational.job_order.detail.detail_job_order.cost.ajukan","urut":40304014301},
+  {"deep":6,"name":"Pengajuan Biaya Keuangan","slug":"operational.job_order.detail.detail_job_order.cost.ajukan_finance","urut":40304014302},
+  {"deep":6,"name":"Approve/Tolak Supervisi","slug":"operational.job_order.detail.detail_job_order.cost.submission_supervisi","urut":40304014401},
+  {"deep":6,"name":"Approve/Tolak Manajer","slug":"operational.job_order.detail.detail_job_order.cost.submission_manajer","urut":40304014402},
+  {"deep":6,"name":"Approve/Tolak Direksi","slug":"operational.job_order.detail.detail_job_order.cost.submission_direksi","urut":40304014403}
+]

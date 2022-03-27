@@ -1,0 +1,76 @@
+<form class="form-horizontal" ng-submit="submitForm()" id="submitForm">
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Using Pallet</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+        <a ng-if="data.item.po_status==1" ui-sref="operational_warehouse.pallet_receipt.create_po({po_id:data.item.id})" class="btn btn-sm btn-primary"><i class="fa fa-download"></i> Input Receiving</a>
+      </div>
+    </div>
+      <div class="ibox-content">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:30%;">Gudang</td>
+              <td>: <% data.item.warehouse.name %></td>
+            </tr>
+            <tr>
+              <td>No. Transaksi</td>
+              <td>: <% data.item.code %></td>
+            </tr>
+            <tr>
+              <td>Tanggal</td>
+              <td>: <% data.item.using_date|fullDate %></td>
+            </tr>
+            <tr>
+              <td>Customer</td>
+              <td class="font-bold">: <% data.item.customer.name %></td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td class="">: <span ng-bind-html="findJsonId(data.item.status,status).name"></span></td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td class="">: <% data.item.description %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Item</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class='hidden'>Barcode</th>
+            <th>Type</th>
+            <th>Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="value in data.detail">
+            <td><% value.item_name %></td>
+            <td class='hidden'><% value.item_barcode %></td>
+            <td><% value.item_category %></td>
+            <td style="width:8%;"><% value.qty|number %></td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <%formData%> -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="operational_warehouse.pallet_using" class="btn btn-sm btn-warning">Back</a>
+      <button type="button" ng-click="approve()" ng-if="data.item.status==1" name="button" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Confirmation</button>
+      <button type="button" ng-click="shipping()" ng-if="data.item.status==2" name="button" class="btn btn-sm btn-primary"><i class="fa fa-truck"></i> To Shipment</button>
+    </div>
+  </div>
+</div>
+</form>

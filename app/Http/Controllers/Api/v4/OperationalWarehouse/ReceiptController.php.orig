@@ -1,0 +1,603 @@
+<?php
+
+namespace App\Http\Controllers\Api\v4\OperationalWarehouse;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Model\Rack;
+use App\Model\StorageType;
+use App\Model\Contact;
+use App\Model\Company;
+use App\Model\City;
+use App\Model\Item;
+use App\Model\VehicleType;
+use App\Model\WarehouseReceipt;
+use App\Model\WarehouseReceiptDetail;
+use App\Model\WarehouseStockDetail;
+use App\Model\Warehouse;
+use App\Model\Piece;
+use App\Model\DeliveryOrderPhoto;
+use App\Utils\TransactionCode;
+use DB;
+use File;
+use Response;
+use Carbon\Carbon;
+use Image;
+use Illuminate\Contracts\Validation\Validator;
+ use Illuminate\Http\Exceptions\HttpResponseException;
+
+class ReceiptController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+      $data['company']=companyAdmin(auth()->id());
+      $data['supplier']=Contact::where('is_supplier', 1)->select('id','name','company_id')->get();
+      $data['customer']=Contact::where('is_pelanggan', 1)->select('id','name','company_id')->get();
+      $data['staff']=Contact::whereRaw("is_staff_gudang = 1")->select('id','name','address','company_id')->get();
+      $data['piece']=Piece::all();
+      $data['category']= DB::table('categories')->where('is_jasa', 0)->get();
+      $data['warehouse']=Warehouse::where('is_active', 1)->get();
+      $data['rack']=Rack::join('storage_types', 'storage_type_id', '=', 'storage_types.id')->where('is_picking_area', 0)->where('is_handling_area', 0)->select('racks.id',DB::raw("CONCAT(code,' (',IFNULL(description,''),')') as name"),'warehouse_id', 'capacity_volume', 'capacity_tonase')->get();
+      $data['vehicle_type']=VehicleType::all();
+      return Response::json($data, 200, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function createImageFromBase64($image){ 
+       $file_data = $image; 
+       $extension = preg_replace('/data:image\/(\w+);base64.+/', '$1', $file_data);
+       $file_name = 'image_'.time() . '.' . $extension; //generating unique file name; 
+       @list($type, $file_data) = explode(';', $file_data);
+       @list(, $file_data) = explode(',', $file_data); 
+       if($file_data!=""){ // storing image in storage/app/public Folder 
+            Storage::disk('public')->put($file_name,base64_decode($file_data)); 
+            return $file_name; 
+       }
+       else {
+        return false;
+       }
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+      // $request->validate([
+      //   'company_id' => 'required',
+      //   'customer_id' => 'required',
+      //   'warehouse_id' => 'required',
+      //   'receiver' => 'required',
+      //   'receive_date' => 'required',
+      //   'receive_time' => 'required'
+      // ]);
+      if(!isset($request->company_id)) {
+        return Response::json(["message" => "Cabang tidak boleh kosong"], 422);
+      }
+      if(!isset($request->customer_id)) {
+        return Response::json(["message" => "Customer tidak boleh kosong"], 422);
+      }
+      if(!isset($request->warehouse_id)) {
+        return Response::json(["message" => "Gudang tidak boleh kosong"], 422);
+      }
+      if(!isset($request->receive_date)) {
+        return Response::json(["message" => "Tanggal terima tidak boleh kosong"], 422);
+      }
+      if(!isset($request->receive_time)) {
+        return Response::json(["message" => "Waktu terima tidak boleh kosong"], 422);
+      }
+      if(!isset($request->receiver)) {
+        return Response::json(["message" => "Consignee tidak boleh kosong"], 422);
+      }
+
+
+      if(is_string($request->detail)) {
+
+        $detail = json_decode($request->detail);
+      }
+      else {
+        $detail = $request->detail; 
+      }
+
+      if(!isset($detail)) {
+      		return Response::json(['message' => 'Item penerimaan barang tidak boleh kosong'], 422);
+      }
+      if(!$request->has('files')) {
+      	return Response::json(['message' => 'Lampiran tidak boleh kosong'], 422);
+      }
+
+      foreach ($detail as $x => $value) {
+        if (empty($value)) {
+          continue;
+        }
+
+        $detail[$x] = (object) $value;
+      }
+
+      if($request->status == 1) {
+        $option = [
+          'warehouse_id' => $request->warehouse_id
+        ];
+        $cek_kapasitas = WarehouseStockDetail::cek_kapasitas($detail, $option);
+        $cek_pallet_keluar = WarehouseStockDetail::cek_pallet_keluar($detail, $option);
+        if($cek_kapasitas !== true) {
+          return $cek_kapasitas;
+        }
+        else if($cek_pallet_keluar !== true){
+          return $cek_pallet_keluar;
+        }
+      }
+
+      DB::beginTransaction();
+      $code = new TransactionCode($request->company_id, 'warehouseReceipt');
+      $code->setCode();
+      $trx_code = $code->getCode();
+      $file=$request->file('files');
+      $attachment = [];
+      $c = 0;
+      foreach($file as $image) {
+        $origin = $image->getClientOriginalName();
+        $filename = 'LAMPIRAN_PENERIMAAN_BARANG' . date('Ymd_His') . $c . $origin;
+        array_push($attachment, $filename);
+        $img = Image::make($image->getRealPath());
+        $img->resize(600, null, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save(public_path('files/' . $filename));
+        $c++;
+      }
+
+      if($request->has('ttd')) {
+          $ttd_file = $request->file('ttd');
+          $ext = $ttd_file->getClientOriginalExtension();
+
+          if( $ext == null OR $ext == '') {
+            $ext = 'png';
+          }
+          $ttd = 'TTD' . date('Ymd_His') . str_random(10) . '.' . $ext;
+          $ttd_file->move(public_path('files'), $ttd);
+      } else {
+          $ttd = null;
+      }
+      
+      $i=WarehouseReceipt::create([
+        'company_id' => $request->company_id,
+        'customer_id' => $request->customer_id,
+        'warehouse_id' => $request->warehouse_id,
+        'city_to' => $request->city_to,
+        'sender' => $request->sender,
+        'receiver' => $request->receiver,
+        'warehouse_staff_id' => auth()->id(),
+        // 'collectible_id' => $request->collectible_id,
+        'reff_no' => $request->reff_no,
+        'code' => $trx_code,
+        'receive_date' => createTimestamp($request->receive_date,$request->receive_time),
+        'is_export' => $request->is_export,
+        'description' => $request->description,
+        'create_by' => auth()->id(),
+        'nopol' => $request->nopol,
+        'driver' => $request->driver,
+        'ttd' => $ttd,
+        'phone_number' => $request->phone_number,
+        'status' => $request->status,
+      ]);
+      // Validasi handling area
+      $handling_storage = Rack::leftJoin('storage_types', 'storage_type_id', 'storage_types.id')->where('is_handling_area', 1)->where('warehouse_id', $request->warehouse_id);
+      $handling_is_exists = $handling_storage->count();
+      if($handling_is_exists == 0) {
+        $r = Rack::create([
+          'warehouse_id' => $request->warehouse_id,
+          'barcode' => '-',
+          'code' => 'Handling Area',
+          'storage_type_id' => StorageType::where('is_handling_area', 1)->first()->id,
+          'capacity_volume' => 100000,
+          'capacity_tonase' => 100000
+        ]);
+
+        $rack_id = $r->id;
+      }
+      else {
+        $r = $handling_storage->selectRaw('racks.id AS id')->first();
+        $rack_id = $r->id;
+      }
+
+
+      $piece = Piece::where('name', 'Item')->first();
+      $piece_id = $piece->id;
+      foreach ($detail as $value) {
+        if (empty($value)) {
+          continue;
+        }
+        WarehouseReceiptDetail::create([
+          'header_id' => $i->id,
+          'storage_type' => $value->storage_type,
+          'rack_id' => $value->storage_type == 'RACK' ? $value->rack_id : $rack_id,
+          'piece_id' => $piece_id,
+          'vehicle_type_id' => $value->vehicle_type_id??null,
+          'qty' => $value->qty??0,
+          'weight' => $value->weight??0,
+          'volume' => ($value->long??0 * $value->wide??0 * $value->high??0),
+          'long' => $value->long??0,
+          'wide' => $value->wide??0,
+          'high' => $value->high??0,
+          'imposition' => $value->imposition??1,
+          'item_id' => $value->item_id??null,
+          'item_name' => $value->item_name??null,
+          
+          'is_use_pallet' => isset($value->is_use_pallet) ? $value->is_use_pallet : 0,
+          'pallet_id' => isset($value->pallet_id) ? $value->pallet_id : null,
+          'pallet_qty' => isset($value->pallet_qty) ? $value->pallet_qty : 0,
+          'nopol' => $request->nopol,
+          'driver_name' => $request->driver,
+          'phone_number' => $request->phone_number,
+          'leftover_warehouse' => $value->qty??0,
+          'leftover_stuffing' => $value->qty??0,
+          'weight_per_kg' => ($value->weight??1 / $value->qty??0),
+          'volume_per_meter' => ( ($value->long??0 * $value->wide??0 * $value->high??0) / $value->qty??0),
+          'create_by' => auth()->id()
+        ]);
+
+        if($request->status == 1 && isset($value->item_id)) {
+          Item::find($value->item_id)->update([
+              'wide' => $value->wide ,
+              'long' => $value->long ,
+              'height' => $value->high ,
+              'volume' => $value->wide * $value->long * $value->high ,
+              'tonase' => $value->weight ,
+          ]);
+        }
+      }
+
+      // Simpan lampiran
+      foreach($attachment as $unit) {
+        DeliveryOrderPhoto::create([
+          'receipt_id' => $i->id,
+          'name' => $unit
+        ]);
+      }
+
+      WarehouseReceiptDetail::update_item();
+      DB::commit();
+
+      return Response::json(['message' => 'Transaksi penerimaan barang berhasil di-input'], 200);
+    }
+
+    public function delete_detail($id)
+    {
+      DB::beginTransaction();
+      if(WarehouseReceiptDetail::find($id)->count() == 0) {
+        return Response::json(['message' => 'Item transaksi penerimaan barang tidak ditemukan'], 500);
+      }
+      WarehouseReceiptDetail::find($id)->delete();
+      DB::commit();
+
+      return Response::json(['message' => 'Item transaksi penerimaan barang berhasil dihapus'], 500);
+    }
+
+    public function update_detail(Request $request, $id)
+    {
+
+      DB::beginTransaction();
+      if(WarehouseReceiptDetail::find($id) == null) {
+        return Response::json(['message' => 'Item transaksi penerimaan barang tidak ditemukan'], 500);
+      }
+      $piece = Piece::where('name', 'Item')->first();
+      $piece_id = $piece->id;
+      $detail = WarehouseReceiptDetail::find($id);
+      $header = WarehouseReceipt::find($detail->header_id);
+      $handling_storage = Rack::leftJoin('storage_types', 'storage_type_id', 'storage_types.id')->where('is_handling_area', 1)->where('warehouse_id', $header->warehouse_id);
+      $handling_is_exists = $handling_storage->count();
+      if($handling_is_exists == 0) {
+        $r = Rack::create([
+          'warehouse_id' => $header->warehouse_id,
+          'barcode' => '-',
+          'code' => 'Handling Area',
+          'storage_type_id' => StorageType::where('is_handling_area', 1)->first()->id,
+          'capacity_volume' => 100000,
+          'capacity_tonase' => 100000
+        ]);
+
+        $rack_id = $r->id;
+      }
+      else {
+        $r = $handling_storage->selectRaw('racks.id AS id')->first();
+        $rack_id = $r->id;
+      }
+
+      $detail->update([
+          'storage_type' => $request->storage_type,
+          'rack_id' => $request->storage_type == 'RACK' ? $request->rack_id : $rack_id,
+          'piece_id' => $piece_id,
+          'vehicle_type_id' => $request->vehicle_type_id??null,
+          'qty' => $request->qty??0,
+          'weight' => $request->weight??0,
+          'volume' => ($request->long??0 * $request->wide??0 * $request->high??0),
+          'long' => $request->long??0,
+          'wide' => $request->wide??0,
+          'high' => $request->high??0,
+          'imposition' => $request->imposition??1,
+          'is_exists' => $request->is_exists,
+          'item_id' => $request->is_exists == 0 ? DB::raw("item_id") : $request->item_id,
+          'item_name' => $request->item_name??null,
+          'pallet_id' => $request->pallet_id,
+          'pallet_qty' => $request->pallet_qty ?? 0,
+          'create_by' => auth()->id()
+        ]);
+      DB::commit();
+
+      return Response::json(['message' => 'Item transaksi penerimaan berhasil di-input'], 200);
+    }
+
+    public function store_detail(Request $request, $id)
+    {
+      DB::beginTransaction();
+      if(WarehouseReceipt::find($id) == null) {
+        return Response::json(['message' => 'Transaksi penerimaan barang tidak ditemukan'], 500);
+      }
+      $piece = Piece::where('name', 'Item')->first();
+      $piece_id = $piece->id;
+      if($request->storage_type == 'HANDLING') {
+        // Validasi handling area
+      $handling_storage = Rack::leftJoin('storage_types', 'storage_type_id', 'storage_types.id')->where('is_handling_area', 1)->where('warehouse_id', $request->warehouse_id);
+      $handling_is_exists = $handling_storage->count();
+      if($handling_is_exists == 0) {
+        $r = Rack::create([
+          'warehouse_id' => $request->warehouse_id,
+          'barcode' => '-',
+          'code' => 'Handling Area',
+          'storage_type_id' => StorageType::where('is_handling_area', 1)->first()->id,
+          'capacity_volume' => 100000,
+          'capacity_tonase' => 100000
+        ]);
+
+        $rack_id = $r->id;
+      }
+      else {
+        $r = $handling_storage->selectRaw('racks.id AS id')->first();
+        $rack_id = $r->id;
+      }
+
+      } 
+
+      if(!isset($request->storage_type)) {
+        return Response::json(["message" => "Tipe penyimpanan tidak boleh kosong"], 422);
+      }
+      if(!isset($request->qty)) {
+        return Response::json(["message" => "Jumlah barang tidak boleh kosong"], 422);
+      }
+      if(!isset($request->imposition)) {
+        return Response::json(["message" => "Pengenaan tidak boleh kosong"], 422);
+      }
+      WarehouseReceiptDetail::create([
+          'header_id' => $id,
+          'storage_type' => $request->storage_type,
+          'rack_id' => $request->storage_type == 'RACK' ? $request->rack_id : $rack_id,
+          'piece_id' => $piece_id,
+          'vehicle_type_id' => $request->vehicle_type_id??null,
+          'qty' => $request->qty??0,
+          'weight' => $request->weight??0,
+          'volume' => ($request->long??0 * $request->wide??0 * $request->high??0),
+          'long' => $request->long??0,
+          'wide' => $request->wide??0,
+          'high' => $request->high??0,
+          'imposition' => $request->imposition??1,
+          'item_id' => $request->item_id??null,
+          'item_name' => $request->item_name??null,
+          'pallet_id' => $request->pallet_id??null,
+          'pallet_qty' => $request->pallet_qty??0,
+          
+          'create_by' => auth()->id()
+        ]);
+
+        WarehouseReceiptDetail::update_item();
+      DB::commit();
+
+      return Response::json(['message' => 'Item transaksi penerimaan barang berhasil di-input'], 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+      if(WarehouseReceipt::find($id) == null) {
+
+        return Response::json(['message' => 'Transaksi penerimaan barang tidak ditemukan'], 422);
+      }
+
+      $data['item']=WarehouseReceipt::with('customer:id,name', 'company:id,name', 'warehouse:id,name','staff:id,name')->where('id', $id)->selectRaw("id, code, status, IF(status = 0, 'Draft', 'Disetujui') AS status_name, company_id, customer_id, sender, receiver, receive_date, stripping_done, warehouse_staff_id, city_to, reff_no, warehouse_id, nopol, driver, phone_number, ttd")->first();
+      $data['item']->ttd = asset('files') . '/' . $data['item']->ttd; 
+
+      $data['detail']=WarehouseReceiptDetail::with('vehicle_type:id,name', 'rack:id,code,capacity_tonase,capacity_volume', 'pallet:id,name')->where('header_id', $id)->select('id', 'rack_id', 'item_id', 'item_name', 'imposition', DB::raw("IF(imposition = 1, 'Kubikasi', IF(imposition = 2, 'Tonase', IF(imposition = 3, 'Item', 'Borongan'))) AS imposition_name"), 'long', 'wide', 'high', 'weight', 'qty', 'vehicle_type_id', 'pallet_id', 'pallet_qty')->get();
+      $path = asset('files') . '/';
+      $surat_jalan=DeliveryOrderPhoto::where('receipt_id', $id)->selectRaw("CONCAT('$path', name) AS name")->get();
+      $list_surat_jalan = [];
+      foreach ($surat_jalan as $x) {
+        # code...
+        array_push($list_surat_jalan, $x->name);
+      }
+      $data['surat_jalan'] = $list_surat_jalan;
+      return Response::json($data, 200, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function print($id)
+    {
+      $w = WarehouseReceipt::find($id);
+      if($w == null) {
+
+        return Response::json(['message' => 'Transaksi penerimaan barang tidak ditemukan'], 422);
+      }
+      $w->update([
+        'stripping_done' => DB::raw("(SELECT NOW())"),
+        'receive_date' => DB::raw('receive_date')
+      ]);
+      
+      $data['item']=WarehouseReceipt::with('customer.company','collectible','warehouse','staff')->where('id', $id)->first();
+      $data['item']->prefix = preg_replace('/(.+\/)(\d+)$/', '$1', $data['item']->code);
+      $data['item']->suffix = preg_replace('/(.+\/)(\d+)$/', '$2', $data['item']->code);
+      $data['detail']=WarehouseReceiptDetail::with('piece','vehicle_type', 'rack')->where('header_id', $id)->get();
+      $data['surat_jalan']=DeliveryOrderPhoto::where('receipt_id', $id)->get();
+      return view('operational_warehouse/surat_terima_barang', $data);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */ 
+    public function edit($id)
+    {
+      if(WarehouseReceipt::where('id', $id)->first() == null) {
+
+        return Response::json(['message' => 'Transaksi penerimaan barang tidak ditemukan'], 422);
+      }
+      $data['item']=WarehouseReceipt::where('id', $id)->select('id',  'warehouse_id', 'receive_date', 'stripping_done', 'customer_id', 'sender', 'receiver', 'city_to', 'reff_no', 'nopol', 'phone_number', 'ttd')->first();
+      $data['item']->ttd = asset('files') . '/' . $data['item']->ttd;
+      return Response::json($data, 200, [], JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+      // $request->validate([
+      //   'company_id' => 'required',
+      //   'customer_id' => 'required',
+      //   'warehouse_id' => 'required',
+      //   'receive_date' => 'required',
+      //   'receive_time' => 'required',
+      // ]);
+
+      if(!isset($request->customer_id)) {
+        return Response::json(["message" => "Customer tidak boleh kosong"], 422);
+      }
+      if(!isset($request->receive_date)) {
+        return Response::json(["message" => "Tanggal terima tidak boleh kosong"], 422);
+      }
+      if(!isset($request->receive_time)) {
+        return Response::json(["message" => "Waktu terima tidak boleh kosong"], 422);
+      }
+      if(!isset($request->receiver)) {
+        return Response::json(["message" => "Consignee tidak boleh kosong"], 422);
+      }
+      if(WarehouseReceipt::where('id', $id)->first() == null) {
+
+          return Response::json(['message' => 'Transaksi penerimaan barang tidak ditemukan'], 500);
+      }
+      DB::beginTransaction();
+      $i=WarehouseReceipt::find($id);
+      $ttd_origin = $i->ttd;
+
+      $inputs = [
+        'customer_id' => $request->customer_id,
+        'city_to' => $request->city_to,
+        'sender' => $request->sender,
+        'receiver' => $request->receiver,
+        'reff_no' => $request->reff_no,
+        'receive_date' => createTimestamp($request->receive_date,$request->receive_time),
+        'description' => $request->description,
+        'create_by' => auth()->id(),
+        'nopol' => $request->nopol,
+        'driver' => $request->driver,
+        'phone_number' => $request->phone_number
+        // 'description' => $request->description,
+      ];
+      if(isset($request->ttd)) {
+           $ttd_file = $request->file('ttd');
+          $ext = $ttd_file->getClientOriginalExtension();
+
+          if( $ext == null OR $ext == '') {
+            $ext = 'png';
+          }
+          $ttd = 'TTD' . date('Ymd_His') . str_random(10) . '.' . $ext;
+          Image::make( $ttd_file->getRealPath() )->save(public_path('files/' . $ttd));
+          $inputs['ttd'] = $ttd;
+          File::delete(public_path('files/' . $ttd_origin));
+      }
+      $i->update($inputs);
+      DB::commit();
+
+      return Response::json(['message' => 'Transaksi penerimaan barang berhasil di-update'], 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    public function approve($id)
+    {
+        DB::beginTransaction();
+        $wd = WarehouseReceiptDetail::where('header_id', $id)->get();
+        $w = WarehouseReceipt::find($id);
+        if($w == null) {
+          return Response::json(['message' => 'Transaksi penerimaan barang tidak ditemukan'], 422);
+        }
+        else {
+          if($w->status == 1) {
+
+            return Response::json(['message' => 'Transaksi penerimaan barang tidak dapat disetujui karena transaksi ini sudah pernah di-approve sebelumnya'], 422);
+          }
+        }
+        $option = ['warehouse_id' => $w->warehouse_id];
+        $cek_kapasitas = WarehouseStockDetail::cek_kapasitas($wd, $option);
+        $cek_pallet_keluar = WarehouseStockDetail::cek_pallet_keluar($wd, $option);
+        if($cek_kapasitas !== true) {
+          return $cek_kapasitas;
+        }
+        else if($cek_pallet_keluar !== true){
+          return $cek_pallet_keluar;
+        }
+
+        $w->status = 1;
+        $detail = WarehouseReceiptDetail::where("header_id", $id)->whereRaw('item_id IS NOT NULL')->get();
+
+        // Meng-update dimensi dan berat di master item
+        foreach ($detail as $value) {
+          # code...
+          Item::find($value->item_id)->update([
+              'wide' => $value->wide ,
+              'long' => $value->long ,
+              'height' => $value->high ,
+              'volume' => $value->wide * $value->long * $value->high ,
+              'tonase' => $value->weight ,
+          ]);
+        }
+        $w->save();
+        DB::commit();
+
+        return Response::json(['message' => 'Transaksi penerimaan barang berhasil disetujui']);
+    }
+}

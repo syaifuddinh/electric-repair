@@ -1,0 +1,70 @@
+<div class="col-md-12">
+  <div class="ibox" ng-cloak>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td><h4>Detail Shipment Status</h4></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <hr>
+      <h5>Daftar Job Order</h5>
+      <table class="table display compact nowrap table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>No. JO</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-show='formData.job_orders.length == 0'>
+              <td colspan='4' class='text-center'>Tidak ada data</td>
+          </tr>
+          <tr ng-repeat="(i,val) in formData.job_orders">
+            <td><% i+1 %></td>
+            <td><% val.code %></td>
+            <td><% val.kpi_status_name %></td>
+            <td class="text-center">
+                <a ui-sref='operational.job_order.show({id:val.id})' ><span class='fa fa-folder-o'  data-toggle='tooltip' title='Detail Data'></span></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+      <h5>Daftar Packing List</h5>
+      <table class="table display compact nowrap table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>No. Packing List</th>
+            <th>Tanggal Keberangkatan</th>
+            <th>Tanggal Kedatangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-show='formData.manifests.length == 0'>
+              <td colspan='4' class='text-center'>Tidak ada data</td>
+          </tr>
+          <tr ng-repeat="(i,val) in formData.manifests">
+            <td><% i+1 %></td>
+            <td><% val.code %></td>
+            <td><% val.departure | fullDate %></td>
+            <td><% val.arrival | fullDate %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="operational.shipment_status" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</div>

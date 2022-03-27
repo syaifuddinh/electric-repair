@@ -1,0 +1,38 @@
+<form>    
+    <div class="col-md-12">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" id="info_tab" ng-click='openInfo()'>
+                    <% solog.label.general.detail %> 
+                </a>
+            </li>
+            <li ng-if="delivery_order_driver_id">
+                <a data-toggle="tab" id="delivery_order_driver_tab" ng-click='openDeliveryOrderDriver()'>
+                    <% solog.label.delivery_order_driver.title %> 
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id='info_detail' class='tab-item'>
+                <manifests-show 
+                    index_route  = '"sales_order.sales_order.show"'
+                    index-route-id  = 'route_id'
+                />
+            </div>
+
+            <div 
+                id="delivery_order_driver_detail" 
+                class="tab-item" 
+            >
+                <span ng-if="delivery_order_driver_id">
+                    <delivery-orders-show
+                        id="delivery_order_driver_id"
+                        index-route="'sales_order.shipment'"
+                    />
+                </span>
+            </div>
+
+        </div>
+    </div>
+</form>

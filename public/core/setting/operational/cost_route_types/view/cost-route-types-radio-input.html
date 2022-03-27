@@ -1,0 +1,11 @@
+<div id="cost_type_type_el">
+    <label ng-repeat="(i, v) in list" class="radio-inline mg-r2">
+        <input 
+            type="radio" 
+            name="cost_route_type"
+            ng-click="change($event.currentTarget)" 
+            ng-model="chosen" 
+            ng-value="v.id"
+        > 
+        <% v.name %>     </label>
+</div>

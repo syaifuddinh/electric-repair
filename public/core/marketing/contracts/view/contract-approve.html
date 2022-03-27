@@ -1,0 +1,70 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Buat Kontrak</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-3"><% $root.solog.label.quotation.code %></label>
+          <div class="col-md-9">
+            <span>: <% data.code %></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Branch</label>
+          <div class="col-md-9">
+            <span>: <% data.company.name %></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tgl. Inquery</label>
+          <div class="col-md-9">
+            <span>: <% data.date_inquery|fullDate %></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Customer</label>
+          <div class="col-md-9">
+            <span>: <strong><% data.customer.name %></strong></span>
+          </div>
+        </div>
+        <hr>
+        <div class="form-group">
+          <label class="col-md-3">Tgl. Kontrak</label>
+          <div class="col-md-4">
+            <input type="text" datepick class="form-control" ng-model="formData.date_start_contract">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tgl. Berakhir</label>
+          <div class="col-md-4">
+            <input type="text" datepick class="form-control" ng-model="formData.date_end_contract">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Komisi Sales</label>
+          <div class="col-md-3">
+            <div class="input-group">
+              <input type="text" jnumber2 only-num class="form-control" ng-model="formData.sales_commision" ng-init="formData.sales_commision=0">
+              <span class="input-group-addon font-bold">%</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Keterangan / Syarat & Ketentuan Kontrak</label>
+          <div class="col-md-9">
+            <div height="300" summernote ng-model="formData.description_contract" config="summConfig">
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="ibox-footer">
+        <a ng-click="back()" class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-primary btn-sm"><% $root.solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>

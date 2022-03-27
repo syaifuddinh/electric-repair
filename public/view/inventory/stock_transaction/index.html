@@ -1,0 +1,63 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Filter</h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Warehouse</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Select Warehouse'" chosen allow-single-deselect="true" ng-model="filterData.warehouse_id" ng-options="s.id as s.name for s in data.warehouse">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Item</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Select Item'" chosen allow-single-deselect="true" ng-model="filterData.item_id" ng-options="s.id as s.code+' - '+s.name for s in data.item">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3 control-label"></label>
+        <div class="col-md-9">
+          <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Display</button>
+          <button class="btn btn-default btn-sm" type="button" ng-click="export()"><i class="fa fa-excel"></i>Export</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Stock Card</h5>
+      <div class="ibox-tools">
+        <!-- <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button> -->
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="inventory.purchase_request.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>Tanggal Transaksi</th>
+            <th>Kode Transaksi</th>
+            <th>Tipe</th>
+            <th>Qty Masuk</th>
+            <th>Qty Keluar</th>
+            <th>Saldo Akhir</th>
+            <th>Keterangan</th>
+            <!-- <th style="width:5%;"></th> -->
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

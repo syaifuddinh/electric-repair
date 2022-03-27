@@ -1,0 +1,764 @@
+\<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Packing List</h5>
+      <div class="ibox-tools">
+        <div class="btn-group btn-group-sm">
+          <button ng-show="roleList.includes('operational.manifest.container.detail.print')" type="button" ng-if="item.container.id" ng-click="printSJ()" class="btn btn-sm btn-default"><i class="fa fa-file-pdf-o"></i>&nbsp;Cetak SJ</button>
+          <button ng-disabled='isNotAllow' ng-show="roleList.includes('operational.manifest.container.detail.set_schedule')" type="button" ng-if="item.container_id" ng-click="setStripStuff()" class="btn btn-sm btn-default font-bold"><i class="fa fa-calendar"></i> Set Waktu Muat / Bongkar</button>
+          <button ng-show="roleList.includes('operational.manifest.container.detail.set_vessel')" type="button" ng-if="item.container_id" class="btn btn-sm btn-default" ng-click="setVessel()"><i class="fa fa-ship"></i> Set Kapal</button>
+          <button ng-show="roleList.includes('operational.manifest.container.detail.set_vessel')" ng-if="data.delivery_order.length<1" ng-click="setVehicle()" class="btn btn-sm btn-primary"><i class="fa fa-truck"></i> Set Vehicle</button>
+          <button ng-show="roleList.includes('operational.manifest.container.detail.set_vessel')" ng-if="data.delivery_order.length>=1" ng-click="showCancelDelivery()" class="btn btn-sm btn-danger"><i class="fa fa-truck"></i> Cancel Vehicle</button>
+        </div>
+        <a ng-show="roleList.includes('operational.manifest.container.edit')" ui-sref="operational.manifest_fcl.edit({id:item.id})" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:40%;">Branch</td>
+                <td>: <span><% item.company.name %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.manifest.code %></td>
+                <td>: <span><% item.code %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.general.date %></td>
+                <td>: <span class="font-bold" ng-if="item.date_manifest"><% item.date_manifest|fullDate %></span></td>
+              </tr>
+              <tr>
+                <td>No Reff</td>
+                <td>: <span><% item.reff_no %></span></td>
+              </tr>
+              <tr>
+                <td>Full/Campuran</td>
+                <td>: <span ng-bind-html="findJsonId(item.is_full,full_campuran).name"></span></td>
+              </tr>
+              <tr>
+                <td>Jumlah Barang</td>
+                <td>: <span><% detail.length %> Item</span></td>
+              </tr>
+              <tr>
+                <td>Keterangan</td>
+                <td>: <span><% item.description %></span></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="col-md-6">
+
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:40%;">Route</td>
+                <td>: <span class="font-bold"><% item.trayek.name %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.general.container_type %></td>
+                <td>: <span><% item.container_type.full_name %></span></td>
+              </tr>
+              <tr>
+                <td>No Kontainer</td>
+                <td>: <span class="font-bold"><% item.container.container_no %></span></td>
+              </tr>
+              <tr>
+                <td>Waktu Bongkar</td>
+                <td>: <span ng-if="item.container.stripping"><% item.container.stripping|fullDateTime %></span></td>
+              </tr>
+              <tr>
+                <td>Waktu Muat</td>
+                <td>: <span ng-if="item.container.stuffing"><% item.container.stuffing|fullDateTime %></span></td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>: <span ng-repeat="val in data.delivery_order"><% val.status %>,</span></td>
+              </tr>
+              <tr ng-if="!item.is_internal_driver">
+                <td>Vendor</td>
+                <td>: <span ng-repeat="val in data.delivery_order"><% val.vendor_name %>,</span></td>
+              </tr>
+              <tr>
+                <td>Vehicle / No Polis</td>
+                <td>: <span ng-repeat="val in data.delivery_order"><% val.kendaraan %>,</span></td>
+              </tr>
+              <tr>
+                <td>No. Surat Jalan</td>
+                <td>: <span ng-repeat="val in data.delivery_order"><% val.code_sj %>,</span></td>
+              </tr>
+              <tr>
+                <td>Driver</td>
+                <td>: <span ng-repeat="val in data.delivery_order"><% val.sopir %>,</span></td>
+              </tr>
+              <tr>
+                <td>Keterangan Biaya</td>
+                <td>: <span><% 'Biaya Generate' %></span></td>
+              </tr>
+            <tr ng-repeat='v in additional_jo_fields'>
+                <td><% v.name %></td>
+                <td>
+                    <span>:</span> 
+                    <span class='inline-block w-60'><% item.job_order[v.slug] %></span>
+                </td>
+            </tr>
+              <tr ng-repeat='v in additional_fields'>
+                <td><% v.name %></td>
+                <td>
+                    <span>:</span> 
+                    <span class='inline-block w-60'><% item.additional[v.slug] %></span>
+                    <span class='inline-block mg-l2'>
+                        <a ng-click='editAdditional(v.name, v.slug)'>
+                            <i class='fa fa-edit'></i>
+                        </a>
+                    </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="col-md-12">
+          <div ng-show="roleList.includes('operational.manifest.container.detail.item')">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td><h4><i class="fa fa-truck"></i> Daftar Surat Jalan / Job Order</h4></td>
+                  <td class="text-right">
+                    <button ng-show="roleList.includes('operational.manifest.container.detail.item.create')" type="button" ng-click="addItem()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Item Barang</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="table display compact nowrap table-bordered">
+              <thead>
+                <tr>
+                  <th>NO-SJ</th>
+                  <th>Customer</th>
+                  <th>Alamat Kirim</th>
+                  <th>Nama Barang</th>
+                  <th>Satuan</th>
+                  <th>Total Tonase</th>
+                  <th>Total Volume</th>
+                  <th>Terangkut</th>
+                  <th>Stok</th>
+                  <th style="width:7%;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="val in detail">
+                  <td class='<% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.job_order_detail.job_order.code %></td>
+                  <td class='<% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.job_order_detail.job_order.customer.name %></td>
+                  <td class='<% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.job_order_detail.job_order.receiver.name+', '+val.job_order_detail.job_order.receiver.address %></td>
+                  <td class='<% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.job_order_detail.item_name %></td>
+                  <td class='text-right <% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.satuan %></td>
+                  <td class='text-right <% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.tonase|number:3 %></td>
+                  <td class='text-right <% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.volume|number:3 %></td>
+                  <td class='text-right <% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.transported|number %></td>
+                  <td class='text-right <% val.transported > val.stock ? "text-danger font-bold" : "" %>'><% val.stock|number %></td>
+                  <td class='text-center <% value.transported > val.stock ? "text-danger font-bold" : "" %>'>
+                    <a ng-show="roleList.includes('operational.manifest.container.detail.item.edit')" ng-click="editDetail(val)"><i class="fa fa-edit"></i></a>
+                    <a ng-show="roleList.includes('operational.manifest.container.detail.item.delete')" ng-click="deleteDetail(val.id)"><i class="fa fa-trash"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <hr>
+
+          <div ng-show="roleList.includes('operational.manifest.container.detail.cost')" ng-if="1==2">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td><h4><i class="fa fa-money"></i> Daftar Biaya Manifest</h4></td>
+                  <td class="text-right">
+                    <button ng-show="roleList.includes('operational.manifest.container.detail.cost.create')" type="button" ng-click="addCost()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Biaya</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table display compact nowrap table-bordered">
+              <thead>
+                <tr>
+                  <th>Kode</th>
+                  <th>Uraian</th>
+                  <th>Vendor</th>
+                  <th>QTY</th>
+                  <th>Harga Satuan</th>
+                  <th>Jumlah</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="val in cost">
+                  <td><% val.cost_type.code %></td>
+                  <td><% val.cost_type.name %></td>
+                  <td><% val.vendor.name %></td>
+                  <td><% val.qty|number %></td>
+                  <td><% val.price|number %></td>
+                  <td><% val.total_price|number %></td>
+                  <td><% val.is_invoice ? 'Selesai' : val.status_name %></td>
+                  <td class="text-center">
+                    <a ng-show="roleList.includes('operational.manifest.container.detail.cost.submission_supervisi')" title="Approve Supervisi" ng-if="val.status==1 && detail_approve[i].approve_with==1" ng-click="saveSubmission(val.id)"><i class="fa fa-location-arrow"></i>&nbsp;</a>
+                    <a ng-show="roleList.includes('operational.manifest.container.detail.cost.submission_manajer')" title="Approve Manajer" ng-if="val.status==1 && detail_approve[i].approve_with==2" ng-click="saveSubmission(val.id)"><i class="fa fa-location-arrow"></i>&nbsp;</a>
+                    <a ng-show="roleList.includes('operational.manifest.container.detail.cost.submission_direksi')" title="Approve Direksi" ng-if="val.status==1 && detail_approve[i].approve_with==3" ng-click="saveSubmission(val.id)"><i class="fa fa-location-arrow"></i>&nbsp;</a>
+                    <a ng-show="roleList.includes('operational.manifest.container.detail.cost.edit')" ng-click="editPrice(val)" ng-if="val.status==1"><i class="fa fa-edit"></i>&nbsp;</a>
+                    <a ng-show="roleList.includes('operational.manifest.container.detail.cost.delete')" ng-click="deletePrice(val.id)" ng-if="val.status==1"><i class="fa fa-trash"></i>&nbsp;</a>
+                    <button ng-show="roleList.includes('operational.manifest.container.detail.cost.revision')" ng-if="val.status==3" type="button" ng-click="revision(val)" class="btn btn-xs btn-primary">Revisi</button>
+                    <a ng-click="cancel_posting(val.id)" ng-if="!val.is_invoice && val.status==5" title="Cancel Posting"><i class="fa fa-reply"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-12" ng-if="data.cancellation.length > 0">
+                <table class="table display compact nowrap table-borderless">
+                    <tbody>
+                        <tr>
+                            <td><h4>Riwayat Pembatalan Assignment Driver / Vehicle</h4></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table display compact nowrap table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Surat Jalan</th>
+                            <th>Driver</th>
+                            <th>Vehicle</th>
+                            <th>Alasan Pembatalan</th>
+                            <th>Dibatalkan Oleh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="val in data.cancellation">
+                        <td><% val.code %></td>
+                        <td><% val.nama_driver %></td>
+                        <td><% val.nopol_kendaraan %></td>
+                        <td><% val.cancel_reason %></td>
+                        <td><% val.cancelled_by %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div ng-show="roleList.includes('operational.job_order.detail.detail_job_order.cost')">
+      <table class="table display compact nowrap table-borderless">
+        <tbody>
+          <tr>
+            <td><h4><i class="fa fa-money"></i> Biaya Packing List</h4></td>
+            <td class="text-right">
+              <button type="button" ng-click="cost_journal()" class="btn btn-sm btn-success" name="button"><i class="fa fa-money"></i> Posting Jurnal</button>
+              <button ng-show="roleList.includes('operational.job_order.detail.detail_job_order.cost.create')" ng-if="!item.invoice_id" type="button" class="btn btn-sm btn-primary" ng-click="addCost()"><i class="fa fa-plus"></i> Add</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table display compact nowrap table-bordered">
+        <thead>
+          <tr>
+            <th>Uraian</th>
+            <th>Sumber Biaya</th>
+            <th>Jenis</th>
+            <th>Standar Biaya</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Keterangan</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i,val) in cost_detail">
+            <td><span><% val.cost_type.name %></span></td>
+            <td><span><% val.vendor.name %></span></td>
+            <td><span><% findJsonId(val.type,type_cost).name %></span></td>
+            <td class="text-right"><span><% (val.status>1 || val.is_edit ? val.price : 0)|number %></span></td>
+            <td class="text-right"><span><% val.qty|number %></span></td>
+            <td class="text-right"><span><% (val.status>1 || val.is_edit ? val.total_price : 0)|number %></span></td>
+            <!-- <td class="text-right"><span ng-if="val.cost_type.is_bbm"><% (val.qty|number)+' lt @ '+(val.price|number) %></span></td> -->
+            <td><span><% val.description %></span></td>
+            <td><span><% val.is_invoice ? 'Selesai' : findJsonId(val.status,status).name %></span></td>
+            <td class="text-center" ng-if="!val.job_order_cost_id">
+              <span ng-if="val.status==1 && !item.invoice_id">
+                <a ng-click="ajukanAtasan(val.id)" ng-show="roleList.includes('operational.job_order.detail.detail_job_order.cost.ajukan')" data-toggle="tooltip" title="Ajukan Biaya"><i class="fa fa-location-arrow"></i></a>&nbsp;
+                <a ng-show="roleList.includes('operational.job_order.detail.detail_job_order.cost.edit')" ng-click="editCost(val.id)" data-toggle="tooltip" title="Edit Biaya"><i class="fa fa-edit"></i></a>&nbsp;
+                <a ng-show="roleList.includes('operational.job_order.detail.detail_job_order.cost.delete')" ng-click="deleteCost(val.id)" data-toggle="tooltip" title="Hapus Biaya"><i class="fa fa-trash"></i></a>
+              </span>
+              <span ng-if="val.status==7 && !item.invoice_id">
+                <a ng-show="roleList.includes('operational.job_order.detail.detail_job_order.cost.approve')" ng-click="approveAtasan(val.id)" title="Approve Biaya"><i class="fa fa-check"></i>&nbsp;</a>
+                <a ng-show="roleList.includes('operational.job_order.detail.detail_job_order.cost.approve')" ng-click="rejectAtasan(val.id)" title="Tolak Biaya"><i class="fa fa-times"></i></a>
+
+              </span>
+              <button ng-show="roleList.includes('operational.job_order.detail.detail_job_order.cost.revision')" type="button" ng-if="val.status==3 && !val.manifest_id" ng-click="revision(val)" class="btn btn-xs btn-primary">Revisi</button>
+              <a ng-click="cancel_posting(val.id)" ng-if="!val.is_invoice && val.status==5" title="Cancel Posting"><i class="fa fa-reply"></i></a>
+            </td>
+            <td ng-if="val.job_order_cost_id"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      </div>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="operational.manifest_fcl" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+    </div>
+  </div>
+
+</div>
+
+<!-- modal cost -->
+<div class="modal fade" id="modalCost" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add Biaya Packing List</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitCost()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3">Jenis Biaya</label>
+            <div class="col-md-9">
+              <select class="form-control" ng-change="changeCT(costData.cost_type)" data-placeholder-text-single="'Choose Biaya'" chosen allow-single-deselect="false" ng-model="costData.cost_type" ng-model="costData.cost_type" ng-options="s.id as s.name+getDesc(s.description) group by s.parent.name for s in cost_type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <!-- <div class="form-group">
+            <label class="col-md-3">Jenis</label>
+            <div class="col-md-9">
+              <input type="radio" ng-change="costData.vendor_id=null" ng-model="costData.is_internal" ng-value="1"> Internal &nbsp;
+              <input type="radio" ng-model="costData.is_internal" ng-value="0"> Eksternal
+            </div>
+          </div> -->
+          <div class="form-group" ng-if="costData.is_internal==0">
+            <label class="col-md-3">Vendor</label>
+            <div class="col-md-9">
+                <vendor-select-input ng-model="costData.vendor_id" ng-change='searchVendorPrice()' />
+            </div>
+          </div>
+          <div class="form-group" ng-if="costData.cost_type.is_bbm">
+            <label class="col-md-3 ">Jumlah Liter</label>
+            <div class="col-md-3">
+              <div class="input-group">
+                <input type="text" ng-change="costData.total_price=costData.qty*costData.price" jnumber2 only-num class="form-control" ng-model="costData.qty" placeholder="Liter">
+                <span class="input-group-addon">Lt</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group">
+                <span class="input-group-addon">Rp.</span>
+                <input type="text" ng-change="costData.total_price=costData.qty*costData.price" jnumber2 only-num class="form-control" ng-model="costData.price" placeholder="Harga per Litar">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-3 "></label>
+            <div class="col-md-4">
+              <label>Biaya Satuan</label>
+              <input type="text" ng-disabled="costData.cost_type.is_bbm" jnumber2 only-num class="form-control" ng-model="costData.price" ng-change="calcCTTotalPrice()">
+            </div>
+            <div class="col-md-5">
+              <label>Jumlah</label>
+              <input type="text" ng-change="calcCTTotalPrice()" jnumber2 only-num class="form-control" ng-model="costData.qty" placeholder="jumlah">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-3 ">Total Biaya</label>
+            <div class="col-md-9">
+              <input type="text" disabled jnumber2 only-num class="form-control" ng-model="costData.total_price">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 "><% solog.label.general.description %></label>
+            <div class="col-md-9">
+              <textarea rows="4" class="form-control" ng-model="costData.description"></textarea>
+            </div>
+          </div>
+          <!-- <pre><% jStyle(costData) %></pre> -->
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- modal item -->
+<div class="modal fade" id="modalItem" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Item Packing List</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitItem()">
+        <div class="modal-body form-horizontal">
+          <div class="form-group">
+            <label class="col-md-3">Customer</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Semua Customer'" chosen allow-single-deselect="true" ng-model="itemData.customer_id" ng-options="s.id as s.name for s in customerList" ng-change="changeCustomerList(itemData.customer_id)">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+
+          <table class="table display compact nowrap table-bordered" id="itemTable">
+            <thead>
+              <tr>
+                <th>Job Order / SJ</th>
+                <th>Customer</th>
+                <th>Nama Barang</th>
+                <th>Qty</th>
+                <th>Terangkut</th>
+                <th>Sisa</th>
+                <th style="width:10%;">Diangkut</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal cost -->
+<div class="modal fade" id="modalCost" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add Biaya Packing List</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitCost()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3">Jenis Biaya</label>
+            <div class="col-md-9">
+              <select class="form-control" ng-change="costData.vendor_id=costData.cost_type.vendor_id;costData.qty=costData.cost_type.qty;costData.price=costData.cost_type.cost;costData.total_price=costData.cost_type.initial_cost;searchVendorPrice()" data-placeholder-text-single="'Choose Biaya'" chosen allow-single-deselect="false" ng-model="costData.cost_type" ng-options="s.name group by s.parent.name for s in cost_type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Jenis</label>
+            <div class="col-md-9">
+              <input type="radio" ng-change="costData.vendor_id=null" ng-model="costData.is_internal" ng-value="1"> Internal &nbsp;
+              <input type="radio" ng-model="costData.is_internal" ng-value="0"> Eksternal
+            </div>
+          </div>
+          <div class="form-group" ng-if="costData.is_internal==0">
+            <label class="col-md-3">Vendor</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="false" ng-model="costData.vendor_id" ng-options="s.id as s.name for s in vendor" ng-change='searchVendorPrice()'>
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="costData.cost_type.is_bbm">
+            <label class="col-md-3 ">Jumlah Liter</label>
+            <div class="col-md-3">
+              <div class="input-group">
+                <input type="text" ng-change="costData.total_price=costData.qty*costData.price" jnumber2 only-num class="form-control" ng-model="costData.qty" placeholder="Liter">
+                <span class="input-group-addon">Lt</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group">
+                <span class="input-group-addon">Rp.</span>
+                <input type="text" ng-change="costData.total_price=costData.qty*costData.price" jnumber2 only-num class="form-control" ng-model="costData.price" placeholder="Harga per Liter">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-3 ">Biaya</label>
+            <div class="col-md-4">
+              <input type="text" ng-disabled="costData.cost_type.is_bbm" jnumber2 only-num class="form-control" ng-model="costData.total_price">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Keterangan</label>
+            <div class="col-md-9">
+              <textarea rows="4" class="form-control" ng-model="costData.description"></textarea>
+            </div>
+          </div>
+          <!-- <pre><% jStyle(costData) %></pre> -->
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modalSet" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Waktu Muat / Bongkar</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3 control-label">Waktu Stripping/Bongkar</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control text-center" ng-model="timeData.stripping_date" datepick>
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control clockpick text-center" clockpick clockpick-position="bottom" ng-model="timeData.stripping_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Waktu Stuffing/Muat</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control text-center" ng-model="timeData.stuffing_date" datepick>
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control clockpick text-center" clockpick clockpick-position="bottom" ng-model="timeData.stuffing_time">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" ng-click="submitTime()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal revisi -->
+<div class="modal fade" id="revisiModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Revisi Biaya Job Order</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">Vendor</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="false" ng-model="revisiData.vendor_id" ng-options="s.id as s.name for s in vendor">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-if="revisiData.cost_type_f.is_bbm">
+          <label class="col-md-3 ">Jumlah Liter</label>
+          <div class="col-md-3">
+            <div class="input-group">
+              <input type="text" ng-change="revisiData.total_price=revisiData.qty*revisiData.price" jnumber2 only-num class="form-control" ng-model="revisiData.qty" placeholder="Liter">
+              <span class="input-group-addon">Lt</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group">
+              <span class="input-group-addon">Rp.</span>
+              <input type="text" ng-change="revisiData.total_price=revisiData.qty*revisiData.price" jnumber2 only-num class="form-control" ng-model="revisiData.price" placeholder="Harga per Litar">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 ">Biaya</label>
+          <div class="col-md-4">
+            <input type="text" ng-disabled="revisiData.cost_type_f.is_bbm" jnumber2 only-num class="form-control" ng-model="revisiData.total_price">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 ">Keterangan</label>
+          <div class="col-md-9">
+            <textarea rows="4" class="form-control" ng-model="revisiData.description"></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" ng-disabled="disBtn" ng-click="submitRevisi()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editDetail" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:40%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Edit Surat Jalan</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3 control-label">Terangkut</label>
+          <div class="col-md-9">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="editData.transported">
+            <!-- <span class="help-block" ng-if="editData.transported>leftover">Jumlah yg anda masukkan melebihi jumlah yang belum terangkut!</span> -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="submitEdit()" ng-disabled="!editData.transported" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editPriceModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Harga</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">Vendor</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="false" ng-model="editData.vendor_id" ng-options="s.id as s.name for s in vendor">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 ">Biaya</label>
+          <div class="col-md-5">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="editData.total_price">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="submitPrice()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalVehicle" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Set Vehicle</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3 ">Internal</label>
+          <div class="col-md-5">
+            <div class="checkbox checkbox-primary checkbox-inline">
+              <input type="checkbox" ng-model="vehicleData.is_internal" id="vehicleIsInternal" ng-true-value="1" ng-false-value="0">
+              <label for="vehicleIsInternal"></label>
+            </div>
+          </div>
+        </div>
+        <div ng-if="vehicleData.is_internal">
+          <div class="form-group">
+            <label class="col-md-3 ">Driver</label>
+            <div class="col-md-5">
+              <drivers-select-input ng-model="vehicleData.driver_internal_id" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">No Polis</label>
+            <div class="col-md-5">
+              <select class="form-control" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="true" ng-model="vehicleData.vehicle_internal_id" ng-options="s.id as s.nopol for s in data.vehicle_internal">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div ng-if="!vehicleData.is_internal">
+          <div class="form-group">
+            <label class="col-md-3">Vendor</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="false" ng-model="vehicleData.vendor_id" ng-options="s.id as s.name for s in data.vendor">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Driver</label>
+            <div class="col-md-5">
+              <select class="form-control" display-disabled-options="false" data-placeholder-text-single="'Choose Driver'" chosen allow-single-deselect="false" ng-model="vehicleData.driver_eksternal_id" ng-options="s.id as s.name disable when s.parent_id != vehicleData.vendor_id for s in data.driver_eksternal">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">No Polis</label>
+            <div class="col-md-5">
+              <select class="form-control" display-disabled-options="false" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="true" ng-model="vehicleData.vehicle_eksternal_id" ng-options="s.id as s.nopol disable when s.vendor_id != vehicleData.vendor_id for s in data.vehicle_eksternal">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="!vehicleData.is_internal || vehicleData.is_edit">
+          <label class="col-md-3 ">No. Surat Jalan</label>
+          <div class="col-md-5">
+            <input type="text" ng-model="vehicleData.delivery_order_number" class="form-control">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="submitVehicle()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal Cancel -->
+<div class="modal fade" id="cancelModal" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Pembatalan Assignment Vehicle</h4>
+            </div>
+            <div class="modal-body" style="height:10em">
+                <div class="form-group">
+                    <label class="col-md-3">Alasan Pembatalan</label>
+                    <div class="col-md-9">
+                        <textarea rows="4" class="form-control" ng-model="cancelData.reason"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="submitCancelDelivery()" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<solog-modal id='additionalModal' title='modalAdditionalTitle' on-submit='submitAdditional()'>
+    <div>
+        <div class="form-group" ng-repeat='v in additional_fields' ng-if='additional_slug == v.slug'>
+            <custom-field ng-model='additional.value' type='v.type_field' />
+        </div>
+    </div>
+</solog-modal>

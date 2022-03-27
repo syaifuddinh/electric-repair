@@ -1,0 +1,59 @@
+---
+- name: Deploy to development server
+  hosts: development
+  become: yes
+  remote_user: root
+  become_user: root
+  gather_facts: no
+  vars:
+    deploy_to: /var/www/html/syalog-b-api/
+    phpunit: ./vendor/bin/phpunit
+    phpunit_xml: phpunit.sandbox.xml
+    git_repo: git@gitlab.com:pilarrnd/beta-syalog-api.git
+    git_branch: development
+    git_identity_key: /root/.ssh/joko_rsa
+    php_path: /usr/bin/php
+    composer_path: /usr/local/bin/composer
+    apache_runas: www-data
+
+  tasks:
+  - name: Update remote repository using SSH key
+    git:
+      repo: "{{ git_repo }}"
+      dest: "{{ deploy_to }}"
+      version: "{{ git_branch }}"
+      accept_hostkey: true
+      update: yes
+      force: yes
+      key_file: "{{ git_identity_key }}"
+    when: git_identity_key|trim != ''
+
+  - name: Running composer install
+    shell: chdir={{ deploy_to }}
+      {{ composer_path }} install --no-interaction
+
+  - name: Running composer dump-autoload
+    shell: chdir={{ deploy_to }}
+      {{ composer_path }} dump-autoload --no-interaction
+
+  - name: List artisan commands
+    shell: chdir={{ deploy_to }}
+      {{ php_path }} artisan
+    register: artisan_commands
+
+  - name: Run multiple artisan command
+    shell: chdir={{ deploy_to }}
+      {{ php_path }} artisan {{ item }}
+    with_items:
+      - cache:clear
+      #- uat:all
+      - migrate
+    ignore_errors: no
+
+  - name: update ownership
+    file:
+      path: "{{ deploy_to }}"
+      state: directory
+      recurse: yes
+      group: "{{ apache_runas }}"
+      owner: "{{ apache_runas }}"

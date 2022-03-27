@@ -1,0 +1,10 @@
+m1. Permintaan pembuatan work order    => work_order
+2. Persetujuan supervisor quotation   => quotation_cost
+3. Persetujuan manajer quotation	    => quotaion_cost
+4. Persetujuan direksi quotation      => quotation_cost
+5. Persetujuan penawaran harga        => 
+6. Persetujuan biaya supervisor       => job_order_cost
+7. Persetujuan biaya manajer          => job_order_cost
+8. Persetujuan biaya direksi          => job_order_cost
+9. Jatuh Tempo Invoice Vendor         => invoice_vendor
+10. Jatuh Tempo Invoice Jual          => invoices

@@ -1,0 +1,91 @@
+<form class="form-horizontal">
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Depresiasi Asset</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:20%;">Branch</td>
+              <td>: <span ng-bind="item.company.name"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 30%;">Akumulasi Beban</td>
+              <td>: <span ng-bind="item.beban_akumulasi|number"></span></td>
+            </tr>
+            <tr>
+              <td style="width:20%;">Kode</td>
+              <td>: <span class="font-bold" ng-bind="item.code"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 30%;">Terhitung Tanggal</td>
+              <td>: <span ng-if="item.terhitung_tanggal"><% item.terhitung_tanggal|fullDate %></span></td>
+            </tr>
+            <tr>
+              <td>Nama</td>
+              <td>: <span ng-bind="item.name"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 20%;">Beban Per Tahun Ini</td>
+              <td>: <span ng-bind="item.beban_tahun|number"></span></td>
+            </tr>
+            <tr>
+              <td>Kelompok Asset</td>
+              <td>: <span ng-bind="item.asset_group.name"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 20%;">Beban Per Bulan</td>
+              <td>: <span ng-bind="item.beban_bulan|number"></span></td>
+            </tr>
+            <tr>
+              <td>Tanggal Perolehan</td>
+              <td>: <span ng-bind="item.date_purchase|fullDate"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 20%;">Nilai Buku</td>
+              <td>: <span ng-bind="item.nilai_buku|number"></span></td>
+            </tr>
+            <tr>
+              <td>Harga Beli</td>
+              <td>: <span ng-bind="item.purchase_price|number"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 20%;">Akun Asset</td>
+              <td>: <span ng-bind="item.account_asset.account_name"></span></td>
+            </tr>
+            <tr>
+              <td>Nilai Residu</td>
+              <td>: <span ng-bind="item.residu_price|number"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 20%;">Akun Akumulasi</td>
+              <td>: <span ng-bind="item.account_accumulation.account_name"></span></td>
+            </tr>
+            <tr>
+              <td>Umur Ekonimis</td>
+              <td>: <span ng-bind="item.umur_ekonomis|number"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 20%;">Akumulasi Depresiasi</td>
+              <td>: <span ng-bind="item.account_depreciation.account_name"></span></td>
+            </tr>
+            <tr>
+              <td>Metode Depresiasi</td>
+              <td>: <span ng-bind="findJsonId(item.method,method).name"></span></td>
+              <td></td>
+              <td style="text-align: left; width: 20%;">Status</td>
+              <td>: <span ng-bind="findJsonId(item.status,status).name"></span></td>
+            </tr>
+            <tr>
+              <td>Keterangan</td>
+              <td>: <span ng-bind="item.description"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+
+</form>

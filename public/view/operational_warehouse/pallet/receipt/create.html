@@ -1,0 +1,124 @@
+<form class="form-horizontal" ng-submit="submitForm()" name="frm">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Receive Pallet</h5>
+    </div>
+    <div class="ibox-content">
+      <div class="row">
+        <div class="col-md-5">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td>Wilayah</td>
+                <td>: <% item.company.name %></td>
+              </tr>
+              <tr>
+                <td>No. PO</td>
+                <td>: <% item.code %></td>
+              </tr>
+              <tr>
+                <td>Tgl. PO</td>
+                <td>: <% item.po_date|fullDate %></td>
+              </tr>
+              <tr>
+                <td>Supplier</td>
+                <td>: <% item.supplier.name %></td>
+              </tr>
+              <tr>
+                <td>Gudang</td>
+                <td>: <% item.warehouse.name %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-7">
+          <div class="form-group">
+            <label class="col-md-3 control-label">Termin</label>
+            <div class="col-md-9">
+              <input type="radio" ng-change="changeTermin(formData.type)" ng-model="formData.type" ng-value="1"> Kas &nbsp;
+              <input type="radio" ng-model="formData.type" ng-value="2"> Kredit
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label"><% formData.type==1?'Akun Kas':'Temin' %></label>
+            <div class="col-md-9" ng-if="formData.type==1">
+              <select class="form-control" data-placeholder-text-single="'Choose Akun Kas'" chosen allow-single-deselect="true" ng-model="formData.cash_account_id" ng-options="s.id as s.code+' - '+s.name for s in cash_account">
+                <option value=""></option>
+              </select>
+            </div>
+            <div class="col-md-5" ng-if="formData.type==2">
+              <div class="input-group">
+                <input type="text" jnumber2 only-num class="form-control" ng-model="formData.termin">
+                <span class="input-group-addon">Hari</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-3 control-label">No. Surat Jalan</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.delivery_no" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Tgl Penerimaan</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.receive_date" datepick class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Nama Penerima</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.receive_name" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Keterangan</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.description" class="form-control">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Barang</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered table-hover">
+        <thead>
+          <tr>
+            <th style="width:5%;">No</th>
+            <th>Nama Item</th>
+            <th class='hidden'>Barcode</th>
+            <th>Jenis</th>
+            <th style="width:10%;">Qty PO</th>
+            <th style="width:10%;">Qty Sudah Diterima</th>
+            <th style="width:10%;">Qty Penerimaan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i, value) in detail">
+            <td><% i+1 %></td>
+            <td><% value.name %></td>
+            
+            <td><% value.cname %></td>
+            <td class="text-right"><% value.qty_po|number %></td>
+            <td class="text-right"><% value.qty_terima|number %></td>
+            <td>
+              <input type="text" class="form-control" ng-change="hitungTerima()" required jnumber2 only-num ng-model="formData.detail[i].qty_terima" class="text-center">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="operational_warehouse.pallet_receipt" class="btn btn-sm btn-warning">Kembali</a>
+      <button type="submit" ng-disabled="disBtn || frm.$invalid || (totalPo-totalDiterima)<totalInput" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </div>
+</form>

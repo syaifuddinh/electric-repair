@@ -1,0 +1,43 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left">General</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat='(x, e) in data'>
+            <h4><b><% e.name %></b></h4>
+            <div ng-repeat='(y, s) in e.content.settings'>
+                <p>
+                    <% s.name %>
+                    <div ng-if='s.type == "boolean"'>
+                        <label for="" class="radio-inline">
+                            <input type="radio" ng-model='data[x].content.settings[y].value' ng-value='1' ng-change='submitForm()'> Ya
+                        </label>
+                        <label for="" class="radio-inline">
+                            <input type="radio" ng-model='data[x].content.settings[y].value' ng-value='0' ng-change='submitForm()'> Tidak
+                        </label>
+                    </div>
+                    <div ng-if='s.type == "time"'>
+                        <div class="form-group">
+                            <input type="text" ng-model="data[x].content.settings[y].value" clockpick  class="form-control" ng-change='submitForm()'>
+                        </div>
+                    </div>
+
+                    <div ng-if='s.type == "radio"'>
+                        <div class="form-group">
+                            <label class="radio-inline" ng-repeat='dt in data[x].content.settings[y].options'>
+                                <input type="radio" ng-model='data[x].content.settings[y].value' ng-value='dt.id' ng-change='submitForm()'> <% dt.name %>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div ng-if='s.type == "selectLookup"'>
+                        <select class="form-control" ng-change="submitForm()" data-placeholder-text-single="s.placeholder" chosen allow-single-deselect="false" ng-model="data[x].content.settings[y].value" ng-options="s.id as s.name for s in <% data[x].content.settings[y].table %>">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </p>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>

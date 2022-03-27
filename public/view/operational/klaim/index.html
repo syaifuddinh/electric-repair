@@ -1,0 +1,40 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Klaim</h5>
+      <div class="ibox-tools">
+        <a class="btn btn-sm btn-primary" ui-sref="operational.klaim.create"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Tgl Klaim</th>
+            <th>Branch</th>
+            <th>Kode Job Order</th>
+            <th>Tgl Job Order</th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>Status</th>    
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>123</td>
+            <td>12/20/2019</td>
+            <td>Ngawi</td>
+            <td>Job1234</td>
+            <td>12/20/2019</td>
+            <td>AMIK</td>
+            <td>1,000,000</td>
+            <td>Disetujui</td>
+            <td><a ui-sref="operational.klaim.show({id:50})"><span class='fa fa-folder-o'></span></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

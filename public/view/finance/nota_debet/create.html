@@ -1,0 +1,93 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Nota Potong Pembelian</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Supplier</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="cariHutang(formData.contact_id)" data-placeholder-text-single="'Choose Supplier'" chosen allow-single-deselect="false" ng-model="formData.contact_id" ng-options="s.id as s.name for s in data.contact">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Hutang</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Nomor Hutang'" no-result-text="'Hutang Tidak Ditemukan!'" chosen allow-single-deselect="false" ng-model="formData.payable_id" ng-options="s.id as s.name for s in payables">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Jenis Nota Potong</label>
+          <div class="col-md-9">
+            <input type="radio" ng-change="jenisChange()" ng-model="formData.jenis" value="1"> Debet &nbsp;
+            <input type="radio" ng-change="jenisChange()" ng-model="formData.jenis" value="2"> Kredit
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Kontra</label>
+          <div class="col-md-9">
+            <input type="radio" ng-change="contraChange()" ng-model="formData.contra" value="1"> Transaksi Kas &nbsp;
+            <input type="radio" ng-change="contraChange()" ng-model="formData.contra" value="2"> Akun
+          </div>
+        </div>
+        <div class="form-group" ng-if="formData.contra==1">
+          <label class="col-md-3 control-label">Transaksi Kas</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="transaksiKas(formData.cash_transaction)" data-placeholder-text-single="'Choose Transaksi Kas'" chosen allow-single-deselect="false" ng-model="formData.cash_transaction" ng-options="s.code+' - Jumlah : '+s.total for s in data.cash_transaction">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Akun</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Akun'" chosen allow-single-deselect="false" ng-model="formData.account_id" ng-options="s.id as s.account_name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Nominal</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" ng-disabled="formData.contra==1" jnumber2 only-num ng-model="formData.amount">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.description">
+          </div>
+        </div>
+        <!-- <pre><% formData %></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="finance.nota_debet" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

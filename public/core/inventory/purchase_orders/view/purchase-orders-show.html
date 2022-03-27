@@ -1,0 +1,138 @@
+<form class="form-horizontal" ng-submit="submitForm()" id="submitForm">
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><% $root.solog.label.general.detail %></h5>
+                <div class="ibox-tools">
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a data-toggle="tab" id="info_tab" ng-click='openInfo()'>
+                                    <% $root.solog.label.general.info %>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" id="receipt_tab" ng-click='openReceipt()'>
+                                    <% $root.solog.label.warehouse_receipt.title %>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="tab-content pd-t2">
+                            <div id='info_detail' class='tab-item'>
+                                <div class="mg-t2 mg-b2 pull-right">
+                                    <button type="button" class="btn btn-sm btn-primary" id="approveButton" ng-disabled="$root.disBtn" ng-click="approve()">
+                                        <% $root.solog.label.general.approve %>
+                                    </button>
+                                </div>
+                                    <table class="table display compact nowrap table-borderless">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:20%;"><% $root.solog.label.general.branch %></td>
+                                                <td>: <% data.item.company_name %></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:20%;"><% $root.solog.label.general.warehouse %></td>
+                                                <td>: <% data.item.warehouse_name %></td>
+                                            </tr>
+                                            <tr>
+                                                <td><% $root.solog.label.purchase_order.code %></td>
+                                                <td>: <% data.item.code %></td>
+                                            </tr>
+                                            <tr>
+                                                <td><% $root.solog.label.purchase_order.date %></td>
+                                                <td ng-if='!po_date_edit'>
+                                                    : <% data.item.po_date|fullDate %>
+                                                    <a ng-click='changePoDate()'>
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </td>
+
+                                                <td ng-if='po_date_edit'>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" ng-model="formData.po_date" datepick>
+                                                        <div class="input-group-btn">
+                                                            <button ng-click='submitForm()' type='button' ng-disabled='disBtn' class='btn btn-md btn-primary'>
+                                                                <i class="fa fa-check"></i>
+                                                            </button>
+                                                            <button type='button' ng-click='abortPoDate()' class='btn btn-md btn-danger'>
+                                                                <i class="fa fa-close"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><% $root.solog.label.general.supplier %></td>
+                                                <td class="font-bold">: <% data.item.supplier_name %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><% $root.solog.label.general.status %></td>
+                                                <td class="">: <% data.item.status_name %></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                
+                                    <hr>
+                                    <h4><% $root.solog.label.item.title %></h4>
+                                    <table class="table display compact nowrap table-bordered" id="appendTable">
+                                        <thead>
+                                            <tr>
+                                                <th><% $root.solog.label.item.name %></th>
+                                                <th><% $root.solog.label.general.category %></th>
+                                                <th><% $root.solog.label.general.qty %></th>
+                                                <th><% $root.solog.label.general.received_qty %></th>
+                                                <th><% $root.solog.label.general.purchase_price %></th>
+                                                <th><% $root.solog.label.general.price_total %></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-if='data.detail.length == 0'>
+                                                <td colspan='6' class="text-center"><% $root.solog.label.general.no_data %></td>
+                                            </tr>
+                                            <tr ng-repeat="value in data.detail">
+                                                <td><% value.item_name %></td>
+                                                <td><% value.category_name %></td>
+                                                <td style="width:8%;" class='text-right'><% value.qty|number %></td>
+                                                <td style="width:8%;" class='text-right'><% value.received_qty|number %></td>
+                                                <td style="width:13%;" class='text-right'><% value.price|number %></td>
+                                                <td style="width:13%;" class='text-right'><% value.total|number %></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="4"><% $root.solog.label.general.price_total %></th>
+                                                <th class='text-right'><% totalHarga|number %></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                
+                            </div>
+
+                            <div id='receipt_detail' class='tab-item'>
+                                <warehouse-receipts-table hide-warehouse='1' hide-branch-filter='1' hide-customer-filter='1' purchase-order-id='data.item.id' hide-add='1'></warehouse-receipts-table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+            <div class="ibox-footer">
+                <a ng-click='backward()' class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+            </div>
+        </div>
+    </div>
+</form>

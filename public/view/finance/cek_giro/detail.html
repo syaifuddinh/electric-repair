@@ -1,0 +1,204 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Cek / Giro</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">No Cek/Giro</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.giro_no">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal Terbit</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal Efektif</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" datepick ng-model="formData.date_effective">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label">Tipe</label>
+          <div class="col-md-9">
+            <select class="form-control" chosen allow-single-deselect="false" ng-model="formData.type" ng-options="s.id as s.name for s in type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Jenis</label>
+          <div class="col-md-9">
+            <select class="form-control"  chosen allow-single-deselect="false" ng-model="formData.jenis" ng-change="inOrout()" ng-options="s.id as s.name for s in jenis">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Bank Asal/Tujuan</label>
+          <div class="col-md-9">
+            <select class="form-control" allow-single-deselect="true" chosen  data-placeholder="Choose Akun" ng-model="formData.account_bank_id" ng-options="s.id as s.code+' - '+s.name group by s.parent.name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Nominal</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.amount">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Saldo Awal</label>
+          <div class="col-md-9">
+            <div class="input-group m-b"><span class="input-group-addon"> <input type="checkbox"  ng-model="formData.is_saldo" ng-change="changeSaldo()" ng-true-value="1" ng-false-value="0"> </span> <input type="text" ng-disabled="formData.is_saldo==0" ng-model="formData.reff_no" class="form-control"></div>
+          </div>
+        </div>
+        <div class="form-group" ng-show="isIn">
+          <label class="col-md-3 control-label">Penerbit</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false"  ng-model="formData.penerbit_id" ng-options="s.id as s.name for s in data.contact">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="isOut">
+          <label class="col-md-3 control-label">Penerima</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Supplier'" chosen allow-single-deselect="false" ng-model="formData.penerima_id" ng-options="s.id as s.name for s in data.contact">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.description">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-9">
+            <div class="ibox" ng-hide="isKliring">
+                <div class="ibox-title">
+                  <h5>Kliring</h5>
+                </div>
+                <div class="ibox-content form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-3">Tanggal</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control"  ng-model="formData.date_kliring"  datepick>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                      <label class="col-md-3">Akun</label>
+                      <div class="col-md-9">
+                        <select class="form-control" allow-single-deselect="true" chosen  data-placeholder="Choose Akun" ng-model="formData.akun" ng-options="s.id as s.code+' - '+s.name group by s.parent.name for s in data.account">
+                          <option value=""></option>
+                        </select>
+                      </div>
+                    </div> -->
+                    <div class="form-group">
+                      <label class="col-md-3 control-label"></label>
+                      <div class="col-md-9">
+                          <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="ibox" ng-hide="isGiro">
+                  <div class="ibox-title">
+                    <h5>Giro Kosong</h5>
+                  </div>
+                  <input type="hidden" ng-model="formData.isGiro" >
+                  <div class="ibox-content form-horizontal">
+                    <div class="form-group">
+                      <label class="col-md-3 control-label">Alasan</label>
+                      <div class="col-md-9">
+                        <input type="text" class="form-control" ng-model="formData.alasan">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-3 control-label"></label>
+                      <div class="col-md-9">
+                          <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+                      </div>
+                    </div>
+
+                  </div>
+              </div>
+              <div class="ibox" ng-hide="formCancelKliring">
+                <div class="ibox-title">
+                  <h5>Cancel Kliring Kosong</h5>
+                </div>
+                <input type="hidden" ng-model="formData.isCancelKliring" >
+                <div class="ibox-content form-horizontal">
+                  <div class="form-group">
+                    <label class="col-md-3 control-label">Alasan</label>
+                    <div class="col-md-9">
+                      <input type="text" class="form-control" ng-model="formData.alasan">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-9">
+                        <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+            <div class="ibox" ng-hide="formCancelGiro">
+              <div class="ibox-title">
+                <h5>Cancel Giro Kosong</h5>
+              </div>
+              <input type="hidden" ng-model="formData.isCancelGiro" >
+              <div class="ibox-content form-horizontal">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Alasan</label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" ng-model="formData.alasan">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"></label>
+                  <div class="col-md-9">
+                      <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+                  </div>
+                </div>
+              </div>
+          </div>
+            <a ng-click="hideKliring()" ng-hide="isCancel" class="btn btn-sm btn-primary"> Kliring</a>
+            <a ng-click="hideGiro()" ng-hide="isCancel" class="btn btn-sm btn-primary">Giro Kosong</a>
+            <a ng-click="hideCancelKliring()" ng-show="isCancelKliring" class="btn btn-sm btn-danger">Cancelkan Kliring</a>
+            <a ng-click="hideCancelGiro()" ng-show="isCancelGiro" class="btn btn-sm btn-danger">Cancelkan Giro Kosong</a>
+          </div>
+        </div>
+
+      </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="finance.cek_giro" class="btn btn-sm btn-warning">Kembali</a>
+      </div>
+    </form>
+  </div>
+</div>

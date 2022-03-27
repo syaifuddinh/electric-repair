@@ -1,0 +1,91 @@
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% solog.label.operational_progress.title %></h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()" id="forms">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3"><% solog.label.general.customer %></label>
+          <div class="col-md-9">
+            <customer-select-input ng-model="formData.customer_id" ng-change="changeCustomer(formData.customer_id)" />
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3"><% solog.label.general.job_order %></label>
+          <div class="col-md-9">
+            <div class="input-group" ng-click="cariJO()">
+              <input type="hidden" id="job_order_id" name="job_order_id" ng-model="formData.job_order_id" readonly>
+              <input type="text" class="form-control" ng-model="job_order.code" readonly>
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3"><% solog.label.general.date %></label>
+          <div class="col-md-5">
+            <input type="text" datepick name="date_update" ng-model="formData.date_update" class="form-control">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3"><% solog.label.general.kpi_status %></label>
+          <div class="col-md-6">
+            <select class="form-control" name="kpi_status_id" data-placeholder-text-single="'Choose Status'" chosen allow-single-deselect="true" ng-model="formData.kpi_status_id" ng-options="s.id as s.name for s in kpi_status">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3"><% solog.label.general.file %></label>
+          <div class="col-md-9">
+            <input type="file" name="file" ng-model="formData.image" class="form-control">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3"><% solog.label.general.description %></label>
+          <div class="col-md-9">
+            <textarea name="description" class="form-control" ng-model="formData.description" rows="4"></textarea>
+          </div>
+        </div>
+        <!-- <pre><% jStyle(formData) %></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational.progress" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- modal JO -->
+<div class="modal fade" id="modalJO" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Job Order</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-condensed table-striped table-bordered" id="jo_datatable" style="width:100%">
+          <thead>
+            <tr>
+              <th></th>
+              <th><% solog.label.job_order.code %></th>
+              <th><% solog.label.general.service %></th>
+              <th><% solog.label.general.service_type %></th>
+              <th><% solog.label.general.date %></th>
+              <th><% solog.label.general.route %></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="col-md-12">
+  <div class="ibox" ng-show="isFilter">
+    <div class="ibox-title">
+      <h5>Filter</h5>
+    </div>
+    <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" ng-submit="filterJobOrder()">
+      <div class="ibox-content">
+        
+        <div class="form-group">
+          <label class="col-md-1 control-label"><% $root.solog.label.general.status %></label>
+          <div class="col-md-11">
+            <select class="form-control" data-placeholder-text-single="'Semua Status'"  allow-single-deselect="true" ng-model="formData.is_active" ng-change="searchData()" >
+              <option value="1">Aktif</option>
+              <option value="0">Tidak Aktif</option>
+            </select>
+            <div ng-hide='hide_type_filter'>
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="pegawai" ng-model="filterType.is_pegawai" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="pegawai">Pegawai</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="pelanggan" ng-model="filterType.is_pelanggan" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="pelanggan">Customer / Pembayar</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="asuransi" ng-model="filterType.is_asuransi" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="asuransi">Asuransi</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="supplier" ng-model="filterType.is_supplier" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="supplier">Supplier</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="depo_bongkar" ng-model="filterType.is_depo_bongkar" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="depo_bongkar">Depo Bongkar</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="helper" ng-model="filterType.is_helper" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="helper">Helper</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="vendor" ng-model="filterType.is_vendor" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="vendor">Vendor</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="sales" ng-model="filterType.is_sales" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="sales">Sales</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="kurir" ng-model="filterType.is_kurir" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="pelanggan">Kurir</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="pengirim" ng-model="filterType.is_pengirim" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="pengirim">Pengirim</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="penerima" ng-model="filterType.is_penerima" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="penerima">Penerima</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="staff" ng-model="filterType.is_staff_gudang" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="staff">Staff gudang / lapangan</label>
+
+                <input ng-change="searchData()" class="form-check-input" type="checkbox" id="driver" ng-model="filterType.is_driver" ng-true-value="1" ng-false-value="0">
+                <label class="form-check-label" for="driver">Driver</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="ibox-footer">
+        <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% $root.pageTitle %></h5>
+      <div class="ibox-tools">
+        <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+        <button type='button' ng-show="$root.roleList.includes('contact.contact.create')" class="btn btn-sm btn-primary mg-r1" id="addButton" ng-click='add()'><i class="fa fa-plus"></i> Add</button type='button'>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <th>Contact Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th style="width:10%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

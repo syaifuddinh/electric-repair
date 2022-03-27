@@ -1,0 +1,87 @@
+<div class="col-md-12">
+  <div class="ibox" ng-show="isFilter">
+    <div class="ibox-title">
+      <h5>Filter Transaksi Kas</h5>
+    </div>
+    <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+      <div class="ibox-content">
+        <div class="form-group" ng-if="is_admin==1">
+          <label class="col-md-3 control-label"><% solog.label.general.branch %></label>
+          <div class="col-md-9">
+            <branch-select-input ng-model="formData.company_id" ng-change='searchData()' />
+          </div>
+        </div>
+       
+        <div class="form-group">
+          <label class="col-md-3 control-label">Periode</label>
+          <div class="col-md-9">
+            <div class="input-daterange input-group" style="width:100%;">
+              <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+              <span class="input-group-addon">to</span>
+              <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label">Status</label>
+          <div class="col-md-9">
+            <select ng-change='searchData()' class="form" data-placeholder-text-single="'Choose Status'" chosen allow-single-deselect="false" ng-model="formData.status">
+              <option value="1">Printed</option>
+              <option value="2">Edited</option>
+              <option value="3">Deleted</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label">Status Approval</label>
+          <div class="col-md-9">
+            <select ng-change='searchData()' class="form" data-placeholder-text-single="'Choose Status Approval'" chosen allow-single-deselect="false" ng-model="formData.status_cost">
+              <option value="1">Belum Persetujuan</option>
+              <option value="2">Pengajuan</option>
+              <option value="3">Selesai</option>
+              <option value="4">Ditolak</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+<!--        <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button>-->
+        <a class="btn btn-default btn-sm font-bold" ng-click="exportExcel()"><i class="fa fa-file-excel-o"></i> Export All</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Transaksi Kas / Bank</h5>
+      <div class="ibox-tools">
+           <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+        <a ng-show="roleList.includes('finance.transaction_cash.create')" class="btn btn-sm btn-primary" ui-sref="finance.cash_transaction.create"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <!-- <th>
+              <input type="checkbox" ng-click="checkAll()" ng-model="call" ng-init="call=0" ng-true-value="1" ng-false-value="0">
+            </th> -->
+            <th>Kode Transaksi</th>
+            <th>Branch</th>
+            <th>Tanggal</th>
+            <th>Tipe Transaksi</th>
+            <th>Total</th>
+            <th>Keterangan</th>
+            <th>Status</th>
+            <th>Status Approval</th>
+            <th style="width:10%;"></th>
+          </tr>
+        </thead>
+      </table>
+      <!-- <pre><%jStyle(listData)%></pre> -->
+    </div>
+  </div>
+</div>

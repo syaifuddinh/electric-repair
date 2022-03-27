@@ -1,0 +1,164 @@
+<table class="table display compact nowrap table-borderless hidden">
+  <tbody>
+    <tr>
+      <td class="text-right">
+        <a href="<% baseUrl+'/marketing/work_order/print/'+stateParams.id %>" target="_blank" class="btn btn-sm btn-default font-bold"><i class="fa fa-file-pdf-o"></i> Cetak WO</a>
+        <button ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.create')" type="button" ng-if="item.quotation_id" ng-click="addFromQuotation()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</button>
+        <button ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.create')" type="button" ng-if="!item.quotation_id" ng-click="addFromPrice()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table display compact nowrap table-bordered table-striped" style="width:100%;overflow-x:auto;">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Layanan</th>
+      <th>Route</th>
+      <th>Komoditas</th>
+      <th>Tipe Vehicle</th>
+      <th>Tipe Kontainer</th>
+      <th>Pengenaan</th>
+      <th>Jumlah JO</th>
+      <th>Status</th>
+      <th>Qty</th>
+      <th style="width:15%;">Keterangan</th>
+      <th style="width:7%;" class="hidden"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="(i,val) in detail" ng-if="item.quotation_id">
+      <td><% i+1 %></td>
+      <td><% val.quotation_detail.service.name %></td>
+      <td><% val.quotation_detail.route.name %></td>
+      <td><% val.quotation_detail.commodity.name %></td>
+      <td><% val.quotation_detail.vehicle_type.name %></td>
+      <td><% val.quotation_detail.container_type.full_name %></td>
+      <td><% imposition_name_arr[i] %></td>
+      
+      <td class="text-right"><% val.total_jo?val.total_jo:0|number %></td>
+      <td><span ng-bind-html="status_proses[i]"></span></td>
+      <td><% val.qty|number %></td>
+      <td><% val.description %></td>
+      <td class="text-center hidden">
+        <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.done')" ng-click="approveDetail(val.id)" ng-if="!val.is_done && val.description"><i class="fa fa-check"></i></a>
+        <!-- <a ng-click="rejectDetail(val.id)" ng-if="val.is_done"><i class="fa fa-times"></i></a> -->
+        <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.edit_description')" ng-click="editDetail(val)" ng-if="!val.is_done"><i class="fa fa-edit"></i></a>
+        <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.delete')" ng-if="!val.total_jo && !val.is_done" ng-click="deletes(val.id)"><i class="fa fa-trash"></i></a>
+      </td>
+    </tr>
+    <tr ng-repeat="(i,val) in detail" ng-if="!item.quotation_id">
+      <td><% i+1 %></td>
+      <td><% val.price_list.service.name %></td>
+      <td><% val.price_list.route.name %></td>
+      <td><% val.price_list.commodity.name %></td>
+      <td><% val.price_list.vehicle_type.name %></td>
+      <td><% val.price_list.container_type.name %></td>
+      <td><% imposition_name_arr[i] %></td>
+      <td class="text-right"><% val.price_list.price_full|number %></td>
+      <td class="text-right"><% val.total_jo?val.total_jo:0|number %></td>
+      <td><span ng-bind-html="status_proses[i]"></span></td>
+      <td><% val.qty|number:3 %></td>
+      <td><% val.description %></td>
+      <td class="text-center hidden">
+        <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.done')" ng-click="approveDetail(val.id)" ng-if="!val.is_done && val.description"><i class="fa fa-check"></i></a>
+        <!-- <a ng-click="rejectDetail(val.id)" ng-if="val.is_done"><i class="fa fa-times"></i></a> -->
+        <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.edit_description')" ng-click="editDetail(val)" ng-if="!val.is_done"><i class="fa fa-edit"></i></a>
+        <a ng-show="roleList.includes('marketing.work_order.detail.work_order_detail.delete')" ng-if="!val.total_jo && !val.is_done" ng-click="deletes(val.id)"><i class="fa fa-trash"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- modal -->
+<div class="modal fade" id="quotationDataModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add Detail Work Order</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="quotation_datatable" style="width: 100%;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Layanan</th>
+              <th>Route</th>
+              <th>Komoditas</th>
+              <th>Tipe Vehicle</th>
+              <th>Tipe Kontainer</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="priceDataModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add Detail Work Order</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="price_list_datatable" style="width: 100%;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode</th>
+              <th>Route</th>
+              <th>Nama Tarif</th>
+              <th>Komoditas</th>
+              <th>Layanan</th>
+              <th>Moda</th>
+              <th>Vehicle</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal keterangan -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Keterangan</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">Keterangan</label>
+          <div class="col-md-9">
+            <textarea ng-model="editData.description" rows="4" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Qty</label>
+          <div class="col-md-9">
+            <input type="text" jnumber2 only-num ng-model="editData.qty" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="submitEdit()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

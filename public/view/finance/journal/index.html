@@ -1,0 +1,178 @@
+<div class="col-md-8">
+  <div class="ibox" ng-hide="!isHide">
+    <div class="ibox-title">
+      <h5>Filter</h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+      <div class="form-group" ng-if="is_admin==1">
+        <label class="col-md-3 control-label">Branch</label>
+        <div class="col-md-9">
+          <branch-select-input ng-change='refreshTable()' ng-model="filterData.company_id">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Periode</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input ng-change='refreshTable()' type="text" class="input-sm form-control" ng-model="filterData.start_date" datepick />
+            <span class="input-group-addon">to</span>
+            <input ng-change='refreshTable()' type="text" class="input-sm form-control" ng-model="filterData.end_date" datepick />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Tipe Transaksi</label>
+        <div class="col-md-9">
+          <select ng-change='refreshTable()' class="form-control" data-placeholder-text-single="'Semua Tipe Transaksi'" chosen
+            allow-single-deselect="true" ng-model="filterData.type_transaction_id"
+            ng-options="s.id as s.name for s in data.type_transaction">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Status</label>
+        <div class="col-md-9">
+          <select ng-change='refreshTable()' class="form-control" data-placeholder-text-single="'Semua Status'" chosen allow-single-deselect="true"
+            ng-model="filterData.status" ng-options="s.id as s.name for s in status">
+            <option value=""></option>
+          </select>
+          <div class="col-md-12">
+            <label for="is_audit" class="checkbox-inline pd-l1">
+              <input ng-change='refreshTable()' type="checkbox" id='is_audit' ng-model='filterData.is_audit' ng-true-value="1" ng-false-value="0">
+              <span ng-show='filterData.is_audit == 1'><b>Tampilkan jurnal audit</b></span> <span
+                ng-show='filterData.is_audit != 1'><b>Tampilkan jurnal non-audit</b></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-footer">
+      <button class="btn btn-warning" ng-click='reset_filter()'>Reset</button>
+<!--      <button class="btn btn-primary" ng-click='refreshTable()'>Cari</button>-->
+      <span id="export_button"></span>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Jurnal Umum</h5>
+      <div class="ibox-tools">
+        <a ng-click="hideFilter()" class="btn btn-sm btn-default"><i class="fa fa-filter"></i> Filter</a>
+        &nbsp;|&nbsp;
+        <button ng-show="roleList.includes('finance.journal.approve')" type="button" ng-click="approve()"
+          class="btn btn-sm btn-info">Setujui</button>
+        <!-- <button type="button" ng-click="approvePost()" class="btn btn-sm btn-success">Posting</button> -->
+        &nbsp;|&nbsp;
+        <a ng-show="roleList.includes('finance.journal.create_favorite')" class="btn btn-sm btn-primary"
+          ui-sref="finance.journal.create_favorite"><i class="fa fa-plus"></i> Add Favorit</a>
+        <a ng-show="roleList.includes('finance.journal.create_audit')" class="btn btn-sm btn-success"
+          ng-click="showYearModal()"><i class="fa fa-plus"></i> Add Audit</a>
+        <a ng-show="roleList.includes('finance.journal.create')" class="btn btn-sm btn-primary"
+          ui-sref="finance.journal.create"><i class="fa fa-plus"></i> Add</a>
+        <button type="button" ng-click="checkAll()" class="btn btn-sm btn-default font-bold">Check All</button>
+      </div>
+    </div>
+
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <!-- <th><input type="checkbox" check-all ></th> -->
+            <th></th>
+            <th>Status</th>
+            <th>Branch</th>
+            <th>Tanggal</th>
+            <th>Kode Jurnal</th>
+            <th>Debet</th>
+            <th>Kredit</th>
+            <th>Keterangan</th>
+            <th>Tipe</th>
+            <th style="width:10%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <!-- <%checkData%> -->
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="postingRevModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Posting Jurnal</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:20%;">Kode Jurnal</td>
+              <td>: <span><% revItem.code %></span></td>
+            </tr>
+            <tr>
+              <td>Tipe Transaksi</td>
+              <td>: <span><% revItem.type_transaction.name %></span></td>
+            </tr>
+            <tr>
+              <td>Tgl. Transaksi</td>
+              <td>: <span><% revItem.date_transaction|fullDate %></span></td>
+            </tr>
+            <tr>
+              <td>Keterangan</td>
+              <td>: <span><% revItem.description %></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table display compact nowrap table-bordered table-striped" id="appendDetail">
+          <thead>
+            <tr>
+              <th>Akun</th>
+              <th>Tipe Kategori Kas</th>
+              <th>Debet</th>
+              <th>Kredit</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+        <!-- <pre><% jStyle(revData) %></pre> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="submitPosting()" ng-disabled="disBtn" class="btn btn-success font-bold"><i
+            class="fa fa-floppy-o"></i>&nbsp;Posting</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="yearModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:40%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Choose Periode</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <form>
+          <div class="form-group">
+            <label class="col-md-2 control-label">Tahun</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control" ng-model='year' yearpick>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click='submitAudit()' ng-disabled="!year">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

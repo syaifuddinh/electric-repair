@@ -1,0 +1,414 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Vehicle</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-md-6">
+            <!-- start -->
+            <div class="form-group" ng-class="{'has-error': formError.company_id}">
+              <label class="col-md-3 control-label">Branch</label>
+              <div class="col-md-9">
+                <branch-select-input ng-model="formData.company_id" />
+                <span class="help-block" ng-if="formError.company_id">
+                  <ul>
+                    <li ng-repeat="val in formError.company_id" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.code}">
+              <label class="col-md-3 control-label">No. Lambung</label>
+              <div class="col-md-4">
+                <input type="text" ng-model="formData.code"  class="form-control">
+                <span class="help-block" ng-if="formError.code">
+                  <ul>
+                    <li ng-repeat="val in formError.code" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.nopol}">
+              <label class="col-md-3 control-label">Nopol</label>
+              <div class="col-md-4">
+                <input type="text" ng-model="formData.nopol" class="form-control">
+                <span class="help-block" ng-if="formError.nopol">
+                  <ul>
+                    <li ng-repeat="val in formError.nopol" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.vehicle_variant_id}">
+              <label class="col-md-3 control-label">Model/Varian</label>
+              <div class="col-md-9">
+                <div class="input-group">
+                    <select class="form-control" data-placeholder-text-single="'Choose Varian'" chosen allow-single-deselect="false" ng-model="formData.vehicle_variant_id" ng-options="s.id as s.name for s in data.vehicle_variant">
+                        <option value=""></option>
+                    </select>
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-md btn-success" ng-click='insertVehicleVariant()' ng-show="roleList.includes('setting.vehicle.variant.create')">
+                            <i class="fa fa-plus pd-08"></i>
+                        </button>
+                    </div>
+                </div>
+                <span class="help-block" ng-if="formError.vehicle_variant_id">
+                  <ul>
+                    <li ng-repeat="val in formError.vehicle_variant_id" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.chassis_no}">
+              <label class="col-md-3 control-label">No. Rangka</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.chassis_no"  class="form-control">
+                <span class="help-block" ng-if="formError.chassis_no">
+                  <ul>
+                    <li ng-repeat="val in formError.chassis_no" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.machine_no}">
+              <label class="col-md-3 control-label">No. Mesin</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.machine_no"  class="form-control">
+                <span class="help-block" ng-if="formError.machine_no">
+                  <ul>
+                    <li ng-repeat="val in formError.machine_no" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.color}">
+              <label class="col-md-3 control-label">Warna</label>
+              <div class="col-md-4">
+                <input type="text" ng-model="formData.color"  class="form-control">
+                <span class="help-block" ng-if="formError.color">
+                  <ul>
+                    <li ng-repeat="val in formError.color" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.is_internal}">
+              <label class="col-md-3 control-label">Internal</label>
+              <div class="col-md-7">
+                <input type="checkbox"  ng-model="formData.is_internal" ng-true-value="1" ng-false-value="0">
+                <span class="help-block" ng-if="formError.is_internal">
+                  <ul>
+                    <li ng-repeat="val in formError.is_internal" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': formError.supplier_id}">
+              <label class="col-md-3 control-label">Vehicle Owner</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Pemilik Vehicle'" chosen allow-single-deselect="false" ng-model="formData.supplier_id" ng-options="s.id as s.name for s in data.supplier">
+                  <option value=""></option>
+                </select>
+                <span class="help-block" ng-if="formError.supplier_id">
+                  <ul>
+                    <li ng-repeat="val in formError.supplier_id" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.vehicle_owner_id}">
+              <label class="col-md-3 control-label">Vehicle Ownership</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Kepemilikan Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_owner_id" ng-options="s.id as s.name for s in data.vehicle_owner">
+                  <option value=""></option>
+                </select>
+                <span class="help-block" ng-if="formError.vehicle_owner_id">
+                  <ul>
+                    <li ng-repeat="val in formError.vehicle_owner_id" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': formError.date_manufacture}">
+              <label class="col-md-3 control-label">Tgl. Pembuatan</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.date_manufacture" datepick class="form-control">
+                <span class="help-block" ng-if="formError.date_manufacture">
+                  <ul>
+                    <li ng-repeat="val in formError.date_manufacture" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.date_operation}">
+              <label class="col-md-3 control-label">Tgl. Mulai Operasi</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.date_operation" datepick class="form-control">
+                <span class="help-block" ng-if="formError.date_operation">
+                  <ul>
+                    <li ng-repeat="val in formError.date_operation" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.is_active}">
+              <label class="col-md-3 control-label">Aktif</label>
+              <div class="col-md-7">
+                <input type="checkbox"  ng-model="formData.is_active" ng-true-value="1" ng-false-value="0">
+                <span class="help-block" ng-if="formError.is_active">
+                  <ul>
+                    <li ng-repeat="val in formError.is_active" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.not_active_reason}">
+              <label class="col-md-3 control-label">Alasan Tidak Aktif</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.not_active_reason" ng-disabled="formData.is_active" class="form-control">
+                <span class="help-block" ng-if="formError.not_active_reason">
+                  <ul>
+                    <li ng-repeat="val in formError.not_active_reason" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required" ng-class="{'has-error': formError.stnk_no}">
+              <label class="col-md-3 control-label">No. STNK</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.stnk_no" class="form-control">
+                <span class="help-block" ng-if="formError.stnk_no">
+                  <ul>
+                    <li ng-repeat="val in formError.stnk_no" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.stnk_name}">
+              <label class="col-md-3 control-label">Nama STNK</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.stnk_name" class="form-control">
+                <span class="help-block" ng-if="formError.stnk_name">
+                  <ul>
+                    <li ng-repeat="val in formError.stnk_name" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.stnk_date}">
+              <label class="col-md-3 control-label">Masa Berlaku STNK</label>
+              <div class="col-md-4">
+                <input type="text" ng-model="formData.stnk_date" datepick class="form-control">
+                <span class="help-block" ng-if="formError.stnk_date">
+                  <ul>
+                    <li ng-repeat="val in formError.stnk_date" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.stnk_address}">
+              <label class="col-md-3 control-label">Alamat STNK</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.stnk_address"  class="form-control">
+                <span class="help-block" ng-if="formError.stnk_address">
+                  <ul>
+                    <li ng-repeat="val in formError.stnk_address" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.bpkb_no}">
+              <label class="col-md-3 control-label">No. BPKB</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.bpkb_no"  class="form-control">
+                <span class="help-block" ng-if="formError.bpkb_no">
+                  <ul>
+                    <li ng-repeat="val in formError.bpkb_no" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group required" ng-class="{'has-error': formError.kir_date}">
+              <label class="col-md-3 control-label">Tgl. KIR Terakhir</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formData.kir_date" datepick class="form-control">
+                <span class="help-block" ng-if="formError.kir_date">
+                  <ul>
+                    <li ng-repeat="val in formError.kir_date" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.initial_km}">
+              <label class="col-md-3 control-label">KM Inisial</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formData.initial_km" jnumber2 only-num class="form-control">
+                <span class="help-block" ng-if="formError.initial_km">
+                  <ul>
+                    <li ng-repeat="val in formError.initial_km" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.initial_km_date}">
+              <label class="col-md-3 control-label">Tgl. KM Inisial</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.initial_km_date" datepick ng-disabled="formData.initial_km<=0" class="form-control">
+                <span class="help-block" ng-if="formError.initial_km_date">
+                  <ul>
+                    <li ng-repeat="val in formError.initial_km_date" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.last_km}">
+              <label class="col-md-3 control-label">KM Akhir</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formData.last_km" jnumber2 only-num class="form-control">
+                <span class="help-block" ng-if="formError.last_km">
+                  <ul>
+                    <li ng-repeat="val in formError.last_km" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.last_km_date}">
+              <label class="col-md-3 control-label">Tgl. KM Akhir</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.last_km_date" datepick ng-disabled="formData.last_km<=0" class="form-control">
+                <span class="help-block" ng-if="formError.last_km_date">
+                  <ul>
+                    <li ng-repeat="val in formError.last_km_date" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.daily_distance}">
+              <label class="col-md-3 control-label">Jarak Tempuh Harian</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formData.daily_distance" jnumber2 only-num class="form-control">
+                <span class="help-block" ng-if="formError.daily_distance">
+                  <ul>
+                    <li ng-repeat="val in formError.daily_distance" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.gps_no}">
+              <label class="col-md-3 control-label">No. GSM GPS</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.gps_no" class="form-control">
+                <span class="help-block" ng-if="formError.gps_no">
+                  <ul>
+                    <li ng-repeat="val in formError.gps_no" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.serep_tire}">
+              <label class="col-md-3 control-label">Kapasitas Ban Serep</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formData.serep_tire" jnumber2 only-num class="form-control">
+                <span class="help-block" ng-if="formError.serep_tire">
+                  <ul>
+                    <li ng-repeat="val in formError.serep_tire" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.is_trailer}">
+              <label class="col-md-3 control-label">Trailer</label>
+              <div class="col-md-7">
+                <input type="checkbox" ng-model="formData.is_trailer" ng-change="isTrailerChange()" ng-true-value="1" ng-false-value="0" class="form-control">
+                <span class="help-block" ng-if="formError.is_trailer">
+                  <ul>
+                    <li ng-repeat="val in formError.is_trailer" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.trailer_size}" ng-if="formData.is_trailer">
+              <label class="col-md-3 control-label">Ukuran Trailer</label>
+              <div class="col-md-5">
+                <select class="form-control" data-placeholder-text-single="'Choose Ukuran Trailer'" chosen allow-single-deselect="false" ng-model="formData.trailer_size" ng-options="s.id as s.name for s in trailer_size">
+                  <option value=""></option>
+                </select>
+                <span class="help-block" ng-if="formError.trailer_size">
+                  <ul>
+                    <li ng-repeat="val in formError.trailer_size" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': formError.max_tonase}" ng-if="formData.is_trailer">
+              <label class="col-md-3 control-label">Tonase Maksimal</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.max_tonase" jnumber2 only-num class="form-control">
+                <span class="help-block" ng-if="formError.max_tonase">
+                  <ul>
+                    <li ng-repeat="val in formError.max_tonase" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formError.max_volume}" ng-if="formData.is_trailer">
+              <label class="col-md-3 control-label">Kubikasi Maximal</label>
+              <div class="col-md-7">
+                <input type="text" ng-model="formData.max_volume" jnumber2 only-num class="form-control">
+                <span class="help-block" ng-if="formError.max_volume">
+                  <ul>
+                    <li ng-repeat="val in formError.max_volume" ng-bind="val"></li>
+                  </ul>
+                </span>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a ng-click='backward()' class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>

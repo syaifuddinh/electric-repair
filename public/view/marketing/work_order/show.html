@@ -1,0 +1,185 @@
+<div class="col-md-12" id='work_order'>
+    <div class="ibox">
+        <div class="ibox-title">
+            <div class="ibox-tools">
+                <div class="btn-group">
+                    <button ng-show="roleList.includes('marketing.work_order.create')" type="button" ng-click="saveAs()" class="btn btn-primary btn-xs mg-r1"><i class="fa fa-disk"></i> Save As</button>
+                    <span ng-if='item.is_job_packet == 1 && !hasInvoice' ng-include='"view/operational/job_order/detail/kpi_status.html"'></span>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td style="width:25%;">Branch</td>
+                                <td>: <span><% item.company.name %></span></td>
+                            </tr>
+                            <tr>
+                                <td>Customer</td>
+                                <td>: <span><% item.customer.name %></span></td>
+                            </tr>
+                            <!-- <tr>
+                                <td>Sales</td>
+                                <td>: <span><% item.quotation.sales.name %></span></td>
+                            </tr>
+                            <tr>
+                                <td>Customer Service</td>
+                                <td>: <span><% item.customer.customer_service.name %></span></td>
+                            </tr> -->
+                            <tr>
+                                <td>Job Name</td>
+                                <td>: <span class=""><% item.name %></span></td>
+                            </tr>
+                            <tr>
+                                <td>Work Order Code</td>
+                                <td>: <span class="font-bold"><% item.code %></span></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>No. Invoice</td>
+                                <td>: 
+                                    <span class="font-bold">
+                                        <span ng-repeat="x in item.job_orders">
+                                            <% x.invoice_detail[0].invoice.code %> </br>
+                                        </span>
+                                    </span>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>No. AJU</td>
+                                <td>: <span><% item.aju_number %></span></td>
+                            </tr>
+                            <tr>
+                                <td>No. BL</td>
+                                <td>: <span><% item.no_bl %></span></td>
+                            </tr>
+                            <tr>
+                                <td>Work Order Date</td>
+                                <td>: <span ng-if="item.date"><% item.date|fullDate %></span></td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>: <span><% findJsonId(item.status,status).name %></span> </td>
+                            </tr>
+                            <tr>
+                                <td>No Contract</td>
+                                <td>: <span><% item.quotation.no_contract %></span></td>
+                            </tr>
+                            <tr>
+                                <td>Contract Date</td>
+                                <td>: <span ng-if="item.quotation.date_contract"><% item.quotation.date_contract|fullDate %></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" ng-if="item.quotation.bill_type==2 && item.status==1" class="btn btn-xs btn-primary" ng-click="editQty()">Edit Qty Borongan</button>
+                    <hr>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-borderless">
+                        <tr ng-repeat='v in additional_fields'>
+                            <td style="width:40%;"><% v.name %></td>
+                            <td>: <span><% item.additional[v.slug] %></span></td>
+                        </tr>
+                        <tr ng-if='settings.work_order.use_job_packet'>
+                            <td style="width:40%;">Apakah paket pekerjaan ?</td>
+                            <td>: <span class="font-bold"><% item.is_job_packet ? 'Ya' : 'Tidak' %></span></td>
+                        </tr>
+                        <tr ng-if='settings.work_order.use_job_packet'>
+                            <td style="width:40%;">Job Status</td>
+                            <td>: <span class="label label-success text-uppercase"><% job_order.kpi_status_data.name %></span></td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%;">Price Source</td>
+                            <td>: <span class="font-bold"><% item.jenis_tarif %></span></td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%;">Qty Borongan</td>
+                            <td>: <span class="font-bold"><% item.qty|number %></span></td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%;">Qty Job Order</td>
+                            <td>: <span class="font-bold"><% cost.qty_jo|number %></span></td>
+                        </tr>
+                        <tr>
+                            <td>Revenue</td>
+                            <td>: <span class="font-bold">Rp. <% cost.pendapatan|number %></span></td>
+                        </tr>
+                        <tr>
+                            <td>Cost</td>
+                            <td>: <span class="font-bold">Rp. <% cost.operasional|number %></span></td>
+                        </tr>
+                        <tr>
+                            <td>Reimbursement</td>
+                            <td>: <span class="font-bold">Rp. <% cost.reimburse|number %></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs">
+                            <li ng-click='closeItemTab($event.currentTarget);closeProcessTab($event.currentTarget)' ng-show="roleList.includes('marketing.work_order.detail.work_order_detail')" ui-sref-active="active"><a ui-sref="marketing.work_order.show.detail" ui-sref-opts="{location:false}"><i class="fa fa-tags"></i> Detail Work Order</a></li>
+                            <li ng-if='item.is_job_packet != 1' ng-click='closeItemTab();closeProcessTab();closePriceTab($event.currentTarget)' ng-show="roleList.includes('marketing.work_order.detail.job_order')" ui-sref-active="active"><a ui-sref="marketing.work_order.show.job_order" ui-sref-opts="{location:false}"><i class="fa fa-briefcase"></i> Job Order</a></li>
+                            <li ng-if='item.is_job_packet == 1' ng-click='openItemTab($event.currentTarget);closeProcessTab($event.currentTarget);closePriceTab($event.currentTarget)'><a><i class="fa fa-tasks"></i>Item</a></li>
+                            <li ng-if='item.is_job_packet == 1' ng-click='closeItemTab($event.currentTarget);closeProcessTab($event.currentTarget)' ui-sref-active="active"><a ui-sref="marketing.work_order.show.price" ui-sref-opts="{location:false}"><i class="fa fa-server"></i> Rincian Harga</a></li>
+                            <li ng-if='item.is_job_packet == 1' ng-click='openProcessTab($event.currentTarget);closeItemTab($event.currentTarget);closePriceTab($event.currentTarget)'><a><i class="fa fa-bar-chart-o"></i>Proses</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel-body">
+                                    <!-- main body -->
+                                    <div ng-if="states.current.name=='marketing.work_order.show' && item" ng-init="states.go('marketing.work_order.show.detail',{id:stateParams.id},{location:false})"></div>
+                                    <div ng-if='!openItem && !openProcess' ui-view="" class="mains">
+                                        
+                                    </div>
+                                    <div ng-if='openItem'>
+                                        <div ng-include='"view/operational/job_order/detail/item.html"'></div>
+                                    </div>
+                                    
+                                    <div ng-if='openProcess'>
+                                        <div ng-include='"view/operational/job_order/detail/proses.html"'></div>
+                                    </div>
+                                    <!-- end main body -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-footer">
+            <a ui-sref="marketing.work_order" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalEditQty" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Edit Qty Borongan</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="form-group">
+                    <label for="">Jumlah</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="qtyData.qty" only-num jnumber2 placeholder="">
+                        <span class="input-group-addon"><% findJsonId(item.quotation.imposition,imposition).name %></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                <button type="button" ng-disabled="!qtyData.qty" ng-click="submitQty()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

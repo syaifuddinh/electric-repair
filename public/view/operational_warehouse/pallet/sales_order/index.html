@@ -1,0 +1,16 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Sales Order</h5>
+      <div class="ibox-tools" id="export_button">
+        <a ng-show="roleList.includes('inventory.pallet.sales_order.create')" class="btn btn-sm btn-primary" ng-click="add()"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+        <sales-orders-table 
+            is-pallet="1"
+            detail-route="'operational_warehouse.pallet_sales_order.show'"
+        />
+    </div>
+  </div>
+</div>

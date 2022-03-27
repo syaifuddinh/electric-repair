@@ -1,0 +1,13 @@
+<div class="ibox">
+  <div class="ibox-title">
+    <h5><% solog.label.general.item_condition %></h5>
+    <div class="ibox-tools">
+        <span ng-hide='hide_add'>
+            <button type='button' ng-show="$root.roleList.includes('operational_warehouse.receive.create')" class="btn btn-sm btn-primary" ng-click='add()'><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></button>
+        </span>
+    </div>
+  </div>
+    <div class="ibox-content">
+        <solog-datatable options='options' id='datatable'></solog-datatable>
+    </div>
+</div>

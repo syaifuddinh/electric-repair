@@ -1,0 +1,18 @@
+<div class="col-md-12">
+  <div class="tabs-container">
+    <div class="tabs-left">
+      <ul class="nav nav-tabs">
+        <li ng-show="roleList.includes('setting.user_management.detail.info')" ui-sref-active="active"><a ui-sref="setting.user.show.personal"><i class="fa fa-user"></i> Personal Info</a></li>
+        <li ng-show="roleList.includes('setting.user_management.detail.password')" ui-sref-active="active"><a ui-sref="setting.user.show.password"><i class="fa fa-key"></i> Change Password</a></li>
+        <li ng-show="roleList.includes('setting.user_management.detail.privilage')" ui-sref-active="active"><a ui-sref="setting.user.show.previlage"><i class="fa fa-cogs"></i> Privilege</a></li>
+        <li ui-sref-active="active"><a ui-sref="setting.user.show.notification"><i class="fa fa-comments"></i> Notification</a></li>
+      </ul>
+      <div class="tab-content active">
+        <div class="panel-body">
+          <div ui-view="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

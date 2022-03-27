@@ -1,0 +1,7 @@
+<button type='button' class='btn btn-sm btn-success' ng-click="openModal()"><i class="fa fa-plus pd-08"></i></button>
+
+<solog-modal id="{{slugId}}" ref='contacts_modal' title='"Add Contact"' hide-footer='1' width-percent='80'>
+    <div class="row form-horizontal">
+        <contacts-create is-pelanggan='1' hide-type='true' id-modal-input="slugId" jo-customer-id="jo_customer_id"></contacts-create>
+    </div>
+</solog-modal>

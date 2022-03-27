@@ -1,0 +1,260 @@
+<div class="col-sm-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td class="font-semibold" width="30%"><% $root.solog.label.general.category %></td>
+            <td><span ng-bind="item.category"></span></td>
+          </tr>
+          <tr>
+            <td class="font-semibold">Item No.</td>
+            <td><span ng-bind="item.code"></span></td>
+          </tr>
+          <tr>
+            <td class="font-semibold"><% $root.solog.label.general.name %></td>
+            <td><span ng-bind="item.name"></span></td>
+          </tr>
+          <tr>
+            <td class="font-semibold">Barcode</td>
+            <td><span ng-bind="item.barcode"></span></td>
+          </tr>
+          <tr>
+            <td class="font-semibold">SKU</td>
+            <td><span ng-bind="item.sku"></span></td>
+          </tr>
+          <tr>
+            <td class="font-semibold">Unit</td>
+            <td><span ng-bind="item.piece"></span></td>
+          </tr>
+          <tr>
+            <td class="font-semibold">Have an Expired</td>
+            <td><span ng-bind="item.is_expired ? 'Yes' : 'No'"></span></td>
+          </tr>
+          <tr>
+            <td class="font-semibold">Service</td>
+            <td><span ng-bind="item.is_service ? 'Yes' : 'No'"></span></td>
+          </tr>
+            <tr ng-show="$root.settings.general.is_use_sales">
+                <td class="font-semibold">Merchandise Item</td>
+                <td><span ng-bind="item.is_merchandise ? 'Yes' : 'No'"></span></td>
+            </tr>
+          <tr>
+            <td class="font-semibold">Description</td>
+            <td><span ng-bind="item.description"></span></td>
+          </tr>
+          <tr>
+            <td class="font-semibold">Internal / WH Item</td>
+            <td><span ng-bind="item.item_type"></span></td>
+          </tr>
+
+          <tr >
+            <td class="font-semibold"><% $root.solog.label.general.default_rack %></td>
+            <td>
+                <% item.rack_code %>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="font-semibold"><% $root.solog.label.general.type %></td>
+            <td class='relative'>
+                <label class='checkbox-inline' for="is_dangerous_good">
+                    <input type="checkbox" ng-model='item.is_dangerous_good' ng-true-value="1" ng-false-value="0">
+                    <span class='inline-block mg-l2'>
+                        <% $root.solog.label.general.is_dangerous_good %>
+                    </span>
+                </label>
+
+                <label class='checkbox-inline' for="is_fast_moving">
+                    <input type="checkbox" ng-model='item.is_is_fast_moving' ng-true-value="1" ng-false-value="0">
+                    <span class='inline-block mg-l2'>
+                        <% $root.solog.label.general.is_fast_moving %>
+                    </span>
+                </label>
+                <div class="cover"></div>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="col-sm-12 col-md-12">
+  <div class="tabs-container">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" data-target="#general">General</a></li>
+      <li><a data-toggle="tab" data-target="#picture">Pictures</a></li>
+      <li><a data-toggle="tab" data-target="#dimension">Dimension</a></li>
+      <li><a data-toggle="tab" data-target="#info">Info & Price</a></li>
+      <li><a data-toggle="tab" data-target="#account">Account</a></li>
+    </ul>
+    <div class="tab-content">
+      <!-- TAB GENERAL -->
+      <div class="tab-pane active" id="general">
+        <div class="panel-body form-horizontal">
+          <!-- START -->
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="font-semibold" width="30%">Part Number</td>
+                <td><span ng-bind="item.part_number"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Stock Item</td>
+                <td><span ng-bind="item.is_stock ? 'Yes' : 'No'"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Minimum Stock</td>
+                <td><span ng-bind="item.minimal_stock"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Default Account Item</td>
+                <td><span ng-bind="item.account_item"></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- END -->
+        </div>
+      </div>
+      <!-- TAB PICTURES -->
+      <div class="tab-pane" id="picture">
+        <div class="panel-body form-horizontal">
+          <form class="form-horizontal" id="fileForm" ng-submit="uploadFile()" method="post">
+            <div class="form-group" ng-class="{ 'has-error' : formError.name }">
+              <label class="col-md-3">File Image</label>
+              <div class="col-md-9">
+                <input type="file" class="form-control" name="file">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary" name="button"><i class="fa fa-upload"></i> Upload</button>
+            <hr>
+            <div class="row">
+              <div class="col-md-2 col-sm-12 text-center" ng-repeat="(i,val) in pictures">
+                <img src="<% baseUrl+'/'+val.file_path %>" style="max-width:100%; max-height: 200px; margin-bottom:20px; border: 2px solid black; border-radius:10px; vertical-align:middle;">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- TAB DIMENSION -->
+      <div class="tab-pane" id="dimension">
+        <div class="panel-body form-horizontal">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="font-semibold" width="30%">Length (cm)</td>
+                <td><span ng-bind="item.long|number"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Width (cm)</td>
+                <td><span ng-bind="item.wide|number"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Height (cm)</td>
+                <td><span ng-bind="item.height|number"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Volume (cm3)</td>
+                <td><span ng-bind="item.volume|number"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Weight (kg)</td>
+                <td><span ng-bind="item.tonase|number"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- TAB INFO & PRICE -->
+      <div class="tab-pane" id="info">
+        <div class="panel-body form-horizontal">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="font-semibold" width="30%">Minimal Order</td>
+                <td><span ng-bind="item.std_purchase|number"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Vendor Path No.</td>
+                <td><span ng-bind="item.vendor_path_no"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Brand Name</td>
+                <td><span ng-bind="item.brand_name"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Default Supplier / Vendor</td>
+                <td><span ng-bind="item.vendor"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Purchase Price</td>
+                <td><span ng-bind="item.harga_beli|number"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Sales Price</td>
+                <td><span ng-bind="item.harga_jual|number"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- TAB ACCOUNT -->
+      <div class="tab-pane" id="account">
+        <div class="panel-body form-horizontal">
+          <!-- START -->
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td class="font-semibold" width="30%">Account Type</td>
+                <td><span ng-bind="item.is_accrual ? 'Accrual Basic' : 'Cash Basic'"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Cost Account</td>
+                <td><span ng-bind="item.account_cost"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Sales Account</td>
+                <td><span ng-bind="item.account_sale"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Payable Account</td>
+                <td><span ng-bind="item.account_payable"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Cash Account</td>
+                <td><span ng-bind="item.account_cash"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Cost Type</td>
+                <td>
+                  <span ng-if="item.is_bbm">Fuel<br></span>
+                  <span ng-if="item.is_operational">Operational Cost<br></span>
+                  <span ng-if="item.is_invoice">Invoice<br></span>
+                </td>
+              </tr>
+              <tr>
+                <td class="font-semibold" >Overtime</td>
+                <td><span ng-bind="item.is_overtime ? 'Yes' : 'No'"></span></td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Tax Include</td>
+                <td><span ng-bind="item.is_ppn ? 'Yes' : 'No'"></span></td>
+              </tr>
+
+            </tbody>
+          </table>
+          <!-- END -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-content">
+      <button type="button" ng-click="back()" class="btn btn-sm btn-warning" name="button"><% $root.solog.label.general.back %></button>
+    </div>
+  </div>
+</div>

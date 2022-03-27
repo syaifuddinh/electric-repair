@@ -1,0 +1,26 @@
+<table class="table display compact nowrap table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Kode Job</th>
+      <th>Tanggal</th>
+      <th>Layanan</th>
+      <th>Status</th>
+      <th>Progress</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="(i,val) in detail_jo">
+      <td><% i+1 %></td>
+      <td><a ui-sref="operational.job_order.show({id: val.id})"><% val.code %></a></td>
+      <td><% val.shipment_date|fullDate %></td>
+      <td><% val.service_type.name %></td>
+      <td><% val.kpi_status.name %></td>
+      <td><% progress_name[i] %></td>
+      <td class="text-center">
+        <a ng-show="roleList.includes('marketing.work_order.detail.job_order.detail')" ui-sref="operational.job_order.show({id:val.id})" ui-sref-opts="{location:true}"><i class="fa fa-folder-o"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>

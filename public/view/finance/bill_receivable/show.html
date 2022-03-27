@@ -1,0 +1,214 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-fax"></i> Detail Pembayaran Piutang</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:25%">Branch</td>
+                <td>: <span><% item.company.name %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.general.code %></td>
+                <td>: <span><% item.code %></span></td>
+              </tr>
+              <tr>
+                <td>Tanggal Permintaan</td>
+                <td>: <span ng-if="item.date_request"><% item.date_request|fullDate %></span></td>
+              </tr>
+              <tr>
+                <td>Tanggal Diterima</td>
+                <td>: <span ng-if="item.date_receive"><% item.date_receive|fullDate %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.general.customer %></td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.general.address %></td>
+                <td>: <span><% item.company.address %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.general.description %></td>
+                <td>: <span><% item.description %></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:25%">Status</td>
+                <td>: <span ng-bind-html="findJsonId(item.status,status).name"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-money"></i> Daftar Tagihan</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-striped">
+        <thead>
+          <tr>
+            <th>No Transaksi</th>
+            <th>Sumber Transaksi</th>
+            <th class="text-right">Jumlah Tagihan</th>
+            <th class="text-right">Ditagihkan</th>
+            <th class="text-right">Sisa Tagihan</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="val in detail">
+            <td><% val.code %></td>
+            <td><% val.type_transaction.name %></td>
+            <td class="text-right"><% val.total_bill|number %></td>
+            <td class="text-right"><% val.bill|number %></td>
+            <td class="text-right"><% val.leftover|number %></td>
+            <td><% val.description %></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right font-bold">TOTAL DITAGIHKAN : </td>
+            <td class="text-right"><% totalAll|number %></td>
+            <td colspan="2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div ng-if="totalPaymentBP>0" class="ibox-content">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>No Bukti Potong</th>
+            <th>Nominal</th>
+            <th class="text-right">COA Bukti Potong</th>
+            <th></th>
+            <!-- <th class="text-right">File Bukti Potong</th> -->
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i,val) in paymentbp | filter:{reff: ''}">
+            <td><% val.reff %></td>
+            <td><% val.total|number%></td>
+            <td class="text-right"><% val.payment_type?val.cash_account.name:val.cek_giro.code %></td>
+            <td ></td>
+            <!-- <td class="text-right"><a href="<% baseUrl+'/files/'+val.filename%>" target="_blank" > <ng-container *ng-if="val.filename!=''; else elseksg" ><% val.filename %></ng-container></a></td> -->
+
+            <!-- <ng-template #elseksg>
+              Please friend, login.
+            </ng-template> -->
+            <!-- <td class="text-right"><a ng-if="val.filename===''">-</a></td> -->
+            <!-- <td class="text-right"><b ng-if="val.valid==1">ter-validasi</b></td> -->
+            <td></td>
+           <!--  <td class="text-right"><a ng-click="validBP(i)" ng-if="val.filename!='' && val.valid==0"><span class="fa fa-check"></span></a></td>
+
+            <td class="text-right"><a ng-click="uploadfileny(val.id)" ng-if="val.valid==0"><span class="fa fa-edit"></span></a></td> -->
+            <!-- <td class="text-right">file</td> -->
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right font-bold">Total Bukti Potong : </td>
+            <td class="text-right"><% totalPaymentBP|number %></td>
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right font-bold">Total Bayar : </td>
+            <td class="text-right"><% totalPayment|number %></td>
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right font-bold">Kurang/Lebih Bayar : </td>
+            <td class="text-right"><% leftOver|number %></td>
+            <td colspan="2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.bill_receivable" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+      <a ng-if="item.status==1"  ng-show="roleList.includes('finance.debt.draft.detail.input_payment')" ui-sref="finance.bill_receivable.payment({id:item.id})" class="btn btn-sm btn-success"><i class="fa fa-fax"></i> Input Pembayaran</a>
+      <a ng-if="item.status!=1"  ng-show="roleList.includes('finance.debt.draft.detail.input_payment')" ui-sref="finance.bill_receivable.payment.edit({id:item.id})" class="btn btn-sm btn-success"><i class="fa fa-fax"></i> Edit Pembayaran</a>
+      <a ng-click="showModalPengantarInvoice()" class="btn btn-sm btn-default"><i class="fa fa-print"></i> Cetak Pengantar Invoice</a>
+    </div>
+  </div>
+
+
+</div>
+
+<div id="pengantarInvoiceModal" 
+    class="modal fade" 
+    tabindex="-1" 
+    role="dialog" 
+    aria-labelledby="" 
+    aria-hidden="true">
+    
+    <div class="modal-dialog" style="width:90%;">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" 
+                class="close" 
+                data-dismiss="modal" 
+                aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="">Cetak Pengantar Invoice</h4>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="form-group">
+                <label class="col-md-3">Jatuh Tempo</label>
+                <div class="col-md-9">
+                    <input type="text"
+                        ng-model="printData.due_date"
+                        datepick class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>No. Invoice</th>
+                            <th>Lampiran</th>
+                            <!--th>Kapal</th-->
+                            <th>Keterangan</th>
+                            <th>Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyPrintModal"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button"
+                class="btn btn-default"
+                data-dismiss="modal">Cancel</button>
+            <button type="button" 
+                ng-click="pengantarInvoicePrint()"
+                class="btn btn-primary">
+                <i class="fa fa-print"></i>Cetak</button>
+        </div>
+        </div>
+    </div>
+</div>

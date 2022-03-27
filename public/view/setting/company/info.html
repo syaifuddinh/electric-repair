@@ -1,0 +1,16 @@
+<div class="tabs-container">
+  <div class="tabs-left">
+    <ul class="nav nav-tabs">
+      <li ng-show="roleList.includes('setting.company.detail.info.detail')" ui-sref-active="active"><a ui-sref="setting.company.show.info.detail"> Detail Info</a></li>
+      <li ng-show="roleList.includes('setting.company.detail.info.numbering')" ui-sref-active="active"><a ui-sref="setting.company.show.info.numbering"> Format Penomoran</a></li>
+      <li ng-show="roleList.includes('setting.company.detail.info.warehouse')" ui-sref-active="active"><a ui-sref="setting.company.show.info.gudang"> Warehouse</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <div class="panel-body">
+            <div ui-view=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

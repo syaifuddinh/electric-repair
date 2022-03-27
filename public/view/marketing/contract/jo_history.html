@@ -1,0 +1,34 @@
+<style media="screen">
+  .ttable tbody tr td {
+    font-size: 12px;
+  }
+</style>
+<div class="sk-container panel-body" ng-init="sumDetail={}">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+  <table class="table display compact nowrap table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>No. JO</th>
+        <th>Tanggal JO</th>
+        <th>Jenis Layanan</th>
+        <th>Qty</th>
+        <th>Total Tarif</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="(i, val) in item">
+        <td><% i+1 %></td>
+        <td><a ui-sref="operational.job_order.show({id:val.id})"><% val.code %></a></td>
+        <td><% val.shipment_date|fullDate %></td>
+        <td><% val.service %></td>
+        <td><span ng-bind-html="in_array(val.service_type_id,[2,3,4])?val.qty_unit:val.qty_item"></span></td>
+        <td><% val.tarif|number %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

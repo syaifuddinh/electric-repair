@@ -1,0 +1,22 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <h4><% item.name %></h4>
+      <h5><% item.customer.name %></h5>
+      <hr>
+      <p><% item.description %></p>
+      <div ng-if="item.file_name">
+        <span class="font-bold">Attachment: </span><br>
+        <a href="<% baseUrl+'/'+item.file_name %>"><i class="fa fa-file-o"></i> Downlad File</a>
+      </div>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="marketing.inquery_customer" class="btn btn-sm btn-warning"><i class="fa fa-arrow-left"></i> Kembali</a>
+    </div>
+  </div>
+</div>

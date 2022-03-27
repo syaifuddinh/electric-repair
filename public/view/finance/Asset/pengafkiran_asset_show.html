@@ -1,0 +1,63 @@
+<form class="form-horizontal">
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Penghapusan Asset</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+      <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:20%;">Branch</td>
+              <td>: <span><% item.company.name %></span></td>
+            </tr>
+            <tr>
+              <td>Kode</td>
+              <td>: <span><% item.code %></span></td>
+            </tr>
+            <tr>
+              <td>Tanggal</td>
+              <td>: <span ng-if="item.date_transaction"><% item.date_transaction|fullDate %></span></td>
+            </tr>
+            <tr>
+              <td>Nama Asset</td>
+              <td>: <span><% item.asset.name %></span></td>
+            </tr>
+            <tr>
+              <td>Akumulasi Asset</td>
+              <td>: <span><% item.asset.beban_akumulasi|number %></span></td>
+            </tr>
+            <tr>
+              <td>Akun Kerugian</td>
+              <td>: <span><% item.account_loss.name %></span></td>
+            </tr>
+            <tr>
+              <td>Nilai Kerugian</td>
+              <td>: <span><% item.loss_amount|number %></span></td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>: <span ng-bind-html="findJsonId(item.status,status).name"></span></td>
+            </tr>
+            <tr>
+              <td>Keterangan</td>
+              <td>: <span><% item.description %></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ibox-footer">
+        <button type="button" ng-show="roleList.includes('finance.asset.rejected.detail.approve')" ng-click="approve()" ng-if="item.status==1" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Approve</button>
+      </div>
+  </div>
+</div>
+
+</form>

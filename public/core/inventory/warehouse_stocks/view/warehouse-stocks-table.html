@@ -1,0 +1,71 @@
+<div class="ibox" ng-show="isFilter">
+    <div class="ibox-title">
+        <h5><% $root.solog.label.general.filter %></h5>
+    </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="form-group hidden">
+        <label class="col-md-3 control-label"><% $root.solog.label.general.branch %></label>
+        <div class="col-md-9">
+          <select class="form" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="c.id as c.name for c in data.company" ng-change="searchData()">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="col-md-3 control-label"><% $root.solog.label.general.warehouse %></label>
+        <div class="col-md-9">
+            <warehouses-select-input ng-model="formData.warehouse_id" ng-change="searchData()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3 control-label">Stock</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="number" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_qty" ng-change="searchData()">
+            <span class="input-group-addon">to</span>
+            <input type="number" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_qty" ng-change="searchData()">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+          <div class="col-md-2">
+
+          </div>
+          <label class="col-md-5">
+                <span ng-show="$root.settings.general.is_use_sales">
+                    <span ng-hide="hide_is_merchandise_filter">
+                        <label class="checkbox-inline">
+                            <input ng-change='searchData()' type="checkbox" ng-model='formData.is_merchandise' ng-true-value="1" ng-false-value="0">
+                            Hanya tampilkan stok barang dagang
+                        </label>
+                    </span>
+                </span>
+          </label>
+      </div>
+
+    </div>
+    <div class="ibox-footer export_button">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+    </div>
+  </form>
+</div>
+
+<div class="ibox">
+    <div class="ibox-title">
+    <h5><% $root.pageTitle %></h5>
+    <div class="ibox-tools">
+        <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+    </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-bordered" id="datatable">
+        </table>
+    </div>
+</div>

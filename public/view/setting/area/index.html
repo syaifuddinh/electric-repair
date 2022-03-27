@@ -1,0 +1,49 @@
+<div class="col-md-8">
+    <div class="ibox">
+        <div class="ibox-title">
+        <h5>Area</h5>
+        <div class="ibox-tools">
+            <a class="btn btn-sm btn-primary mg-r1" ng-click="addArea()" ng-show="roleList.includes('setting.regional.create')" data-toggle='tooltip' title='Add Data Area'><i class="fa fa-plus"></i> Add</a>
+        </div>
+        </div>
+        <div class="ibox-content">
+            <div ng-show="isLoading" class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+            <table ng-hide="isLoading" class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+                <thead>
+                <tr>
+                    <th>Area Name</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalArea" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id=""><% modalAreaTitle %></h4>
+            </div>
+            <form class="form-horizontal formz">
+                <div class="modal-body">
+                <div class="form-group required">
+                    <label for="">Name</label>
+                    <input type="text" class="form-control" name="name" ng-model="areaName" placeholder="Area Name">
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

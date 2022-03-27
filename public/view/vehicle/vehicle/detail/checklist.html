@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table display compact nowrap table-borderless">
+      <tbody>
+        <tr>
+          <td style="width:25%;">
+            <H4>Kelengkapan Vehicle</H4>
+          </td>
+          <td></td>
+        </tr>
+        <tr ng-if="item">
+          <td>Petugas</td>
+          <td>: <% item.officer %></td>
+        </tr>
+        <tr ng-if="item">
+          <td>Tanggal Pengecekan</td>
+          <td>: <% item.date_transaction|fullDate %></td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table display compact nowrap table-bordered">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th class="text-center">Ada</th>
+          <th class="text-center">Berfungsi</th>
+          <th class="text-center">Kondisi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="val in detail_checklist">
+          <td><% val.vehicle_checklist.name %></td>
+          <td class="text-center"><span ng-bind-html="val.exist_name_html"></span></td>
+          <td class="text-center"><span ng-bind-html="val.function_name_html"></span></td>
+          <td class="text-center"><span ng-bind-html="val.condition_html"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

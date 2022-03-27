@@ -1,0 +1,58 @@
+<div class="col-md-8">
+  <form class="form-horizontal" ng-submit="submitForm()">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Kas Bon</h5>
+      </div>
+      <div class="ibox-content">
+
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-change="onModifyDate()" ng-model="formData.date_transaction" datepick>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Jatuh Tempo</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.due_date" datepick disabled>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Karyawan</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Karyawan'" chosen allow-single-deselect="false" ng-model="formData.employee_id" ng-options="s.id as s.name for s in data.employee">
+              <option value=""></option>
+            </select>
+            <!-- <p><% data.contact.name %></p> -->
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Jumlah</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" ng-model="formData.total_cash_advance" jnumber2 only-num>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Keperluan</label>
+          <div class="col-md-9">
+            <textarea class="form-control" ng-model="formData.description" rows="4"></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="finance.kas_bon" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,33 @@
+<div class="sk-container col-md-12">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+  <form id="forms">
+    <p><b>* Jika user yang login adalah admin, maka semua hak akses akan diizinkan secara otomatis</b></p>
+    <div id='privilege_table'>
+        <div class="row">
+            <div class="pd-4 col-md-10 bb-1 b-gray">
+                <b class='text-uppercase'>
+                    User Previlege
+                </b>
+            </div>
+            <div class="pd-4 bb-1 b-gray col-md-2 text-center">
+                <input class="pull-right" type="checkbox" ng-model="all"  ng-change="alls()" ng-true-value="1" ng-false-value="0">
+            </div>
+        </div>
+
+        <span id="previlage_body"></span>
+
+        <div class="row mg-t5">
+            <div class="col-md-12 ">
+                <button type="button" ng-click="submitForm()" class="btn btn-sm btn-primary btn-sm pull-right">Save</button>  
+            </div>
+        </div>
+    </div>
+    
+
+  </form>
+</div>
+

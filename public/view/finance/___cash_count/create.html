@@ -1,0 +1,102 @@
+<div class="col-md-12">
+  <form class="form-horizontal" ng-submit="submitForm()">
+    <div class="row">
+      <div class="col-md-6">
+
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>Penghitungan Kas Kecil</h5>
+          </div>
+          <div class="ibox-content">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Branch</label>
+              <div class="col-md-9">
+                <select class="form-control" ng-disabled="is_freeze" ng-change="companyChange(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label"></label>
+              <div class="col-md-9">
+                <button type="button" ng-click="toggleFreeze(formData.company_id)" ng-disabled="!formData.company_id" class="btn btn-<%is_freeze?'warning':'success'%> btn-sm btn-block"><% is_freeze?'Lepaskan':'Bekukan' %> Akun Kas</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Tanggal</label>
+              <div class="col-md-9">
+                <input type="text" datepick readonly class="form-control" ng-model="formData.date_transaction">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Jumlah Saldo</label>
+              <div class="col-md-9">
+                <input type="text" jnumber2 only-num class="form-control" ng-model="formData.saldo_awal" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Nama Petugas</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.officer" >
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Keterangan</label>
+              <div class="col-md-9">
+                <textarea ng-model="formData.description" rows="4" class="form-control"></textarea>
+              </div>
+            </div>
+
+          </div>
+          <div class="ibox-footer">
+            <button type="button" ng-click="goBack(formData.company_id)" class="btn btn-sm btn-warning">Kembali</button>
+            <button type="submit" ng-disabled="!formData.saldo_awal" class="btn btn-sm btn-primary">Save</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>Daftar Uang Kas</h5>
+          </div>
+          <div class="ibox-content">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Nominal</th>
+                  <th>Jumlah</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="(i, val) in cash">
+                  <td><%val.name%></td>
+                  <td>
+                    <input type="text" jnumber2 only-num ng-change="cash[i].total=cash[i].amount*cash[i].value;hitungTotal()" class="form-control" ng-model="cash[i].amount">
+                  </td>
+                  <td>
+                    <input type="text" jnumber2 only-num disabled class="form-control" ng-model="cash[i].total">
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="2" class="text-right">TOTAL SALDO</th>
+                  <th><% formData.total_saldo|number %></th>
+                </tr>
+                <!-- <tr>
+                  <th colspan="2" class="text-right">Talangan Kasir</th>
+                  <th><% formData.bailout|number %></th>
+                </tr> -->
+              </tfoot>
+            </table>
+          </div>
+          <!-- <pre><% jStyle(formData) %></pre> -->
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

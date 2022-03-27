@@ -1,0 +1,56 @@
+<form class='form-horizontal'>
+    <div class="form-group" ng-if='!companyId'>
+          <label class="col-md-3 control-label"><% $root.solog.label.general.branch %></label>
+          <div class="col-md-9">
+                <branch-select-input ng-model='formData.company_id'></branch-select-input>
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.code %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.code">
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.racks.name %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.name">
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.address %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.address">
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.volume_capacity %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.capacity_volume">
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.weight_capacity %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.capacity_tonase">
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.rack.luas_lahan %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.luas_lahan">
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.rack.luas_bangunan %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.luas_bangunan">
+          </div>
+    </div>
+    <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.rack.luas_gudang %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.luas_gudang">
+          </div>
+    </div>
+</form>

@@ -1,0 +1,439 @@
+<div class="col-sm-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Create</h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+      <div class="form-group" ng-class="{ 'has-error' : formError.name }">
+        <label class="col-md-3"><% $root.solog.label.general.category %></label>
+        <div class="col-md-9">
+          <item-category-select-input is-pallet='is_pallet' is-container-part='is_container_part' is-container-yard='is_container_yard' ng-model='formData.category_id' ng-change='searchData()'></item-category-select-input>
+          <div ng-if="formError.name">
+            <small class="text-danger font-bold" ng-repeat-start="val in formError.category_id" ng-bind="'* '+val"></small><br ng-repeat-end>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error' : formError.code }">
+        <label class="col-md-3">No. Item</label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" id="codeInput" ng-model="formData.code" >
+          <div ng-if="formError.code">
+            <small class="text-danger font-bold" ng-repeat-start="val in formError.code" ng-bind="'* '+val"></small><br ng-repeat-end>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error' : formError.name }">
+        <label class="col-md-3"><% $root.solog.label.general.name %></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="nameInput" ng-model="formData.name" >
+          <div ng-if="formError.name">
+            <small class="text-danger font-bold" ng-repeat-start="val in formError.name" ng-bind="'* '+val"></small><br ng-repeat-end>
+          </div>
+        </div>
+      </div>
+      <span ng-hide='hide_barcode'>
+          <div class="form-group" ng-class="{ 'has-error' : formError.barcode }">
+            <label class="col-md-3">Barcode</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" id="barcodeInput" ng-model="formData.barcode" >
+              <div ng-if="formError.barcode">
+                <small class="text-danger font-bold" ng-repeat-start="val in formError.barcode" ng-bind="'* '+val"></small><br ng-repeat-end>
+              </div>
+            </div>
+          </div>
+      </span>
+      <span ng-hide='hide_sku'>
+          <div class="form-group" ng-class="{ 'has-error' : formError.sku }">
+            <label class="col-md-3">SKU</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.sku" >
+              <div ng-if="formError.sku">
+                <small class="text-danger font-bold" ng-repeat-start="val in formError.sku" ng-bind="'* '+val"></small><br ng-repeat-end>
+              </div>
+            </div>
+          </div>
+      </span>
+      <span ng-hide='hide_piece_id'>
+          <div class="form-group" ng-class="{ 'has-error' : formError.piece_id }">
+            <label class="col-md-3">Unit</label>
+            <div class="col-md-9">
+                <units-select-input ng-model='formData.piece_id' />
+            </div>
+          </div>
+       </span>
+      <span ng-hide='hide_is_expired'>
+          <div class="form-group" ng-class="{ 'has-error' : formError.is_expired }">
+            <label class="col-md-3">Have an Expired</label>
+            <div class="col-md-9">
+              <div class="checkbox checkbox-primary">
+                <input type="checkbox" id="is_expired" ng-model="formData.is_expired" ng-true-value="1" ng-false-value="0">
+                <label for="is_expired"></label>
+              </div>
+            </div>
+          </div>
+      </span>
+      <span ng-hide='hide_is_internal'>
+          <div class="form-group" ng-class="{ 'has-error' : formError.is_service }">
+            <label class="col-md-3">Service</label>
+            <div class="col-md-9">
+              <div class="checkbox checkbox-primary">
+                <input type="checkbox" id="is_service" ng-model="formData.is_service" ng-true-value="1" ng-false-value="0">
+                <label for="is_service"></label>
+              </div>
+            </div>
+          </div>
+      </span>
+      <span ng-show="$root.settings.general.is_use_sales">
+          <span ng-hide="hide_merchandise">
+              <span>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.is_merchandise }">
+                    <label class="col-md-3">Merchandise Item</label>
+                    <div class="col-md-9">
+                      <div class="checkbox checkbox-primary">
+                        <input type="checkbox" id="is_merchandise" ng-model="formData.is_merchandise" ng-true-value="1" ng-false-value="0">
+                        <label for="is_merchandise"></label>
+                      </div>
+                    </div>
+                  </div>
+              </span>
+          </span>
+      </span>
+      <div class="form-group" ng-class="{ 'has-error' : formError.description }">
+        <label class="col-md-3">Description</label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" ng-model="formData.description" >
+        </div>
+      </div>
+      <span ng-hide='hide_is_internal'>
+          <div class="form-group">
+            <label class="col-md-3">Internal / WH Item</label>
+            <div class="col-md-9">
+              <div class="radio radio-primary radio-inline">
+                <input type="radio" id="is_internal" ng-model="formData.item_type" ng-value="1">
+                <label for="is_internal">Internal</label>
+              </div>
+              <div class="radio radio-primary radio-inline">
+                <input type="radio" id="is_wh" ng-model="formData.item_type" ng-value="2">
+                <label for="is_wh">WH Item</label>
+              </div>
+              <div class="radio radio-primary radio-inline">
+                <input type="radio" id="is_both" ng-model="formData.item_type" ng-value="3">
+                <label for="is_both">Both</label>
+              </div>
+            </div>
+          </div>
+      </span>
+
+
+      <span ng-hide='hide_type'>
+          <div class="form-group">
+            <label class="col-md-3"><% $root.solog.label.general.type %></label>
+            <div class="col-md-9">
+
+                <label class='checkbox-inline' for="is_dangerous_good">
+                    <input type="checkbox" ng-model='formData.is_dangerous_good' ng-true-value="1" ng-false-value="0">
+                    <span class='mg-l2'>
+                        <% $root.solog.label.general.is_dangerous_good %>
+                    </span>
+                </label>
+
+                <label class='checkbox-inline' for="is_fast_moving">
+                    <input type="checkbox" ng-model='formData.is_fast_moving' ng-true-value="1" ng-false-value="0">
+                    <span class='mg-l2'>
+                        <% $root.solog.label.general.is_fast_moving %>
+                    </span>
+                </label>
+            </div>
+          </div>
+      </span>
+
+        <span ng-hide='hide_default_rack_id'>
+            <div class="form-group mg-t2">
+                <label class="col-md-3"><% $root.solog.label.general.default_rack %></label>
+                <div class="col-md-9">
+                    <racks-select-input ng-model="formData.default_rack_id" />
+                </div>
+            </div>
+        </span>
+
+    </div>
+  </div>
+</div>
+<div class="col-sm-12 col-md-12">
+    <span ng-hide='hide_detail'>
+          <div class="tabs-container">
+            <ul class="nav nav-tabs">
+              <li class="active"><a data-toggle="tab" data-target="#general">General</a></li>
+              <!-- <li><a data-toggle="tab" data-target="#picture">Pictures</a></li> -->
+              <li><a data-toggle="tab" data-target="#dimension">Dimension</a></li>
+              <li><a data-toggle="tab" data-target="#info">Info & Price</a></li>
+              <li><a data-toggle="tab" data-target="#account">Account</a></li>
+            </ul>
+            <div class="tab-content">
+              <!-- TAB GENERAL -->
+              <div class="tab-pane active" id="general">
+                <div class="panel-body form-horizontal">
+                  <!-- START -->
+                  <div class="form-group" ng-class="{ 'has-error' : formError.part_number }">
+                    <label class="col-md-3">Part Number</label>
+                    <div class="col-md-9">
+                      <input type="text" class="form-control" ng-model="formData.part_number" >
+                      <div ng-if="formError.part_number">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.part_number" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.is_stock }">
+                    <label class="col-md-3">Stock Item</label>
+                    <div class="col-md-9">
+                      <div class="checkbox checkbox-primary">
+                        <input type="checkbox" id="is_stock" ng-model="formData.is_stock" ng-true-value="1" ng-false-value="0">
+                        <label for="is_service"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.minimal_stock }">
+                    <label class="col-md-3">Minimum Stock</label>
+                    <div class="col-md-9">
+                      <input type="text" class="form-control" ng-model="formData.minimal_stock" >
+                      <div ng-if="formError.minimal_stock">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.minimal_stock" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.account_id }">
+                    <label class="col-md-3">Item Account</label>
+                    <div class="col-md-9">
+                      <select class="form-control" data-placeholder-text-single="'Pick an Item Account'" chosen allow-single-deselect="true" ng-model="formData.account_id" ng-options="s.id as s.code+'-'+s.name for s in data.account">
+                        <option value=""></option>
+                      </select>
+                      <div ng-if="formError.account_id">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.account_id" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END -->
+                </div>
+              </div>
+              <!-- TAB PICTURES
+              <div class="tab-pane" id="picture">
+                <div class="panel-body form-horizontal">
+                </div>
+              </div>
+              <!-- TAB DIMENSION -->
+              <div class="tab-pane" id="dimension">
+                <div class="panel-body form-horizontal">
+                  <div class="form-group" ng-class="{ 'has-error' : formError.long }">
+                    <label class="col-md-3">Length (cm)</label>
+                    <div class="col-md-9">
+                      <input type="text" jnumber2 only-number class="form-control" ng-model="formData.long" >
+                      <div ng-if="formError.long">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.long" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.wide }">
+                    <label class="col-md-3">Width (cm)</label>
+                    <div class="col-md-9">
+                      <input type="text" jnumber2 only-number class="form-control" ng-model="formData.wide" >
+                      <div ng-if="formError.wide">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.wide" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.height }">
+                    <label class="col-md-3">Height (cm)</label>
+                    <div class="col-md-9">
+                      <input type="text" jnumber2 only-number class="form-control" ng-model="formData.height" >
+                      <div ng-if="formError.height">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.height" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3">Volume (m3)</label>
+                    <div class="col-md-9">
+                      <input type="text" readonly jnumber2 only-number class="form-control" ng-model="formData.volume" >
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.tonase }">
+                    <label class="col-md-3">Weight (kg)</label>
+                    <div class="col-md-9">
+                      <input type="text" jnumber2 only-number class="form-control" ng-model="formData.tonase" >
+                      <div ng-if="formError.tonase">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.tonase" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- TAB INFO & PRICE -->
+              <div class="tab-pane" id="info">
+                <div class="panel-body form-horizontal">
+                  <div class="form-group" ng-class="{ 'has-error' : formError.std_purchase }">
+                    <label class="col-md-3">Minimum PO</label>
+                    <div class="col-md-9">
+                      <input type="text" jnumber2 only-num class="form-control" ng-model="formData.std_purchase" >
+                      <div ng-if="formError.std_purchase">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.std_purchase" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.vendor_path_no }">
+                    <label class="col-md-3">Vendor Path No.</label>
+                    <div class="col-md-9">
+                      <input type="text" class="form-control" ng-model="formData.vendor_path_no" >
+                      <div ng-if="formError.vendor_path_no">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.vendor_path_no" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.brand_name }">
+                    <label class="col-md-3">Brand Name</label>
+                    <div class="col-md-9">
+                      <input type="text" class="form-control" ng-model="formData.brand_name" >
+                      <div ng-if="formError.brand_name">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.brand_name" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.main_supplier_id }">
+                    <label class="col-md-3">Default Supplier / Vendor</label>
+                    <div class="col-md-9">
+                      <select class="form-control" data-placeholder-text-single="'Pick an Item Account'" chosen allow-single-deselect="true" ng-model="formData.main_supplier_id" ng-options="s.id as s.name for s in data.supplier">
+                        <option value=""></option>
+                      </select>
+                      <div ng-if="formError.main_supplier_id">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.main_supplier_id" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.harga_beli }">
+                    <label class="col-md-3">Purchase Price</label>
+                    <div class="col-md-9">
+                      <input type="text" jnumber2 only-num class="form-control" ng-model="formData.harga_beli" >
+                      <div ng-if="formError.harga_beli">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.harga_beli" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.harga_jual }">
+                    <label class="col-md-3">Sale Price</label>
+                    <div class="col-md-9">
+                      <input type="text" jnumber2 only-num class="form-control" ng-model="formData.harga_jual" >
+                      <div ng-if="formError.harga_jual">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.harga_jual" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- TAB ACCOUNT -->
+              <div class="tab-pane" id="account">
+                <div class="panel-body form-horizontal">
+                  <!-- START -->
+                  <div class="form-group">
+                    <label class="col-md-3">Transaction Type</label>
+                    <div class="col-md-9">
+                      <div class="radio radio-primary radio-inline">
+                        <input type="radio" id="is_accrual" ng-model="formData.is_accrual" ng-value="1">
+                        <label for="is_accrual">Accrual Basic</label>
+                      </div>
+                      <div class="radio radio-primary radio-inline">
+                        <input type="radio" id="is_cash" ng-model="formData.is_accrual" ng-value="0">
+                        <label for="is_cash">Cash Basic</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3">Cost Type</label>
+                    <div class="col-md-9">
+                      <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="is_bbm" ng-model="formData.is_bbm" ng-true-value="1" ng-false-value="0">
+                        <label for="is_bbm">Fuel / BBM</label>
+                      </div>
+                      <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="is_operational" ng-model="formData.is_operational" ng-true-value="1" ng-false-value="0">
+                        <label for="is_operational">Operational Cost</label>
+                      </div>
+                      <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="is_invoice" ng-model="formData.is_invoice" ng-true-value="1" ng-false-value="0">
+                        <label for="is_invoice">Invoice</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.account_purchase_id }">
+                    <label class="col-md-3">Account Cost</label>
+                    <div class="col-md-9">
+                      <select class="form-control" data-placeholder-text-single="'Pick an Account'" chosen allow-single-deselect="true" ng-model="formData.account_purchase_id" ng-options="s.id as s.code+'-'+s.name group by s.parent.name for s in data.account">
+                        <option value=""></option>
+                      </select>
+                      <div ng-if="formError.account_purchase_id">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.account_purchase_id" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.account_sale_id }">
+                    <label class="col-md-3">Account Sale</label>
+                    <div class="col-md-9">
+                      <select class="form-control" data-placeholder-text-single="'Pick an Account'" chosen allow-single-deselect="true" ng-model="formData.account_sale_id" ng-options="s.id as s.code+'-'+s.name group by s.parent.name for s in data.account">
+                        <option value=""></option>
+                      </select>
+                      <div ng-if="formError.account_sale_id">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.account_sale_id" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.account_payable_id }">
+                    <label class="col-md-3">Account Payable</label>
+                    <div class="col-md-9">
+                      <select class="form-control" data-placeholder-text-single="'Pick an Account'" chosen allow-single-deselect="true" ng-model="formData.account_payable_id" ng-options="s.id as s.code+'-'+s.name group by s.parent.name for s in data.account">
+                        <option value=""></option>
+                      </select>
+                      <div ng-if="formError.account_payable_id">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.account_payable_id" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{ 'has-error' : formError.account_cash_id }">
+                    <label class="col-md-3">Account Cash</label>
+                    <div class="col-md-9">
+                      <select class="form-control" data-placeholder-text-single="'Pick an Account'" chosen allow-single-deselect="true" ng-model="formData.account_cash_id" ng-options="s.id as s.code+'-'+s.name group by s.parent.name for s in data.account">
+                        <option value=""></option>
+                      </select>
+                      <div ng-if="formError.account_cash_id">
+                        <small class="text-danger font-bold" ng-repeat-start="val in formError.account_cash_id" ng-bind="'* '+val"></small><br ng-repeat-end>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3">Overtime</label>
+                    <div class="col-md-9">
+                      <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="is_overtime" ng-model="formData.is_overtime" ng-true-value="1" ng-false-value="0">
+                        <label for="is_overtime"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3">Tax</label>
+                    <div class="col-md-9">
+                      <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="is_ppn" ng-model="formData.is_ppn" ng-true-value="1" ng-false-value="0">
+                        <label for="is_ppn"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END -->
+                </div>
+              </div>
+            </div>
+          </div>
+    </span>
+  <div class="ibox">
+    <div class="ibox-content">
+      <button type="button" ng-click="store()" ng-disabled='disBtn' class="btn btn-sm btn-primary" name="button"><% $root.solog.label.general.save %></button>
+      <button type="button" ng-click="back()" class="btn btn-sm btn-warning" name="button"><% $root.solog.label.general.back %></button>
+    </div>
+  </div>
+</div>

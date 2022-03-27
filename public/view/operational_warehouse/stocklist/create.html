@@ -1,0 +1,141 @@
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3">Warehouse From</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="changeWarehouseFrom(formData.warehouse_from_id)" data-placeholder-text-single="'Choose Warehouse Asal'" chosen allow-single-deselect="true" ng-model="formData.warehouse_from_id" ng-options="s.id as s.name for s in data.warehouse">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Storage From</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Storage Asal'" chosen allow-single-deselect="true" ng-model="formData.rack_from_id" ng-options="s.id as s.name for s in rack_from">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Warehouse To</label>
+        <div class="col-md-9">
+          <select class="form-control" ng-change="changeWarehouseTo(formData.warehouse_to_id)" data-placeholder-text-single="'Choose Warehouse Tujuan'" chosen allow-single-deselect="true" ng-model="formData.warehouse_to_id" ng-options="s.id as s.name for s in data.warehouse">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Storage To</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Storage Tujuan'" chosen allow-single-deselect="true" ng-model="formData.rack_to_id" ng-options="s.id as s.name for s in rack_to">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3">Date</label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" ng-model="formData.date_transaction" datepick>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Description</label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" ng-model="formData.description">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3">Item</label>
+        <div class="col-md-9">
+          <div class="input-group" ng-click="cariPallet()">
+            <input type="text" readonly class="form-control" ng-model="detailData.item_name">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Qty</label>
+        <div class="col-md-3">
+          <input type="text" class="form-control qty" ng-change='yo()' ng-model="detailData.qty" jnumber2 only-num>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">In Stock</label>
+        <div class="col-md-3">
+          <input type="text" class="form-control" ng-model="detailData.stock" readonly jnumber2 only-num>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3"></label>
+        <div class="col-md-9">
+          <button type="button" class="btn btn-sm btn-primary btn-block" ng-disabled="is_allow_insert()" ng-click="appendTable()"><i class="fa fa-plus"></i> Add ke Tabel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered table-striped" id="appendTable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th style="width:5%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+      <!-- <pre><% jStyle(formData) %></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <button type="button" ng-click="submitForm()" ng-disabled="disBtn" class="btn btn-sm btn-primary" name="button">Save</button>
+      <a ui-sref="operational_warehouse.mutasi_transfer" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</div>
+<!-- modal pallet master -->
+<div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Item List</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-striped" id="pallet_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Code</th>
+              <th>Name</th>
+              <th class='hidden'>Barcode</th>
+              <th>Type</th>
+              <th>Measurement</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

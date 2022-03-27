@@ -1,0 +1,22 @@
+<table class="table display compact nowrap table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>No. PL</th>
+      <th>Tanggal</th>
+      <th>Rute</th>
+      <th>Vehicle</th>
+      <th>Berangkat</th>
+      <th>Sampai</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="val in data.item">
+      <td><% val.code %></td>
+      <td><% val.date_manifest %></td>
+      <td><% val.route %></td>
+      <td><% val.nopol %></td>
+      <td><span ng-if="val.depart"><% val.depart|fullDateTime %></span></td>
+      <td><span ng-if="val.arrive"><% val.arrive|fullDateTime %></span></td>
+    </tr>
+  </tbody>
+</table>

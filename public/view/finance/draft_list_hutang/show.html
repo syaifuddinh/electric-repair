@@ -1,0 +1,90 @@
+<div class="col-md-12">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><i class="fa fa-fax"></i> Detail Draft Hutang</h5>
+      </div>
+      <div class="ibox-content">
+          <div class="sk-spinner sk-spinner-wave">
+              <div class="sk-rect1"></div>
+              <div class="sk-rect2"></div>
+              <div class="sk-rect3"></div>
+          </div>
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td style="width:25%">Vendor</td>
+                  <td>: <span><% item.contact.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Tipe Transaksi</td>
+                  <td>: <span><% item.type_transaction.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Tanggal Transaksi</td>
+                  <td>: <span><% item.date_transaction|fullDate %></span></td>
+                </tr>
+                <tr>
+                  <td>Jatuh Tempo</td>
+                  <td>: <span><% item.date_tempo|fullDate %></span></td>
+                </tr>
+                <tr>
+                    <td>Total Hutang</td>
+                    <td>: <span><% item.total_hutang|number %></span></td>
+                </tr>
+                <tr>
+                    <td>Sisa</td>
+                    <td>: <span><% item.sisa_hutang|number %></span></td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>: <span><% findJsonId(item.status,status).name %></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><i class="fa fa-money"></i> Detail Hutang</h5>
+      </div>
+      <div class="ibox-content">
+          <div class="sk-spinner sk-spinner-wave">
+              <div class="sk-rect1"></div>
+              <div class="sk-rect2"></div>
+              <div class="sk-rect3"></div>
+          </div>
+        <table class="table display compact nowrap table-striped">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Kode</th>
+              <th>Keterangan</th>
+              <th class="text-right">Hutang</th>
+              <th class="text-right">Pembayaran</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="val in detail">
+              <td><% val.no %></td>
+              <td><% val.code %></td>
+              <td><% val.description %></td>
+              <td class="text-right"><% val.credit|number %></td>
+              <td class="text-right"><% val.debet|number %></td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-right font-bold">Sisa Hutang : </td>
+              <td colspan="2" class="text-right"><% item.sisa_hutang|number %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="finance.draft_list_hutang" class="btn btn-sm btn-warning">Kembali</a>
+      </div>
+    </div>
+  </div>
+  

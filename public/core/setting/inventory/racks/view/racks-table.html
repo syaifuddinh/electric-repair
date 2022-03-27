@@ -1,0 +1,136 @@
+
+
+<div class="sk-container">
+  <div class="sk-spinner sk-spinner-wave">
+    <div class="sk-rect1"></div>
+    <div class="sk-rect2"></div>
+    <div class="sk-rect3"></div>
+  </div>
+
+  <div>
+      <solog-modal title='modalTitle' on-submit='submitForm()'>
+        <div>
+         <span ng-hide='hide_warehouse'>
+                <div class="form-group required">
+                  <label class="col-md-3 control-label"><% $root.solog.label.general.warehouse %></label>
+                  <div class="col-md-9">
+                    <warehouses-select-input ng-model='formData.warehouse_id'></warehouses-select-input>
+                  </div>
+                </div>
+         </span>
+        <div class="form-group required">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.code %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.code">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.storage_type %></label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Type Storage'" chosen allow-single-deselect="false" ng-model="formData.storage_type_id" ng-options="s.id as s.name for s in data.storage_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.volume_capacity %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.capacity_volume">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.weight_capacity %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.capacity_tonase">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.max %> <% $root.solog.label.general.pallet %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.max_pallet">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.luas %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.luas">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.is_floor_stake %></label>
+          <div class="col-md-9">
+            <label class="radio-inline">
+                <input type="radio" ng-model='formData.is_floor_stake' ng-value='0'> 
+                <span class='mg-l2'>
+                    <% $root.solog.label.general.no %>
+                </span>
+            </label>
+            <label class="radio-inline">
+                <input type="radio" ng-model='formData.is_floor_stake' ng-value='1'> 
+                <span class='mg-l2'>
+                    <% $root.solog.label.general.yes %>
+                </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label">For dangerous goods ?</label>
+          <div class="col-md-9">
+            <label class="radio-inline">
+                <input type="radio" ng-model='formData.is_dangerous_good' ng-value='0' class='mg-r2'> 
+                <span class='mg-l2'>
+                    <% $root.solog.label.general.no %>
+                </span>
+            </label>
+            <label class="radio-inline">
+                <input type="radio" ng-model='formData.is_dangerous_good' ng-value='1' class='mg-r2'> 
+                <span class='mg-l2'>
+                    <% $root.solog.label.general.yes %>
+                </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label"><% $root.solog.label.general.map %></label>
+          <div class="col-md-9">
+            <warehouse-maps-select-input warehouse-id='formData.warehouse_id' ng-model='formData.warehouse_map_id'>
+          </div>
+        </div>
+    </div>
+    </solog-modal>
+  </div>
+
+  <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <tr>
+        <td class="text-right btn-area">
+          <button ng-show="$root.roleList.includes('inventory.setting.bin_location.create')" type="button" ng-click="add()" class="btn btn-sm btn-primary mg-r1"><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table display compact nowrap table-bordered" id="rack_datatable">
+    <thead>
+      <tr>
+        <th rowspan='2' style='vertical-align:middle'><% $root.solog.label.general.branch %></th>
+        <th rowspan='2' style='vertical-align:middle'><% $root.solog.label.general.warehouse %></th>
+        <th rowspan='2' style='vertical-align:middle'><% $root.solog.label.general.code %></th>
+        <th rowspan='2' style='vertical-align:middle'>Type Storage</th>
+        <th colspan='2' class='text-center'><% $root.solog.label.general.volume_capacity %></th>
+        <th colspan='2' class='text-center'><% $root.solog.label.general.weight_capacity %></th>
+        <th rowspan='2'></th>
+      </tr>
+      <tr>
+          <th><% $root.solog.label.general.total %></th>
+          <th><% $root.solog.label.general.used %></th>
+          <th><% $root.solog.label.general.total %></th>
+          <th><% $root.solog.label.general.used %></th>
+      </tr>
+    </thead>
+  </table>
+</div>

@@ -1,0 +1,61 @@
+<div class="col-md-8" ng-show='is_filter'>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-filter"></i> Filter</h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3">Nama Asset</label>
+        <div class="col-md-9">
+          <select ng-change='searchData()'  class="form-control" data-placeholder-text-single="'Semua Asset'" chosen allow-single-deselect="false" ng-model="filterData.asset_id" ng-options="s.id as s.name for s in data.asset">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Periode</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input ng-change='searchData()'  type="text" class="input-sm form-control" ng-model="filterData.start_date" datepick/>
+            <span class="input-group-addon">to</span>
+            <input ng-change='searchData()'  type="text" class="input-sm form-control" ng-model="filterData.end_date" datepick />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-footer" id="export_button">
+        <button class="btn btn-warning" ng-click='reset_filter()'>Reset</button>
+<!--        <button class="btn btn-primary" ng-click='filter()'>Cari</button>-->
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Depresiasi Asset</h5>
+      <div class="ibox-tools">
+        <button ng-click='is_filter = !is_filter' class="btn btn-success btn-sm font-bold"><i class="fa fa-filter"></i> Filter</button>
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="finance.depresiasi_asset.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+      </div>
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nama Asset</th>
+            <th>Tgl Depresiasi</th>
+            <th>Nilai Depresiasi</th>
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>

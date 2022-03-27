@@ -1,0 +1,69 @@
+<div ng-if="isFilter">
+  <div class="ibox-title">
+    <h5><% solog.label.general.filter %></h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% solog.label.general.branch %></label>
+        <div class="col-md-9">
+          <branch-select-input ng-change='searchData()' ng-model="formData.company_id" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3 control-label">Tipe Asset</label>
+        <div class="col-md-9">
+          <select ng-change='searchData()' class="form" data-placeholder-text-single="'Choose Tipe Asset'" chosen allow-single-deselect="false" ng-model="formData.asset_type">
+            <option value=""></option>
+            <option value="1">Asset Tidak Berwujud</option>
+            <option value="1">Asset Berwujud</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+<!--      <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button>-->
+    </div>
+  </form>
+</div>
+
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Daftar Saldo Awal Asset</h5>
+      <div class="ibox-tools">
+        <span id="button_export_saldo_awal"></span>
+          <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+          <!-- <a href="<%baseUrl+'/excel/saldo_awal_asset_export'%>" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i>
+            Export</a> -->
+        <a class="btn btn-sm btn-primary" ui-sref="finance.saldoawal_asset.create" ng-show="roleList.includes('finance.asset.first_saldo_asset.create')"><i class="fa fa-plus"></i> Add</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+      </div>
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <th>Branch</th>
+            <th>Kode</th>
+            <th>Nama</th>
+            <th>Nama Kelompok</th>
+            <th>Tipe Asset</th>
+            <th>Metode Depresiasi</th>
+            <th>Status</th>
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

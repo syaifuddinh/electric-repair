@@ -1,0 +1,608 @@
+<div class="sk-container row" ng-cloak>
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <div class="col-md-12">
+        <table class="table display compact nowrap table-borderless">
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td class="text-right">
+                        <a ng-click="cetak()" class="btn btn-xs btn-default"><i class="fa fa-file-o"></i> Cetak</a>
+                        <button type="button" ng-if="vendor_job.kpi_status_data.status==4" name="button" class="btn btn-xs btn-success font-bold" ng-click="editService(item)"><i class="fa fa-wrench"></i> Edit Layanan</button>
+                        <button ng-if="vendor_job.kpi_status_data.status==4" type="button" class="btn btn-xs btn-info font-bold"><% durasi %></button>
+                        
+                        <a ng-show="roleList.includes('operational.vendor_job.edit')" ui-sref="operational.vendor_job.edit({id:item.id})" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> Edit</a>
+                        
+                        <span ng-include='"view/operational/vendor_job/detail/kpi_status.html"'></span>
+                        
+                        <a href="<%baseUrl+'/operational/report/export_bdv/'+item.id%>" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-file-pdf-o"></i> BDV</a>
+                        <button type="button" ng-click="state.reload()" class="btn btn-default btn-xs"><i class="fa fa-refresh"></i> Refresh</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <table class="table display compact nowrap table-borderless">
+            <tbody>
+                <tr>
+                    <td style="width:25%;">No. Work Order</td>
+                    <td>: <span><% item.work_order.code %></span></td>
+                </tr>
+                <tr>
+                    <td>No. Vendor Job</td>
+                    <td>: <span><% item.code %></span></td>
+                </tr>
+                <tr>
+                    <td>No. Invoice</td>
+                    <td>: <span><% item.invoice_detail[0].invoice.code %></span></td>
+                </tr>
+                <tr ng-if='item.service_type_id!=12 && item.service_type_id!=13 && item.service_type_id!=14 && item.service_type_id!=15'>
+                    <td>No. BL</td>
+                    <td>: <span><% item.no_bl %></span></td>
+                </tr>
+                <tr>
+                    <td>No. PO Customer</td>
+                    <td>: <span><% item.no_po_customer %></span></td>
+                </tr>
+                <tr>
+                    <td>Customer</td>
+                    <td>: <span class="font-bold"><% item.customer.name %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id!=6 && item.service_type_id!=7 && item.service_type_id!=12 && item.service_type_id!=13 && item.service_type_id!=14 && item.service_type_id!=15">
+                    <td>Sender</td>
+                    <td>: <span ng-if="item.sender_id"><% item.sender.name+', '+item.sender.address %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id!=6 && item.service_type_id!=7 && item.service_type_id!=12 && item.service_type_id!=13 && item.service_type_id!=14 && item.service_type_id!=15">
+                    <td>Receiver</td>
+                    <td>: <span ng-if="item.receiver_id"><% item.receiver.name+', '+item.receiver.address %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id!=6 && item.service_type_id!=7 && item.service_type_id!=12 && item.service_type_id!=13 && item.service_type_id!=14 && item.service_type_id!=15">
+                    <td>Tertagih</td>
+                    <td ng-if="item.collectible_id">: <span><% item.collectible.name+', '+item.collectible.address %></span></td>
+                </tr>
+                <tr>
+                    <td>Input Time</td>
+                    <td>: <span ng-if="item.created_at"><% item.created_at|fullDateTime %></span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <%
+                        item.service_type_id!=12 && item.service_type_id!=13 && item.service_type_id!=14 && item.service_type_id!=15 ?
+                        'Shipment Date' : 'Date'
+                        %>
+                    </td>
+                    <td>: <span ng-if="item.shipment_date"><% item.shipment_date|fullDate %></span></td>
+                </tr>
+                <tr ng-if='item.moda_id == 3 && item.service_type_id == 1'>
+                    <td>Agent Name</td>
+                    <td>: <span><% item.agent_name %></span></td>
+                </tr>
+                <tr ng-if='item.moda_id == 3 && item.service_type_id == 1'>
+                    <td>No AWB</td>
+                    <td>: <span><% item.awb_number %></span></td>
+                </tr>
+                <tr ng-if='item.moda_id == 3 && item.service_type_id == 1'>
+                    <td>Flight Code</td>
+                    <td>: <span><% item.flight_code %></span></td>
+                </tr>
+                <tr ng-if='item.moda_id == 3 && item.service_type_id == 1'>
+                    <td>Flight Route</td>
+                    <td>: <span><% item.flight_route %></span></td>
+                </tr>
+                <tr ng-if='item.moda_id == 3 && item.service_type_id == 1'>
+                    <td>Flight Date</td>
+                    <td>: <span><% item.flight_date | fullDate %></span></td>
+                </tr>
+                <tr ng-if='item.moda_id == 3 && item.service_type_id == 1'>
+                    <td>Flight Date</td>
+                    <td>: <span><% item.cargo_ready_date | fullDate %></span></td>
+                </tr>
+                <tr ng-if='item.moda_id == 3 && item.service_type_id == 1'>
+                    <td>House AWB</td>
+                    <td>: <span><% item.house_awb %></span></td>
+                </tr>
+                <tr ng-if='item.moda_id == 3 && item.service_type_id == 1'>
+                    <td>HS Code</td>
+                    <td>: <span><% item.hs_code %></span></td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>: <span><% item.description %></span></td>
+                </tr>
+                <tr>
+                    <td>Duration</td>
+                    <td>: <span><% durasi %></span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    <div class="col-md-6">
+        <table class="table display compact nowrap table-borderless">
+            <tbody>
+                <tr ng-if="item.service_type_id!=6&&item.service_type_id!=7">
+                    <td style="width:25%;">Route</td>
+                    <td>: <span class="font-bold"><% item.trayek.name %></span></td>
+                </tr>
+                <tr>
+                    <td>Price Type</td>
+                    <td>: <span ><% jenis_tarif %></span></td>
+                </tr>
+                <tr>
+                    <td>Price Total</td>
+                    <td>: <span ><% item.total_price | number %></span></td>
+                </tr>
+                <tr>
+                    <td>Service Type</td>
+                    <td>: <span ng-if="item.service_id"><% item.service.name+' ('+item.service.service_type.name+')' %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id==6">
+                    <td>Document Name</td>
+                    <td>: <span><% item.document_name %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id==3 || item.service_type_id==2 || item.service_type_id==4">
+                    <td>Jumlah Armada</td>
+                    <td>: <span ng-if="item.total_unit" class="font-bold"><% item.total_unit|number %> Unit</span></td>
+                </tr>
+                <tr ng-if="item.service_type_id==1">
+                    <td>Moda</td>
+                    <td>: <span class=""><% item.moda.name %></span></td>
+                </tr>
+                <tr ng-if="in_array(item.service_type_id,[1,2,3,4])">
+                    <td>Armada / Tipe Kontainer</td>
+                    <td>: <span><% item.vehicle_type_id?item.vehicle_type.name:item.container_type.code %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id==6||item.service_type_id==7">
+                    <td>No Reff</td>
+                    <td>: <span class=""><% item.reff_no %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id==6">
+                    <td>No Dokumen</td>
+                    <td>: <span class=""><% item.docs_no %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id==6">
+                    <td>No Reff Dokumen</td>
+                    <td>: <span class=""><% item.docs_reff_no %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id==6">
+                    <td>Nama Kapal</td>
+                    <td>: <span><% item.vessel_name %></span></td>
+                </tr>
+                <tr ng-if="item.service_type_id==6">
+                    <td>No. Voyage</td>
+                    <td>: <span><% item.voyage_no %></span></td>
+                </tr>
+                
+                <tr class="hidden">
+                    <td>Price Total</td>
+                    <td>: <span><% item.total_price|number %></span></td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>: <span class="label label-success text-uppercase"><% vendor_job.kpi_status_data.name %></span></td>
+                </tr>
+                <tr>
+                    <td>Invoice Status</td>
+                    <td>: <span><% item.status_invoice %></span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    <div class="col-md-12">
+        <div ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.armada')" ng-if="in_array(item.service_type_id,[1,2,3,4])">
+            <table class="table display compact nowrap table-borderless">
+                <tbody>
+                    <tr>
+                        <td><h4><i class="fa fa-truck"></i> Armada</h4></td>
+                        <td class="text-right">
+                            <button type="button" ng-click="addArmadaLCL()" class="btn btn-sm btn-primary" ng-if="!item.invoice_id && item.service_type_id==1" name="button"><i class="fa fa-truck"></i> Buat PL</button>
+                            <button ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.armada')" ng-if="!item.invoice_id && item.service_type_id!=1" type="button" ng-click="addArmada()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add PL & Armada</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table display compact nowrap table-bordered">
+                <thead>
+                    <tr>
+                        <th>No. Manifest</th>
+                        <th ng-if="item.service_type_id==3 || item.service_type_id==4">Tipe Vehicle</th>
+                        <th ng-if="item.service_type_id==2">Tipe Kontainer</th>
+                        <th><% item.service_type_id==2?'Kapal':'Nopol' %></th>
+                        <th><% item.service_type_id==2?'Kontainer':'Driver' %></th>
+                        <th>Status</th>
+                        <th ng-if="item.service_type_id==2">Tanggal Bongkar</th>
+                        <th ng-if="item.service_type_id==2">Tanggal Muat</th>
+                        <th ng-if="item.service_type_id==3">Tanggal Berangkat</th>
+                        <th ng-if="item.service_type_id==3">Tanggal Sampai</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="manifest.length<1 && item.service_type_id==1">
+                        <td colspan="5"><small class="font-italic">No Data</small></td>
+                    </tr>
+                    <tr ng-repeat="val in manifest">
+                        <td><% val.code %></td>
+                        <td ng-if="item.service_type_id==3 || item.service_type_id==4"><% val.vname %></td>
+                        <td ng-if="item.service_type_id==2"><% val.cname %></td>
+                        <td><% item.service_type_id==2?val.voyage:val.nopol %></td>
+                        <td><% item.service_type_id==2?val.container:val.driver %></td>
+                        <td><% val.status_name %></td>
+                        <td ng-if="item.service_type_id==2"><span ng-if="val.stripping"><% val.stripping|fullDateTime %></span></td>
+                        <td ng-if="item.service_type_id==2"><span ng-if="val.stuffing"><% val.stuffing|fullDateTime %></span></td>
+                        <td ng-if="item.service_type_id==3"><span ng-if="val.depart"><% val.depart|fullDateTime %></span></td>
+                        <td ng-if="item.service_type_id==3"><span ng-if="val.arrive"><% val.arrive|fullDateTime %></span></td>
+                        <td class="text-center">
+                            <a ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.armada.detail')" ng-if="item.service_type_id==3" ui-sref="operational.manifest_ftl.show({id:val.id})" data-toggle='tooltip' title='Detail Packing List FTL / LTL'><i class="fa fa-folder-o"></i>&nbsp;</a>
+                            <a ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.armada.detail')" ng-if="item.service_type_id==2" ui-sref="operational.manifest_fcl.show({id:val.id})"><i class="fa fa-folder-o" data-toggle='tooltip' title='Detail Packing List FCL / LCL'></i>&nbsp;</a>
+                            <a ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.armada.set')" ui-sref="operational.vendor_job.show.set_voyage({id:item.id,manifest:val.id})" ng-if="item.service_type_id==2 && !val.container_id"><i class="fa fa-ship" data-toggle='tooltip' title='Jadwal Kapal & Kontainer'></i>&nbsp;</a>
+                            <a ng-click="deleteArmada(val.id)"><i class="fa fa-trash" data-toggle='tooltip' title='Hapus Armada'></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div ng-include='"view/operational/vendor_job/detail/item.html"'></div>
+        <hr>
+        <div ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.cost')">
+            <table class="table display compact nowrap table-borderless">
+                <tbody>
+                    <tr>
+                        <td><h4><i class="fa fa-money"></i> Biaya Vendor Job</h4></td>
+                        <td class="text-right">
+                            <button type="button" ng-click="cost_journal()" class="btn btn-sm btn-success" name="button"><i class="fa fa-money"></i> Posting Jurnal</button>
+                            <button ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.cost.create')" ng-if="!item.invoice_id" type="button" class="btn btn-sm btn-primary" ng-click="addCost()"><i class="fa fa-plus"></i> Add</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table display compact nowrap table-bordered">
+                <thead>
+                    <tr>
+                        <th>Uraian</th>
+                        <th>Sumber Biaya</th>
+                        <th>Jenis</th>
+                        <th>Standar Biaya</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if='cost_detail.length == 0'>
+                        <td colspan='9' class='text-center'>Tidak ada data</td>
+                    </tr>
+                    <tr ng-repeat="(i,val) in cost_detail">
+                        <td><span><% val.cost_type.name %></span></td>
+                        <td><span><% val.vendor.name %></span></td>
+                        <td><span><% findJsonId(val.type,type_cost).name %></span></td>
+                        <td class="text-right"><span><% (val.status>1 || val.is_edit ? val.price : 0)|number %></span></td>
+                        <td class="text-right"><span><% val.qty|number %></span></td>
+                        <td class="text-right"><span><% (val.status>1 || val.is_edit ? val.total_price : 0)|number %></span></td>
+                        <!-- <td class="text-right"><span ng-if="val.cost_type.is_bbm"><% (val.qty|number)+' lt @ '+(val.price|number) %></span></td> -->
+                        <td><span><% val.description %></span></td>
+                        <td><span><% val.is_invoice==1 ? 'Selesai' : findJsonId(val.status,status).name %></span></td>
+                        <td class="text-center" ng-if="!val.manifest_cost_id">
+                            <span ng-if="val.status==1 && !item.invoice_id">
+                                <a ng-click="ajukanAtasan(val.id)" ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.cost.ajukan')" data-toggle="tooltip" title="Ajukan Biaya"><i class="fa fa-location-arrow"></i></a>&nbsp;
+                                <a ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.cost.edit')" ng-click="editCost(val.id)" data-toggle="tooltip" title="Edit Biaya"><i class="fa fa-edit"></i></a>&nbsp;
+                                <a ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.cost.delete')" ng-click="deleteCost(val.id)" data-toggle="tooltip" title="Hapus Biaya"><i class="fa fa-trash"></i></a>
+                            </span>
+                            <span ng-if="val.status==7 && !item.invoice_id">
+                                <a ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.cost.approve')" ng-click="approveAtasan(val.id)" title="Approve Biaya"><i class="fa fa-check"></i>&nbsp;</a>
+                                <a ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.cost.approve')" ng-click="rejectAtasan(val.id)" title="Tolak Biaya"><i class="fa fa-times"></i></a>
+                            </span>
+                            <a ng-click="cancel_posting(val.id)" ng-if="!val.is_invoice && val.status==5" title="Cancel Posting"><i class="fa fa-reply"></i></a>
+                            
+                            <button ng-show="roleList.includes('operational.vendor_job.detail.detail_vendor_job.cost.revision')" type="button" ng-if="val.status==3 && !val.manifest_id" ng-click="revision(val)" class="btn btn-xs btn-primary">Revisi</button>
+                        </td>
+                        <td ng-if="val.manifest_cost_id"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <a ui-sref="operational.vendor_job" class="btn btn-sm btn-warning">Back</a>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modalArmada" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:20%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Add Armada</h4>
+            </div>
+            <form class="form-horizontal" ng-submit="submitArmada()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Addkan Armada</label>
+                        <input type="text" class="form-control" ng-model="armadaData.qty" jnumber2 only-num>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- modal biaya -->
+<div class="modal fade" id="modalCost" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><% titleCost %></h4>
+            </div>
+            <form class="form-horizontal" ng-submit="submitCost()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-md-3">Tipe Biaya</label>
+                        <div class="col-md-9">
+                            <div class="radio radio-inline radio-primary">
+                                <input type="radio" ng-model="costData.type" ng-value="1" id="oper">
+                                <label for="oper">Operasional</label>
+                            </div>
+                            <div class="radio radio-inline radio-primary">
+                                <input type="radio" ng-model="costData.type" ng-value="2" id="reim">
+                                <label for="reim">Reimburse/Talangan</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Jenis Biaya</label>
+                        <div class="col-md-9">
+                            <select class="form-control" ng-change="changeCT(costData.cost_type)" data-placeholder-text-single="'Choose Biaya'" chosen allow-single-deselect="false" ng-model="costData.cost_type" ng-options="s.id as s.name+getDesc(s.description) group by s.parent.name for s in cost_type">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Vendor</label>
+                        <div class="col-md-9">
+                            <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="false" ng-model="costData.vendor_id" ng-options="s.id as s.name for s in vendor" ng-change='searchVendorPrice()'>
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="costData.cost_type_f.is_bbm">
+                        <label class="col-md-3 ">Jumlah Liter</label>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input type="text" ng-change="costData.total_price=costData.qty*costData.price" jnumber2 only-num class="form-control" ng-model="costData.qty" placeholder="Liter">
+                                <span class="input-group-addon">Lt</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Rp.</span>
+                                <input type="text" ng-change="costData.total_price=costData.qty*costData.price" jnumber2 only-num class="form-control" ng-model="costData.price" placeholder="Harga per Litar">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-3"></label>
+                        <div class="col-md-4">
+                            <label>Biaya Satuan</label>
+                            <input type="text" ng-disabled="costData.cost_type_f.is_bbm" jnumber2 only-num class="form-control" ng-change="calcCTTotalPrice()" ng-model="costData.price">
+                        </div>
+                        <div class="col-md-5">
+                            <label>Jumlah</label>
+                            <input type="text" ng-change="calcCTTotalPrice()" jnumber2 only-num class="form-control" ng-model="costData.qty" placeholder="jumlah">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 ">Total Biaya</label>
+                        <div class="col-md-9">
+                            <input type="text" disabled jnumber2 only-num class="form-control" ng-model="costData.total_price">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 ">Keterangan</label>
+                        <div class="col-md-9">
+                            <textarea rows="4" class="form-control" ng-model="costData.description"></textarea>
+                        </div>
+                    </div>
+                    <!-- <pre><% jStyle(costData) %></pre> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" ng-disabled="disBtn || !costData.total_price" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- modal Penerimaan -->
+<div class="modal fade" id="modalReceipt" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Add Data Penerimaan</h4>
+            </div>
+            <form class="form-horizontal" ng-submit="submitReceipt()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-md-3">Diterima Oleh</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="receiptData.receiver">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Tanggal Terima</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" ng-model="receiptData.date_receive" datepick>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Telephone</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="receiptData.telephone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Keterangan</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" ng-model="receiptData.description" rows="4"></textarea>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- modal add armada LCL -->
+<div class="modal fade" id="modalArmadaLCL" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Buat PL untuk layanan LCL/LTL</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table display compact nowrap table-borderless">
+                    <tbody>
+                        <tr>
+                            <td style="width:30%;">Moda</td>
+                            <td>: <span><% item.moda.name %></span></td>
+                        </tr>
+                        <tr>
+                            <td>Jenis Vehicle</td>
+                            <td>: <span><% item.vehilce_type.name %></span></td>
+                        </tr>
+                        <tr>
+                            <td>Route</td>
+                            <td>: <span><% item.trayek.name %></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5>Item Barang</h5>
+                <table class="table display compact nowrap table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Satuan</th>
+                            <th>Tonase</th>
+                            <th>Volume</th>
+                            <th>Qty</th>
+                            <th>Sisa</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(i,val) in detail">
+                            <td ng-if="item.service_type_id!=7"><% val.item_name %></td>
+                            <td ng-if="item.service_type_id!=7"><% val.piece.name %></td>
+                            <td class="text-right"><% val.weight|number:3 %></td>
+                            <td class="text-right"><% val.volume|number:3 %></td>
+                            <td class="text-right"><% val.qty|number %> <% val.piece.name %></td>
+                            <td class="text-right"><% val.leftover|number %></td>
+                            <td class="text-right"><input type="text" jnumber2 only-num ng-model="formArmadaLCL.detail[i].angkut" class="form-control"> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-disabled='cekAngkutanLCL()' ng-click="submitArmadaLCL()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- modal revisi -->
+<div class="modal fade" id="revisiModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Revisi Biaya Vendor Job</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-3">Vendor</label>
+                    <div class="col-md-9">
+                        <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="false" ng-model="revisiData.vendor_id" ng-options="s.id as s.name for s in vendor">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 ">Qty</label>
+                    <div class="col-md-3">
+                        <input type="text" ng-change="revisiData.total_price=revisiData.qty*revisiData.price" jnumber2 only-num class="form-control" ng-model="revisiData.qty" placeholder="">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" ng-change="revisiData.total_price=revisiData.qty*revisiData.price" jnumber2 only-num class="form-control" ng-model="revisiData.price" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-3 ">Total Biaya</label>
+                    <div class="col-md-4">
+                        <input type="text" readonly jnumber2 only-num class="form-control" ng-model="revisiData.total_price">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 ">Keterangan</label>
+                    <div class="col-md-9">
+                        <textarea rows="4" class="form-control" ng-model="revisiData.description"></textarea>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                <button type="button" ng-disabled="disBtn" ng-click="submitRevisi()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalService" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Edit Layanan</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-3">Layanan Lama</label>
+                    <div class="col-md-9">
+                        <input type="text" readonly class="form-control" ng-value="item.service.name" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3">Layanan Baru</label>
+                    <div class="col-md-9">
+                        <select class="form-control" data-placeholder-text-single="'Choose Layanan'" chosen allow-single-deselect="false" ng-model="serviceChangeData.work_order_detail_id" ng-options="s.id as s.name for s in wo_detail">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" ng-disabled="!serviceChangeData.work_order_detail_id" ng-click="changeServiceSubmit()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

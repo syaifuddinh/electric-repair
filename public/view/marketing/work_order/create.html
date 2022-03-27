@@ -1,0 +1,264 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-md-3"><% solog.label.general.branch %></label>
+            <div class="col-md-9">
+                <branch-select-input ng-model="formData.company_id" ng-change="companyChange(formData.company_id)"></branch-select-input>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3"><% solog.label.general.customer %></label>
+            <div class="col-md-9">
+                <customer-select-input ng-change="qtyDiv=false;qty=0;showPic();resetTable()" ng-model='formData.customer_id'></customer-select-input>
+            </div>
+          </div>
+          <!-- <div class="form-group required">
+            <label class="col-md-3">Sales</label>
+            <div class="col-md-9">
+              <input type="text" class='form-control' ng-model='sales_name' readonly>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3">Customer Service</label>
+            <div class="col-md-9">
+              <input type="text" class='form-control' ng-model='customer_service_name' readonly>
+            </div>
+          </div> -->
+          <div class="form-group required">
+            <label class="col-md-3"><% solog.label.work_order.name %></label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3"><% solog.label.general.no_bl %></label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.no_bl">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3"><% solog.label.general.no_aju %></label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.aju_number">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3"><% solog.label.general.date %></label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" ng-model="formData.date" datepick>
+            </div>
+          </div>
+            <div class="form-group" ng-repeat='v in additional_fields'>
+                <label class="col-md-3"><% v.name %></label>
+                    <div class="col-md-9">
+                        <custom-field ng-model='formData.additional[v.slug]' type='v.type_field' />
+                    </div>
+            </div>
+          <div class="form-group" ng-if='settings.work_order.use_job_packet'>
+                <label class="col-md-3">Apakah paket pekerjaan ?</label>
+                <div class="col-md-9">
+                    <label class="radio-inline">
+                        <input type="radio" ng-model='formData.is_job_packet' ng-value='0'> Tidak  
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model='formData.is_job_packet' ng-value='1'> Ya
+                    </label>
+                </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Price Source</label>
+            <div class="col-md-9">
+              <label class="radio-inline">
+                <input type="radio" id="tarif_1" ng-change="changeType(formData.type_tarif,formData)" ng-model="formData.type_tarif" ng-value="1">
+                Contract
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="tarif_2" ng-change="changeType(formData.type_tarif,formData)" ng-model="formData.type_tarif" ng-value="2">
+                Price List
+              </label>
+            </div>
+          </div>
+          <div class="form-group required" ng-if="formData.type_tarif==1">
+            <label class="col-md-3">Contract</label>
+            <div class="col-md-9">
+              <!-- <select class="form-control" ng-change="changeTypeKontrak(formData.quotation_detail_id)" data-placeholder-text-single="'Choose Item Kontrak'" chosen allow-single-deselect="false" ng-model="formData.quotation_detail_id" ng-options="s.id as s.name group by s.group for s in quotation_details">
+                <option value=""></option>
+              </select> -->
+              <div class="input-group" ng-click="cariKontrak()">
+                <input placeholder="Find Contract" type="text" class="form-control" readonly ng-model="formData.contract_code">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group required" ng-if="formData.type_tarif==3">
+            <label class="col-md-3">Tarif Customer</label>
+            <div class="col-md-9">
+              <!-- <select class="form-control" ng-change="changeTypeKontrak(formData.quotation_detail_id)" data-placeholder-text-single="'Choose Item Kontrak'" chosen allow-single-deselect="false" ng-model="formData.quotation_detail_id" ng-options="s.id as s.name group by s.group for s in quotation_details">
+                <option value=""></option>
+              </select> -->
+              <div class="input-group" ng-click="tarifCustomer()">
+                <input placeholder="Cari Tarif Customer" type="text" class="form-control" readonly ng-model="formData.customer_price">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group required" ng-if="formData.type_tarif==2 && showPL">
+            <label class="col-md-3">Price List</label>
+            <div class="col-md-9">
+              <div class="input-group" ng-click="cariTarif()">
+                <input placeholder="Find Pricelist" type="text" class="form-control" readonly ng-model="formData.price_list_code">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group required" ng-if="qtyDiv">
+            <label class="col-md-3"><% qtyTitle %></label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" ng-model="formData.qty" jnumber2 only-num>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-6" ng-if="draft">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td><h5>Deskripsi Permintaan</h5></td>
+              </tr>
+              <tr>
+                <td><p><% draft.description %></p></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-12">
+          <hr>
+          <table class="table table-bordered table-striped" id="appendTable" style="width:100%">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Service</th>
+                <th>Route</th>
+                <th>Commodity</th>
+                <th>Vehicle Type</th>
+                <th>Container Type</th>
+                <th>Charge In</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr ng-if='formData.detail.length == 0'>
+                    <td colspan='8' class='text-center'>Tidak ada data</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- <pre><%jStyle(formData)%></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="marketing.work_order" class="btn btn-sm btn-warning">Back</a>
+      <button type="submit" ng-disabled="disBtn" ng-click="submitForm()" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+<!-- modal kontrak -->
+<div class="modal fade" id="modalContract" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Kontrak</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" style="width:100%;" id="contract_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Nama</th>
+              <th>No. Kontrak</th>
+              <th>Tanggal Berakhir</th>
+              <th>Customer</th>
+              <th>Jenis Kegiatan</th>
+              <th>Sales</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal price list -->
+<div class="modal fade" id="modalPriceList" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Tarif Umum</h4>
+      </div>
+      <div class="modal-body">
+        <div style='overflow-x:scroll'>
+          
+            <table class="table table-bordered" style="width:100%;" id="price_list_datatable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Kode</th>
+                  <th>Route</th>
+                  <th>Nama Tarif</th>
+                  <th>Komoditas</th>
+                  <th>Satuan</th>
+                  <th>Layanan</th>
+                  <th>Tipe</th>
+                  <th>Moda</th>
+                  <th>Vehicle</th>
+                </tr>
+              </thead>
+            </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal tarif customer -->
+<div class="modal fade" id="modalTarifCustomer" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Tarif Customer</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" style="width:100%;" id="customer_price_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Branch</th>
+              <th>Customer</th>
+              <th>Nama Tarif</th>
+              <th>Satuan</th>
+              <th class="hidden"></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>

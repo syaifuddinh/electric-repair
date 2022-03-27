@@ -1,0 +1,20 @@
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left"><% solog.label.sales_orders.title %></h3>
+
+            <div class="ibox-tools" id='export_button'>
+                <a 
+                    ng-click='add()' 
+                    class="btn btn-sm btn-primary pull-right mg-l1"
+                    ng-show="roleList.includes('sales.sales_order.add')"
+                >
+                    <i class="fa fa-plus"></i> <% solog.label.general.add %>
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <sales-orders-table></sales-orders-table>
+        </div>
+    </div>
+</div>

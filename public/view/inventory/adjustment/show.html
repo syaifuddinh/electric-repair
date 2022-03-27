@@ -1,0 +1,79 @@
+<form class="form-horizontal" ng-submit="submitForm()" name="frm">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Penyesuaian Stok</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="row">
+        <div class="col-md-8">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td>Wilayah</td>
+                <td>: <% item.company.name %></td>
+              </tr>
+              <tr>
+                <td>Gudang</td>
+                <td>: <% item.warehouse.name %></td>
+              </tr>
+              <tr>
+                <td>Kode Penyesuaian</td>
+                <td>: <% item.code %></td>
+              </tr>
+              <tr>
+                <td>Tgl. Penyesuaian</td>
+                <td>: <% item.date_transaction|fullDate %></td>
+              </tr>
+              <tr>
+                <td>Keterangan</td>
+                <td>: <% item.description %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Penyesuaian</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Item</th>
+            <th>Part Number</th>
+            <th>Kategori</th>
+            <th style="width:10%;">Penyesuaian</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i, value) in detail">
+            <td><% i+1 %></td>
+            <td><% value.item.name %></td>
+            <td><% value.item.part_number %></td>
+            <td><% value.item.category.name %></td>
+            <td class="text-right"><% value.qty|number %></td>
+          </tr>
+        </tbody>
+      </table>
+      <%formData%>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="inventory.adjustment" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</form>

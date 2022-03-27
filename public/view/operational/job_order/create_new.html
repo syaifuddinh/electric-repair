@@ -1,0 +1,302 @@
+<div class="row">
+  <div class="col-sm-12 col-md-7">
+    <div class="ibox">
+      <div class="ibox-content form-horizontal">
+        <div class="form-group required">
+          <label class="col-md-3">Customer</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in customers">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Work Order</label>
+          <div class="col-md-9">
+            <div class="radio radio-primary radio-inline">
+              <input type="radio" id="wo_new" ng-model="formData.is_new_wo" ng-value="1">
+              <label for="wo_new">WO baru</label>
+            </div>
+            <div class="radio radio-primary radio-inline">
+              <input type="radio" id="wo_old" ng-model="formData.is_new_wo" ng-value="0">
+              <label for="wo_old">WO Lama</label>
+            </div>
+          </div>
+        </div>
+        <!-- JIKA PAKAI WO LAMA -->
+        <div class="form-group required" ng-if="!formData.is_new_wo">
+          <label class="col-md-3">No. WO</label>
+          <div class="col-md-9">
+            <div class="input-group" ng-click="cariWO()">
+              <input placeholder="Cari Work Order" type="text" class="form-control" readonly ng-model="work_order_name">
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            </div>
+          </div>
+        </div>
+        <!-- END PAKAI WO LAMA -->
+        <!-- START PAKAI WO BARU -->
+        <div ng-if="formData.is_new_wo">
+          <div class="form-group">
+            <label class="col-md-3">Jenis Tarif</label>
+            <div class="col-md-9">
+              <div class="radio radio-primary radio-inline">
+                <input type="radio" id="jnsumum" ng-model="formData.jns_tarif" ng-value="1">
+                <label for="jnsumum">Tarif Umum</label>
+              </div>
+              <div class="radio radio-primary radio-inline">
+                <input type="radio" id="jnskontrak" ng-model="formData.jns_tarif" ng-value="2">
+                <label for="jnskontrak">Kontrak</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group required" ng-if="formData.jns_tarif==1">
+            <label class="col-md-3">Tarif Umum</label>
+            <div class="col-md-9">
+              <div class="input-group" ng-click="cariTU()">
+                <input placeholder="Cari Tarif Umum" type="text" class="form-control" readonly ng-model="tarif_umum_name">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group required" ng-if="formData.jns_tarif==2">
+            <label class="col-md-3">Tarif Kontrak</label>
+            <div class="col-md-9">
+              <div class="input-group" ng-click="cariTK()">
+                <input placeholder="Cari Tarif Kontrak" type="text" class="form-control" readonly ng-model="tarif_kontrak_name">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <!-- END PAKAI WO BARU -->
+          <div class="form-group">
+            <label class="col-md-3">No BL</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.bl_no">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3">No AJU</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.aju_number">
+            </div>
+          </div>
+
+        </div>
+        <% jStyle(formData) %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6">
+    <div class="ibox">
+      <div class="ibox-content form-horizontal">
+        <!-- START -->
+        <div class="form-group required" ng-if="service_id==1||service_id==2||service_id==3||service_id==4">
+          <label class="col-md-3">Pengirim</label>
+          <div class="col-md-7">
+            <select class="form-control" data-placeholder-text-single="'Choose Pengirim'" chosen allow-single-deselect="false" ng-model="formData.sender_id" ng-options="s.id as s.name for s in contact_address">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button type="button" ng-click="addContact()" class="btn btn-block btn-success font-bold"><i class="fa fa-plus"></i></button>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3">Penerima</label>
+          <div class="col-md-7">
+            <select class="form-control" ng-change="formData.collectible_id=findJsonId(formData.receiver_id,contact_address).collectible_id" data-placeholder-text-single="'Choose Penerima'" chosen allow-single-deselect="false" ng-model="formData.receiver_id" ng-options="s.id as s.name for s in contact_address">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button type="button" ng-click="addContact()" class="btn btn-block btn-success font-bold"><i class="fa fa-plus"></i></button>
+          </div>
+        </div>
+        <div class="form-group" ng-if="service_id==1||service_id==2||service_id==3||service_id==4">
+          <label class="col-md-3">Route</label>
+          <div class="col-md-9">
+            <select class="form-control" disabled data-placeholder-text-single="'Choose Route'" chosen allow-single-deselect="false" ng-model="formData.route_id" ng-options="s.id as s.name for s in data.trayek">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-if="service_id==1">
+          <label class="col-md-3">Moda</label>
+          <div class="col-md-6">
+            <select class="form-control" disabled data-placeholder-text-single="'Choose Moda'" chosen allow-single-deselect="false" ng-model="formData.moda_id" ng-options="s.id as s.name for s in data.moda">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-if="(service_id==1&&formData.vehicle_type_id)||service_id==3||service_id==4">
+          <label class="col-md-3">Armada</label>
+          <div class="col-md-6">
+            <select class="form-control" disabled data-placeholder-text-single="'Choose Armada'" chosen allow-single-deselect="false" ng-model="formData.vehicle_type_id" ng-options="s.id as s.name for s in data.vehicle_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-if="(service_id==1&&formData.container_type_id)||service_id==2">
+          <label class="col-md-3">Tipe Kontainer</label>
+          <div class="col-md-9">
+            <select class="form-control" disabled data-placeholder-text-single="'Choose Tipe Kontainer'" chosen allow-single-deselect="false" ng-model="formData.container_type_id" ng-options="s.id as s.full_name for s in data.container_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-if="service_id==2||service_id==3||service_id==4">
+          <label class="col-md-3">Komoditas Utama</label>
+          <div class="col-md-9">
+            <select class="form-control" disabled data-placeholder-text-single="'Choose Komoditas Utama'" chosen allow-single-deselect="false" ng-model="formData.commodity_id" ng-options="s.id as s.name for s in data.commodity">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required" ng-if="service_id!=6&&service_id!=7">
+          <label class="col-md-3">Jumlah Unit</label>
+          <div class="col-md-4">
+            <div class="input-group">
+              <input type="text" class="form-control" ng-model="formData.total_unit" jnumber2 only-num>
+              <span class="input-group-addon">Unit</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">No. WO/PO Customer</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.wo_customer">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3">Shipment Date</label>
+          <div class="col-md-4">
+            <input type="text" class="form-control" ng-model="formData.shipment_date" datepick>
+          </div>
+        </div>
+        <div ng-if="service_id==6">
+          <div class="form-group">
+            <label class="col-md-3">Nama Dokumen</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.document_name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Nama Barang</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.item_name">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3">No Reff</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.reff_no">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">No Dokumen</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.docs_no">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3">No Reff Dokumen</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.docs_reff_no">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Jumlah</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" ng-model="formData.total_unit" jnumber2 only-num>
+            </div>
+            <div class="col-md-6">
+              <select class="form-control" data-placeholder-text-single="'Choose Satuan'"  chosen allow-single-deselect="false" ng-model="formData.piece_id" ng-options="s.id as s.name for s in data.piece">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Nama Kapal</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.vessel_name" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">No. Voyage</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.voyage_no" >
+            </div>
+          </div>
+        </div>
+        <div ng-if="service_id==7">
+          <div class="form-group required">
+            <label class="col-md-3">No Reff</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.reff_no">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Jumlah</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" ng-model="formData.total_unit" jnumber2 only-num>
+            </div>
+            <div class="col-md-6">
+              <select class="form-control" data-placeholder-text-single="'Choose Satuan'" chosen allow-single-deselect="false" ng-model="formData.piece_id" ng-options="s.id as s.name for s in data.piece">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Keterangan</label>
+          <div class="col-md-9">
+            <textarea class="form-control" ng-model="formData.description" rows="3"></textarea>
+          </div>
+        </div>
+        <!-- END -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6">
+    <div class="ibox">
+      <div class="ibox-content">
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODALS -->
+<!-- Modal WO -->
+<div class="modal fade" id="modalWO" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Work Order</h4>
+      </div>
+      <div class="modal-body">
+        <div style="overflow-x:scroll">
+            <table class="table display compact nowrap table-bordered" style="width:100%;" id="wo_datatable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>No. Work Order</th>
+                  <th>No. BL</th>
+                  <th>No. AJU</th>
+                  <th>Layanan</th>
+                  <th>Route</th>
+                  <th>Komoditas</th>
+                  <th>Jenis Tarif</th>
+                  <th>Satuan</th>
+                  <th>Sisa WO</th>
+                </tr>
+              </thead>
+            </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>

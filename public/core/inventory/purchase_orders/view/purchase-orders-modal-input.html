@@ -1,0 +1,18 @@
+<div class="input-group" ng-click="cariItem()">
+    <input type="text" readonly class="form-control" ng-model="item_name">
+    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+</div>
+
+<solog-modal id='purchase_order_modal' hide-save='1' hide-action='1'  width-percent='80'>
+    <purchase-orders-table 
+        hide-export='1' 
+        table-on-created='tableOnCreated' 
+        hide-branch-filter='1' 
+        hide-add='1' 
+        hide-status='1' 
+        hide-action='1' 
+        is-active='1' 
+        is-merchandise="is_merchandise"
+        is-approved='1'
+    />
+</solog-modal>

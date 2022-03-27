@@ -1,0 +1,62 @@
+<div class="col-md-12" ng-show='is_filter'>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-filter"></i> Filter</h5>
+    </div>
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3">Customer</label>
+        <div class="col-md-9">
+          <customer-select-input ng-change='filter()' ng-model="filterData.customer_id" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Period</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input ng-change='filter()' type="text" class="input-sm form-control" ng-model="filterData.start_date" datepick/>
+            <span class="input-group-addon">to</span>
+            <input ng-change='filter()' type="text" class="input-sm form-control" ng-model="filterData.end_date" datepick />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-footer" id="export_button">
+        <button class="btn btn-warning" ng-click='reset_filter()'>Reset</button>
+<!--        <button class="btn btn-primary" ng-click='filter()'>Cari</button>-->
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Sales Order Return</h5>
+      <div class="ibox-tools">
+        <button ng-click='is_filter = !is_filter' class="btn btn-success btn-sm font-bold">
+            <i class="fa fa-filter"></i> 
+            Filter
+        </button>
+
+        <a ng-show="$root.roleList.includes('sales.sales_order_return.add')" class="btn btn-sm btn-primary" ng-click="add()"><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>No. Transaksi</th>
+            <th><% $root.solog.label.general.branch %></th>
+            <th>Customer</th>
+            <th>Tgl. Transaksi</th>
+            <th>Status</th>
+            <th style="width:5%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

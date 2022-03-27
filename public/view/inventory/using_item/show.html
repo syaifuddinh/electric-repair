@@ -1,0 +1,93 @@
+<form class="form-horizontal" ng-submit="submitForm()" id="submitForm">
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% solog.label.general.detail %></h5>
+      <div class="ibox-tools">
+        <button type='button' class="btn btn-sm btn-success pull-right" ng-show='item.status == 1' ng-disabled="disBtn" ng-click='approve()'><% solog.label.general.approve %></button>
+      </div>
+    </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:30%;"><% solog.label.general.branch %></td>
+              <td>: <% item.company_name %></td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><% solog.label.general.warehouse %></td>
+              <td>: <% item.warehouse_name %></td>
+            </tr>
+            <tr>
+              <td><% solog.label.general.requested_date %></td>
+              <td>: <% item.date_request|fullDate %></td>
+            </tr>
+            <tr>
+              <td><% solog.label.item_usage.code %></td>
+              <td>: <% item.code %></td>
+            </tr>
+            <tr>
+              <td><% solog.label.general.status %></td>
+              <td>: <% item.status_name %></td>
+            </tr>
+            <tr ng-if="item.date_approve && item.date_approve != '0000-00-00'">
+              <td>Tgl Approve</td>
+              <td>: <% item.date_approve|fullDate %></td>
+            </tr>
+            <tr ng-if="item.date_pemakaian">
+              <td>Tgl Pemakaian</td>
+              <td>: <% item.date_pemakaian|fullDate %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Barang</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-bordered" id="appendTable">
+            <thead>
+              <tr>
+                <th><% solog.label.warehouse_receipt.code %></th>
+                <th><% solog.label.item.code %></th>
+                <th><% solog.label.item.name %></th>
+                <th class='hidden'>Barcode</th>
+                <th><% solog.label.general.qty %></th>
+                <th><% solog.label.general.rack %></th>
+                <th><% solog.label.general.stock %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(i,value) in detail">
+                <td ><% value.warehouse_receipt_code %></td>
+                <td><% value.item_code %></td>
+                <td><% value.item_name %></td>
+                
+                <td style="width:8%;" class="text-right"><% value.qty|number %></td>
+                <td ><% value.rack_code %></td>
+                <td class="text-right"><% value.stock | number %></td>
+              </tr>
+            </tbody>
+        </table>
+      <!-- <%formData%> -->
+    </div>
+    <div class="ibox-footer">
+      <a ng-click="back()" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+    </div>
+  </div>
+</div>
+</form>

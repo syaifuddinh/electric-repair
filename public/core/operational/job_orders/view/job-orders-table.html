@@ -1,0 +1,86 @@
+ <div class="ibox" ng-show="isFilter">
+            <div class="ibox-title">
+                <h5>Filter</h5>
+            </div>
+            <form class="form-horizontal ng-valid ng-dirty ng-valid-parse">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Customer</label>
+                        <div class="col-md-9">
+                            <customer-select-input ng-model='formData.customer_id' ng-change='filterJobOrder()'></customer-select-input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Period</label>
+                        <div class="col-md-9">
+                            <div class="input-daterange input-group" style="width:100%;">
+                                <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="" ng-change='filterJobOrder()'>
+                                <span class="input-group-addon">to</span>
+                                <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="" ng-change='filterJobOrder()'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Service</label>
+                        <div class="col-md-9">
+                            <select class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" ng-change='filterJobOrder()' data-placeholder-text-single="'All Service'" chosen="" allow-single-deselect="true" ng-model="formData.service" ng-change="serviceChange()" ng-options="service.id as service.name group by service.service_type.name for service in data.services"><option value="" class="" selected="selected"></option></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Status</label>
+                        <div class="col-md-9">
+                            <select ng-change='filterJobOrder()' class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" data-placeholder-text-single="'All Status'" chosen="" allow-single-deselect="true" ng-model="formData.kpi_status_name" ng-options="s.name as s.name for s in data.kpi_statuses"><option value="" class="" selected="selected"></option></select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ibox-footer">
+                    <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+                    <span id="export_button"></span>
+                </div>
+            </form>
+        </div>
+
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Job Order</h5>
+                <div class="ibox-tools">
+                    <!-- <button type="button" ng-disabled="disableArchive" ng-click="submitArchive()" class="btn btn-sm btn-success" ng-show='$root.roleList.includes("operational.job_order.operasional_selesai")'><i class="fa fa-check"></i> Operasional Selesai</button> -->
+                    <button type="button" ng-click="sendNotification()" class="btn btn-sm btn-default"><i class="fa fa-envelope"></i> Kirim Pesan ke Marketing</button>
+                    <button type="button" class="btn btn-success btn-sm font-bold" ng-click="toggleFilter()"><i class="fa fa-filter"></i> Filter</button>
+                    <button ng-show="$root.roleList.includes('operational.job_order.create')" class="btn btn-sm btn-primary" ng-click='add()'><i class="fa fa-plus"></i> Add</button>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                </div>
+                <table class="table table-bordered" id="datatable">
+                    <thead></thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal fade" id="notifModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+            <div class="modal-dialog" style="width:60%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="">Kirim Pesan ke Marketing</h4>
+                    </div>
+                    <div class="modal-body form-horizontal">
+                        <div class="form-group">
+                            <label for="">Isi Pesan</label>
+                            <textarea name="name" rows="8" class="form-control" ng-model="notifData.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" ng-click="submitNotif()" class="btn btn-primary">Kirim</button>
+                    </div>
+                </div>
+            </div>
+        </div>

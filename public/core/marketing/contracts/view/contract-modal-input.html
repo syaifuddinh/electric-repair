@@ -1,0 +1,15 @@
+<div class="input-group" ng-click="cariItem()">
+    <input type="text" readonly class="form-control" ng-model="item_name">
+    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+</div>
+
+<solog-modal id='contract_modal' title='$root.solog.label.contract.title' hide-save='1' hide-action='1'  width-percent='80'>
+    <contract-table 
+        hide-export='1' 
+        hide-action='1' 
+        select-mode="1"
+        customer-id="customer_id"
+        is-active='1' 
+        is-sales-contract="is_sales_contract"
+    />
+</solog-modal>

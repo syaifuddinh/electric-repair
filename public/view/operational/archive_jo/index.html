@@ -1,0 +1,80 @@
+<div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5>Filter Job Order</h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" ng-submit="filterJobOrder()">
+    <div class="ibox-content">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Customer</label>
+        <div class="col-md-9">
+          <select class="form" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in data.customer">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Periode</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Service</label>
+        <div class="col-md-9">
+          <select class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" data-placeholder-text-single="'Semua Service'" chosen="" allow-single-deselect="true" ng-model="formData.service" ng-change="serviceChange()" ng-options="service.id as service.name group by service.service_type.name for service in data.services"><option value="" class="" selected="selected"></option></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Status</label>
+        <div class="col-md-9">
+          <select class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" data-placeholder-text-single="'Semua Status'" chosen="" allow-single-deselect="true" ng-model="formData.status" ng-options="s.id as s.name for s in serviceStatus"><option value="" class="" selected="selected"></option></select>
+        </div>
+      </div>
+
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+      <button type="submit" id='cari_data' class="btn btn-sm btn-primary">Cari</button>
+      <span id="export_button"></span>
+    </div>
+  </form>
+</div>
+
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>Job Order</h5>
+    <div class="ibox-tools">
+      <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+      <thead>
+        <tr>
+          <th>Layanan</th>
+          <th>No. WO</th>
+          <th>No. JO</th>
+          <th>No. BL</th>
+          <th>No. AJU</th>
+          <th>Customer</th>
+          <th>Route</th>
+          <th>Tanggal</th>
+          <th>PO Customer</th>
+          <th>Status</th>
+          <th style="width:7%;"></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>

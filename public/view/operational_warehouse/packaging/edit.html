@@ -1,0 +1,154 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Edit Job Order</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td style="width:25%;">Customer</td>
+                  <td>: <span class="font-bold"><% item.customer.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Kontrak</td>
+                  <td>: <span class="font-bold"><% item.quotation.no_contract %></span></td>
+                </tr>
+                <tr>
+                  <td>Layanan</td>
+                  <td>: <span class="font-bold" ng-if="item.service_id"><% item.service.name %> (<% item.service.service_type.name %>)</span></td>
+                </tr>
+                <tr>
+                  <td>Tanggal Input</td>
+                  <td>: <span class="font-bold" ng-if="item.created_at"><% item.created_at|fullDateTime %></span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="form-group hidden">
+              <label class="col-md-3">No Surat Pendukung</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.no_bl">
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-md-12"><hr></div>
+          
+          <div class="col-md-6">
+            <div ng-if="!in_array(item.service_type_id,[6,7])">
+              <div class="form-group">
+              <label class="col-md-3">Tanggal</label>
+              <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="formData.shipment_date" datepick>
+              </div>
+            </div>
+
+            
+            <div class="form-group">
+              <label class="col-md-3">Nama Barang</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.item_name">
+              </div>
+            </div>
+
+            
+            <div class="form-group" ng-if='false'>
+              <label class="col-md-3">Barcode</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.barcode">
+              </div>
+            </div>
+
+            
+            <div class="form-group">
+              <label class="col-md-3">Qty</label>
+              <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="formData.qty">
+              </div>
+            </div>
+
+            
+            <div class="form-group">
+              <label class="col-md-3">Harga Paket</label>
+              <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="formData.price" jnumber2 only-num>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3">Gudang</label>
+              <div class="col-md-9">
+                <select style='width:100%' class="form-control" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="true" ng-model="formData.warehouse_id" ng-options="s.id as s.name for s in data.warehouse">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-3">Staff Warehouse</label>
+              <div class="col-md-6">
+                <select class="form-control" data-placeholder-text-single="'Choose Staff Warehouse'" chosen allow-single-deselect="false" ng-model="formData.staff_gudang_name" ng-options="s.name as s.name for s in data.staff_gudang">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-3">Lembur ?</label>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <label class="radio-inline">
+                    <input type="radio"  ng-model="formData.is_overtime" ng-value='1'>Ya
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio"  ng-model="formData.is_overtime" ng-value='0'>Tidak
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Jam Mulai</label>
+              <div class="col-md-4">
+                <input type="text" class="form-control" ng-model='formData.start_time' clockpick clockpick-position>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Jam Selesai</label>
+              <div class="col-md-4">
+                <input type="text" class="form-control" timepick ng-model='formData.end_time' clockpick clockpick-position>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3">Keterangan</label>
+                <div class="col-md-9">
+                  <textarea class="form-control" ng-model="formData.description" rows="4"></textarea>
+                </div>
+              </div>
+            
+            </div>
+
+            <div ng-if="in_array(item.service_type_id,[6])">
+              <div class="form-group">
+                <label class="col-md-3">No Reff</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" ng-model="formData.reff_no">
+                </div>
+              </div>
+             
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational_warehouse.packaging" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

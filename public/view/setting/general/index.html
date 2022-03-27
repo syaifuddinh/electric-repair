@@ -1,0 +1,34 @@
+<div class="col-md-12">
+  <div class="tabs-container">
+    <div class="">
+      <div ng-if="states.current.name=='setting.general'" ng-bind="states.go('setting.general.bank',null,{'location':'replace'})">
+      </div>
+
+      <ul class="nav nav-tabs">
+        <li ng-show="roleList.includes('setting.general_setting.bank')" ui-sref-active="active"><a ui-sref="setting.general.general"> General</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.bank')" ui-sref-active="active"><a ui-sref="setting.general.bank"> Bank</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.email')" ui-sref-active="active"><a ui-sref="setting.general.email_server"> Email Server</a></li>
+        <li ui-sref-active="active"><a ui-sref="setting.general.countries"> Country</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.vessel')" ui-sref-active="active"><a ui-sref="setting.general.vessel"> Vessel</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.piece')" ui-sref-active="active"><a ui-sref="setting.general.satuan"> Unit</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.commodity')" ui-sref-active="active"><a ui-sref="setting.general.commodity"> Commodity</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.container_type')" ui-sref-active="active"><a ui-sref="setting.general.container"> Container Type</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.vendor_type')" ui-sref-active="active"><a ui-sref="setting.general.vendor_type"> Vendor Type</a></li>
+        <li ui-sref-active="active"><a ui-sref="setting.general.vendor_job_status"> Vendor Job Status</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.service')" ui-sref-active="active"><a ui-sref="setting.general.service"> Service</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.customer_stage')" ui-sref-active="active"><a ui-sref="setting.general.customer_stage"> Customer Stage</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.dermagabandara')" ui-sref-active="active"><a ui-sref="setting.general.airport"> Port</a></li>
+        <li ng-show="roleList.includes('setting.general_setting.lead')" ui-sref-active="active"><a ui-sref="setting.general.lead"> Leads</a></li>
+        <li ui-sref-active="active"><a ui-sref="setting.general.print_remark"> Remark for Printout</a></li>
+        <li ui-sref-active="active" ng-if='solog.getModule("additionalFields")'><a ui-sref="setting.general.additional_fields"> Additional Field </a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active">
+          <div class="panel-body">
+            <div ui-view=""></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

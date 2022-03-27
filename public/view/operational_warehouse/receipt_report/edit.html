@@ -1,0 +1,134 @@
+<div class="col-md-12">
+  <form class="form-horizontal" ng-submit="submitForm()">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Data</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-3">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="companyChange(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 ">Tanggal Terima</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.receive_date" datepick>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control text-center" clockpick clockpick-position="bottom" ng-model="formData.receive_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 ">Selesai Stripping</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.stripping_date" datepick>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control text-center" clockpick clockpick-position="bottom" ng-model="formData.stripping_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Customer</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="customerChange(formData.customer_id)" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in customers">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Shipper</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Pengirim'" chosen allow-single-deselect="false" ng-model="formData.sender_id" ng-options="s.id as s.name for s in contact_address">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Consignee</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="formData.collectible_id=findJsonId(formData.receiver_id,contact_address).collectible_id" data-placeholder-text-single="'Choose Penerima'" chosen allow-single-deselect="false" ng-model="formData.receiver_id" ng-options="s.id as s.name for s in contact_address">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jenis</label>
+          <div class="col-md-9">
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="export" ng-model="formData.is_export" ng-value="1">
+              <label for="export">Export</label>
+            </div>
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="local" ng-model="formData.is_export" ng-value="0">
+              <label for="local">Local</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Staff Warehouse</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Staff Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_staff_id" ng-options="s.id as s.name for s in data.staff">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Reff</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.reff_no" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tujuan</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.city_to" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Gudang</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="warehouseChange(formData.warehouse_id)" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_id" ng-options="s.id as s.name for s in warehouses">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Nopol</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.nopol" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Driver</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.driver" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Handphone</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.phone_number" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Lembur</label>
+          <div class="col-md-9">
+            <div class="checkbox checkbox-inline checkbox-primary">
+              <input type="checkbox" ng-model="formData.is_overtime" ng-true-value="1" ng-false-value="0">
+              <label for=""></label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational_warehouse.receipt_report" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary" name="button">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

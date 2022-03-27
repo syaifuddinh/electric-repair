@@ -1,0 +1,64 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Cash Count</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table table-borderless">
+        <tr>
+          <td style="width:25%;">Branch</td>
+          <td><span><% item.company.name %></span></td>
+        </tr>
+        <tr>
+          <td>Tanggal Transaksi</td>
+          <td><span ng-if="item.date_transaction"><% item.date_transaction|fullDate %></span></td>
+        </tr>
+        <tr>
+          <td>Petugas</td>
+          <td><span><% item.officer %></span></td>
+        </tr>
+        <tr>
+          <td>Saldo Awal</td>
+          <td><span><% item.saldo_awal|number %></span></td>
+        </tr>
+        <!-- <tr>
+          <td>Talangan Kasir</td>
+          <td><span><% item.bailout|number %></span></td>
+        </tr> -->
+        <tr>
+          <td>Keterangan</td>
+          <td><span><% item.description %></span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Perhitungan</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nominal</th>
+            <th class="text-right">Jumlah</th>
+            <th class="text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="val in detail">
+            <td>Rp. <% val.nominal|number %></td>
+            <td class="text-right"><% val.qty|number %></td>
+            <td class="text-right">Rp. <% val.total|number %></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-right">TOTAL PERHITUNGAN</td>
+            <td class="text-right">Rp. <% totalAll|number %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

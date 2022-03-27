@@ -1,0 +1,20 @@
+<div class="col-md-12">
+  <div class="tabs-container">
+    <ul class="nav nav-tabs">
+      <li ng-show="roleList.includes('setting.company.detail.info')" ui-sref-active="active"><a ui-sref="setting.company.show.info"><i class="fa fa-users"></i> Info & Setting</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <div ng-if="states.current.name=='setting.company.show.info'">
+          <% states.go('setting.company.show.info.detail',{},{location:'replace'}) %>
+        </div>
+        <div ng-if="states.current.name=='setting.company.show'">
+          <% states.go('setting.company.show.info',{},{location:'replace'}) %>
+        </div>
+        <div class="panel-body">
+          <div ui-view=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

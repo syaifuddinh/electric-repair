@@ -1,0 +1,142 @@
+<form class="form-horizontal">
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Deposit Customer</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:30%;">Branch</td>
+              <td>: <% data.item.company.name %></td>
+            </tr>
+            <tr>
+              <td>Kode Transaksi</td>
+              <td>: <% data.item.code %></td>
+            </tr>
+            <tr>
+              <td>Tanggal Transaksi</td>
+              <td>: <% data.item.date_transaction|fullDate %></td>
+            </tr>
+            <tr>
+              <td>Nama Customer</td>
+              <td>: <% data.item.contact.name %></td>
+            </tr>
+            <tr>
+              <td>Alamat Customer</td>
+              <td>: <% data.item.contact.address %></td>
+            </tr>
+            <tr>
+              <td>Jumlah Uang Muka</td>
+              <td>: <% data.item.credit|number %></td>
+            </tr>
+            <tr>
+              <td>Keterangan</td>
+              <td>: <% data.item.description %></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Cara Pembayaran</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th>Cara Bayar</th>
+            <th>No. Ref</th>
+            <th>Jumlah Bayar</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="value in paid">
+            <td><% value.type_name %></td>
+            <td><% value.code %></td>
+            <td class="text-right"><% value.amount|number %></td>
+            <td><% value.description %></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3">Total</th>
+            <th><% total|number %></th>
+          </tr>
+          <tr>
+            <th colspan="3">Dibayar</th>
+            <th><% total_bayar|number %></th>
+          </tr>
+          <tr class="hidden">
+            <th colspan="3">Lebih Bayar</th>
+            <th><% lebih_bayar|number %></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.um_customer" class="btn btn-sm btn-warning">Kembali</a>
+      <a ng-show="sisa>0"
+        ng-click="showAkunModal()"
+        class="btn btn-sm btn-primary">Kembalikan Sisa Deposit</a>
+    </div>
+  </div>
+</div>
+</form>
+<div id="modalAkun"
+    class="modal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby=""
+    aria-hidden="true">
+    <div class="modal-dialog" style="width: 75%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="form-group required">
+                    <label class="col-md-3 control-label">Tanggal</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" datepick ng-model="formData.transaction_date">
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-3 control-label">Akun Kas/Bank</label>
+                    <div class="col-md-9">
+                        <select id="accountName" chosen
+                            class="form-control"
+                            data-placeholder-text-single="'Choose Akun Kas/Bank'"
+                            allow-single-deselect="false"
+                            ng-model="formData.cash_account_id"
+                            ng-options="s.id as s.name for s in data.cash_account">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a ng-disabled="disBtn" ng-click="simpanKembali()" class="btn btn-sm btn-primary">Save</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,212 @@
+<div class="col-md-12">
+    <div class="ibox-title">
+        <div class="row">
+            <div class="col-md-4">
+                <h5><% $root.pageTitle %></h5>
+            </div>
+            <div class="col-md-8">
+                <button type="button" ng-if="formData.status_slug == 'draft' && (($root.roleList.includes('sales.customer_order.approve') && (formData.file.length > 0 && formData.btn_code)) || ($root.roleList.includes('sales.customer_order.approve_without_po')))" ng-click="approveBtn()" class="btn btn-sm btn-primary m-r-sm pull-right" name="button">
+                    <span ng-if="($root.roleList.includes('sales.customer_order.approve') && (formData.file.length > 0 && formData.btn_code)) || ($root.roleList.includes('sales.customer_order.approve_without_po') && (formData.file.length > 0 && formData.btn_code))">
+                        <% $root.solog.label.customer_order.approve %>
+                    </span>
+                    <span ng-if="$root.roleList.includes('sales.customer_order.approve_without_po') && (formData.file.length == 0 || !formData.btn_code)">
+                        <% $root.solog.label.customer_order.approve %> Tanpa PO
+                    </span>
+                </button>
+                <button type="button" ng-if="formData.status_slug == 'draft' && ($root.roleList.includes('sales.customer_order.approve_without_po') || $root.roleList.includes('sales.customer_order.approve'))" ng-click="rejectBtn()" class="btn btn-sm btn-danger m-r-sm pull-right" name="button"><% $root.solog.label.customer_order.reject %></button>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table display compact nowrap table-borderless">
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold" style="width: 30%;"><% $root.solog.label.general.customer %></td>
+                            <td>:</td>
+                            <td><% formData.customer_name %></td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold"><% $root.solog.label.customer_order.no_po_customer %></td>
+                            <td>:</td>
+                            <td>
+                                <input ng-if="formData.status_slug == 'draft'" type="text" ng-model="formData.code" class="form-control">
+                                <span ng-if="formData.status_slug != 'draft'"><% formData.code %></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">No. <% $root.solog.label.general.contract %></td>
+                            <td>:</td>
+                            <td><% formData.no_contract %></td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold"><% $root.solog.label.general.date %></td>
+                            <td>:</td>
+                            <td><% formData.date|fullDate %></td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold"><% $root.solog.label.general.status %></td>
+                            <td>:</td>
+                            <td ng-if="formData.status_slug == 'approved'"><span class="badge badge-success"><% formData.status %></span></td>
+                            <td ng-if="formData.status_slug == 'rejected'"><span class="badge badge-danger"><% formData.status %></span></td>
+                            <td ng-if="formData.status_slug == 'draft'"><span class="badge badge-secondary"><% formData.status %></span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Description</td>
+                            <td>:</td>
+                            <td>
+                                <input ng-if="formData.status_slug == 'draft'" type="text" ng-model="formData.description" class="form-control">
+                                <span ng-if="formData.status_slug != 'draft'"><% formData.description %></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Pembayaran</td>
+                            <td>:</td>
+                            <td ng-if="formData.payment_type == 1">Due On Receipt</td>
+                            <td ng-if="formData.payment_type == 2">Jatuh Tempo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 pd-b8">
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 ng-show="$root.roleList.includes('sales.customer_order.add')"><i class="fa fa-cubes"></i> <% $root.solog.label.general.item %></h4>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="pull-right" ng-if="formData.status_slug == 'draft'">
+                            <item-warehouses-modal-input type='button' is-multiple='1' ng-model='formData.item_id' is-pallet="isPallet" quotation-id='formData.quotation_id' />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-responsive" id="appendTable">
+                    <thead>
+                        <tr>
+                        <th><% $root.solog.label.item.code %></th>
+                        <th><% $root.solog.label.item.name %></th>
+                        <th><% $root.solog.label.general.unit %></th>
+                        <th><% $root.solog.label.general.qty %></th>
+                        <th><% $root.solog.label.general.stock %></th>
+                        <th><% $root.solog.label.general.description %></th>
+                        <th><% $root.solog.label.general.price %></th>
+                        <th><% $root.solog.label.general.price_total %></th>
+                        <th style="width:5%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if='formData.detail.length == 0'>
+                            <td colspan="7" class='text-center'><% $root.solog.label.general.no_data %></td>
+                        </tr>
+                        <tr ng-repeat='(i, v) in formData.detail'>
+                            <td><% v.code %></td>
+                            <td><% v.name %></td>
+                            <td><% v.unit %></td>
+                            <td>
+                                <input type="text" ng-if="formData.status_slug == 'draft'" class='form-control' placeholder only-num ng-model='formData.detail[i].qty' ng-change="sumDetails()">
+                                <span ng-if="formData.status_slug != 'draft'"><% formData.detail[i].qty %></span>
+                            </td>
+                            <td><% v.stock %></td>
+                            <td>
+                                <input type="text" ng-if="formData.status_slug == 'draft'" class='form-control' placeholder ng-model='formData.detail[i].description'>
+                                <span ng-if="formData.status_slug != 'draft'"><% formData.detail[i].description %></span>
+                            </td>
+                            <td><% v.price %></td>
+                            <td><% v.qty * v.price %></td>
+                            <td class='text-center'>
+                                <a ng-if="formData.status_slug == 'draft'" ng-click='deletes(v.id)'>
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7">TOTAL</td>
+                            <td><% formData.total_price %></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-12 pd-b8">
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 ng-show="$root.roleList.includes('sales.customer_order.add')"><i class="fa fa-files-o"></i> <% $root.solog.label.general.files %></h4>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="pull-right">
+                            <a class="btn btn-sm btn-primary pull-right" ng-if="formData.status_slug == 'draft'" ng-click="modalUpload()"><i class="fa fa-upload"></i> Upload</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <table class="table display compact nowrap table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Berkas</th>
+                        <th>Waktu Upload</th>
+                        <th>File</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="value in formData.file">
+                        <td><% value.name %></td>
+                        <td><% value.date_upload|fullDate %></td>
+                        <td>
+                          <a download="<% value.name+'.'+value.extension %>" href="<% urls+'/'+value.file_name %>"><i class="fa fa-file"></i></a>
+                          <a ng-show="$root.roleList.includes('sales.customer_order.delete')" ng-if="formData.status_slug == 'draft'" ng-click='deleteFile(value.id)'><i class="fa fa-trash"></i></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-footer">
+        <a ng-click="back()" class="mg-l4 btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+        <button type="button" ng-show="$root.roleList.includes('sales.customer_order.edit')"  ng-if="formData.status_slug == 'draft'" ng-click="submitForm()" ng-disabled="disBtn" class="btn btn-sm btn-primary" name="button"><% $root.solog.label.general.save %></button>
+    </div>
+</div>
+
+<!-- modal upload -->
+<div class="modal fade" id="modalUpload" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id=""><i class="fa fa-upload"></i> Upload Berkas</h4>
+        </div>
+        <form class="form-horizontal" ng-submit="uploadSubmit()" id="uploadForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="col-md-3">Nama File</label>
+              <div class="col-md-9">
+                <input type="text" class="form-control" id="name" name="name" >
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">File</label>
+              <div class="col-md-9">
+                <input type="file" class="form-control" name="file" >
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+            <button ng-show="$root.roleList.includes('sales.customer_order.edit')" type="submit" ng-disabled="disBtn" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+  

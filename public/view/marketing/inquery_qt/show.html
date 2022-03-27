@@ -1,0 +1,198 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td class="text-right">
+                  <span ng-show="item.status==2">
+                    <a ng-show="roleList.includes('marketing.Inquery.edit')" ui-sref="marketing.inquery_qt.edit({id:item.id})" class="btn btn-sm btn-info"><i class="fa fa-edit"></i> <% solog.label.general.edit %></a>
+                    <a ng-show="roleList.includes('marketing.Inquery.detail.quotation_create')" ui-sref="marketing.inquery_qt.generate_quotation({id:item.id})" class="btn btn-sm btn-success"><i class="fa fa-check"></i> <% solog.label.general.create %> <% solog.label.general.quotation %></a>
+                    <button ng-show="roleList.includes('marketing.Inquery.detail.cancel')" type="button" ng-click="cancelInquery()" class="btn btn-sm btn-danger font-bold">Cancelkan Inquery</button>
+                  </span>
+                  <button ng-show="roleList.includes('marketing.Inquery.detail.revert')" type="button" ng-click="cancelCancelInquery()" ng-if="item.status==6" class="btn btn-sm btn-success font-bold">Jadikan Inquery</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:35%;">Branch</td>
+                <td>: <span class="font-bold"><% item.company.name %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.opportunity.code %></td>
+                <td>: <span><% item.code_opportunity %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.inquery.code %></td>
+                <td>: <span><% item.code_inquery %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.opportunity.date %></td>
+                <td>: <span ng-if="item.date_opportunity"><% item.date_opportunity|fullDate %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.inquery.date %></td>
+                <td>: <span ng-if="item.date_inquery"><% item.date_inquery|fullDate %></span></td>
+              </tr>
+              <tr>
+                <td>Customer</td>
+                <td>: <span><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>: <span class="font-bold"><% findJsonId(item.status,status).name %></span></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:35%;">Sales</td>
+                <td>: <span><% item.sales_inquery.name %></span></td>
+              </tr>
+              <tr>
+                <td>Tipe Pengiriman</td>
+                <td>: <span><% findJsonId(item.type_send,send_type).name %></span></td>
+              </tr>
+              <tr>
+                <td>Customer Stage</td>
+                <td>: <span><% item.customer_stage.name %></span></td>
+              </tr>
+              <tr>
+                <td><% solog.label.inquery.description %></td>
+                <td>: <span><% item.description_inquery %></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-12">
+          <hr>
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td><h4><% solog.label.general.activity %></h4></td>
+                <td class="text-right" ng-show="item.customer_stage_id != 8 && item.customer_stage_id != 9">
+                  <button ng-show="roleList.includes('marketing.Inquery.detail.create') && notCancel" type="button" ng-click="addActivity()" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> <% solog.label.general.add %></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table display compact nowrap table-bordered">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Sales</th>
+                <th>Tgl Aktivitas</th>
+                <th>Aktivitas</th>
+                <th>Status</th>
+                <th>Tgl Selesai</th>
+                <th>Catatan</th>
+                <th>Dokumen</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(i,val) in detail">
+                <td><% i+1 %></td>
+                <td><% val.sales.name %></td>
+                <td><% val.date_activity|fullDate %></td>
+                <td><% val.customer_stage.name %></td>
+                <td><% val.is_done?'Selesai':'Belum Selesai' %></td>
+                <td><span ng-if="val.date_done"><% val.date_done|fullDate %></span></td>
+                <td><% val.description %></td>
+                <td class="text-center">
+                  <span ng-if="val.file_name">
+                    <a download="<% val.customer_stage.name+'.'+val.extension %>" href="<% fileUrl+'/'+val.file_name %>"><i class="fa fa-file"></i></a>
+                  </span>
+                </td>
+                <td class="text-center">
+                  <a ng-show="roleList.includes('marketing.Inquery.detail.done') && notCancel" ng-click="isDone(val.id)" ng-if="!val.is_done" class="font-bold" title="Selesaikan Aktivitas"><i class="fa fa-check"></i>&nbsp;</a>
+                  <a ng-show="roleList.includes('marketing.Inquery.detail.delete') && notCancel" ng-click="deleteActivity(val.id)" ng-if="!val.is_done"><i class="fa fa-trash"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="marketing.inquery_qt" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+    </div>
+  </div>
+</div>
+<!-- modal aktivitas -->
+<div class="modal fade" id="modalActivity" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Aktivitas</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitActivity()" enctype="multipart/form-data" id="forms">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-7">
+
+              <div class="form-group">
+                <label class="col-md-3">Sales</label>
+                <div class="col-md-9">
+                  <select class="form-control" name="sales_id" data-placeholder-text-single="'Choose Sales'" chosen allow-single-deselect="false" ng-model="activityData.sales_id" ng-options="s.id as s.name for s in dataActivity.sales">
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">Tgl Aktivitas</label>
+                <div class="col-md-6">
+                  <input type="text" ng-model="activityData.date_activity" name="date_activity" datepick class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">Customer Stage</label>
+                <div class="col-md-9">
+                  <select class="form-control" name="customer_stage_id" data-placeholder-text-single="'Choose Customer Stage'" chosen allow-single-deselect="false" ng-model="activityData.customer_stage_id" ng-options="s.id as s.name for s in dataActivity.stage">
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <label class="col-md-3">Keterangan</label>
+                <div class="col-md-9">
+                  <textarea ng-model="activityData.description" name="description" rows="4" class="form-control"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3">Berkas</label>
+                <div class="col-md-9">
+                  <input type="file" name="file" class="form-control">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

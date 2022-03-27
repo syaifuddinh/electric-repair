@@ -1,0 +1,179 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Data</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">Branch</label>
+              <div class="col-md-9">
+                  <branch-select-input  ng-model="formData.company_id" />
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3">Tgl Pengajuan</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.date_request" datepick class="form-control">
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3">Tgl Diterima Penagih</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.date_receive" datepick class="form-control">
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3">Customer</label>
+              <div class="col-md-9">
+                  <customer-select-input ng-model='formData.customer_id' ng-change='customerChange()' />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Keterangan</label>
+              <div class="col-md-9">
+                <textarea ng-model="formData.description" class="form-control" rows="4"></textarea>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">Daftar Piutang</label>
+              <div class="col-md-9">
+                <div class="input-group" ng-click="cariPiutang()">
+                  <input type="text" readonly class="form-control" ng-model="detailData.receivable_code">
+                  <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3">Jumlah Piutang</label>
+              <div class="col-md-9">
+                <input type="text" readonly class="form-control" jnumber2 only-num ng-model="detailData.receivable_amount">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Tagihkan Semua</label>
+              <div class="col-md-9">
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox" ng-change="tagihkanAll()" ng-model="detailData.is_all" ng-true-value="1" ng-false-value="0">
+                  <label for=""></label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3">Jumlah Ditagihkan</label>
+              <div class="col-md-9">
+                <input type="text" ng-keyup="detailData.leftover=detailData.receivable_amount-detailData.bill" ng-disabled="detailData.is_all" class="form-control" jnumber2 only-num ng-model="detailData.bill">
+              </div>
+            </div>
+            <!--
+            <div class="form-group">
+              <label class="col-md-3">Sisa</label>
+              <div class="col-md-9">
+                <input type="text" readonly class="form-control" jnumber2 only-num ng-model="detailData.leftover">
+              </div>
+            </div>
+            -->
+            <div class="form-group">
+              <label class="col-md-3">Keterangan</label>
+              <div class="col-md-9">
+                <textarea ng-model="detailData.description" class="form-control" rows="4"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-3"></label>
+              <div class="col-md-3">
+                <button type="button" ng-click="appendTable()" ng-disabled="!detailData.receivable_id || detailData.leftover<0 || !detailData.bill" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add ke Tabel</button>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="col-md-12">
+            <h4><i class="fa fa-money"></i> Penagihan</h4>
+            <table class="table display compact nowrap table-bordered" id="">
+              <thead>
+                <tr>
+                  <th>No. Transaksi</th>
+                  <th>Jumlah Tagihan</th>
+                  <th>Ditagihkan</th>
+                  <th>Sisa Tagihan</th>
+                  <th>Keterangan</th>
+                  <th style="width:5%;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="(i,val) in formData.detail">
+                  <td><% val.code %></td>
+                  <td  class="text-center"><% val.receivable_amount|number %></td>
+                  <td class="text-right"><% val.bill|number %></td>
+                  <td class="text-right"><% val.leftover|number %></td>
+                  <td><% val.description %></td>
+                  <td class="text-center"><a ng-click="deleteAppend(i)"><span class="fa fa-trash"></span></a></td>
+                </tr>
+                <tr ng-if='formData.detail.length == 0'>
+                    <td colspan="6" class="text-center">
+                        <% solog.label.general.no_data %>
+                    </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="4" class="text-right">Total</th>
+                  <th class="text-right"><%formData.total|number%></th>
+                  <th></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <!-- <pre><%jStyle(formData)%></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="finance.bill_receivable" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modalReceivable" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Piutang</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-striped" id="receivable_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode</th>
+              <th>Tanggal</th>
+              <th>Tipe</th>
+              <th>Jatuh Tempo</th>
+              <th>Umur Piutang</th>
+              <th>Jumlah</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

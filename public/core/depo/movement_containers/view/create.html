@@ -1,0 +1,96 @@
+<div class="col-md-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5><% $root.solog.label.general.create %></h5>
+        </div>
+        <div class="ibox-content">
+            
+            <form class="form-horizontal">
+                <div class="ibox-content">
+                    <div class="sk-spinner sk-spinner-wave">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                    </div>
+                    
+                    <div class="form-group required">
+                        <label class="col-md-1 control-label"><% solog.label.general.branch %></label>
+                        <div class="col-md-11">
+                            <branch-select-input ng-model='formData.company_id' />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group required">
+                        <label class="col-md-1 control-label"><% solog.label.general.date %></label>
+                        <div class="col-md-11">
+                            <input type="text" class="form-control" ng-model="formData.date" datepick>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-md-1 control-label"><% solog.label.general.operator %></label>
+                        <div class="col-md-11">
+                            <pegawai-select-input ng-model="formData.operator_id" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-1 control-label"><% solog.label.general.description %></label>
+                        <div class="col-md-11">
+                            <textarea class='form-control' ng-model='formData.description'></textarea>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </form>
+            <div class="form-group pull-right">
+                <div class="col-md-12">
+                    <button class="btn btn-success btn-sm" type='button' ng-click='addDetail()'><% solog.label.general.add %> <% solog.label.general.detail %></button>
+                </div>
+            </div>
+            <div>
+                    
+                <table class="table table-bordered table-striped" id="appendTable">
+                    <thead>
+                      <tr>
+                        <th><% solog.label.gate_in_container.code %></th>
+                        <th><% solog.label.container.code %></th>
+                        <th><% solog.label.general.container_yard_destination %></th>
+                        <th style="width:5%;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if='formData.detail.length == 0'>
+                            <td colspan="4" class='text-center'><% solog.label.general.no_data %></td>
+                        </tr>
+                        <tr ng-repeat='(i, v) in formData.detail'>
+                            <td>
+                                <div ng-click='setId(v.id)'>
+                                    <gate-in-containers-modal-input type='button' hide-button='1' ng-model='formData.detail[i].gate_in_container_id' />
+                                </div>
+                            </td>
+                            <td>
+                                <% formData.detail[i].no_container %>
+                            </td>
+                            <td>
+                                <item-modal-input is-container-yard='1' ng-model='formData.detail[i].container_yard_destination_id'>
+                            </td>
+                            <td class='text-center'>
+                                <a ng-click='deletes(v.id)'>
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table>
+              </div>
+        </div>
+        <div class="ibox-footer">
+            <div class="btn-group">
+                <a ng-click='backward()' class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+                <button type="button" ng-click='submitForm()' ng-disabled="disBtn" class="btn btn-sm btn-primary"><% $root.solog.label.general.save %></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,270 @@
+<div class="col-md-12">
+  <form class="form-horizontal" ng-submit="submitForm()">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Data</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-3">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="companyChange(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 ">Tanggal Terima</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.receive_date" datepick>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control text-center" clockpick clockpick-position="bottom" ng-model="formData.receive_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 ">Selesai Stripping</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.stripping_date" datepick>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control text-center" clockpick clockpick-position="bottom" ng-model="formData.stripping_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Customer</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="customerChange(formData.customer_id)" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in customers">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Shipper</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Pengirim'" chosen allow-single-deselect="false" ng-model="formData.sender_id" ng-options="s.id as s.name for s in contact_address">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Consignee</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="formData.collectible_id=findJsonId(formData.receiver_id,contact_address).collectible_id" data-placeholder-text-single="'Choose Penerima'" chosen allow-single-deselect="false" ng-model="formData.receiver_id" ng-options="s.id as s.name for s in contact_address">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jenis</label>
+          <div class="col-md-9">
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="export" ng-model="formData.is_export" ng-value="1">
+              <label for="export">Export</label>
+            </div>
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="local" ng-model="formData.is_export" ng-value="0">
+              <label for="local">Local</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tipe</label>
+          <div class="col-md-9">
+            <div class="radio radio-primary">
+              <input type="radio" id="w_wo" ng-model="formData.stripping_type" ng-value="1">
+              <label for="w_wo">Dengan WO</label>
+            </div>
+            <div class="radio radio-primary">
+              <input type="radio" id="wo_wo" ng-model="formData.stripping_type" ng-value="2">
+              <label for="wo_wo">Tanpa WO</label>
+            </div>
+            <div class="radio radio-primary">
+              <input type="radio" id="pl" ng-model="formData.stripping_type" ng-value="3">
+              <label for="pl">Perpindahan Lokasi</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Staff Warehouse</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Staff Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_staff_id" ng-options="s.id as s.name for s in data.staff">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Reff</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.reff_no" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tujuan</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.city_to" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Gudang</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="warehouseChange(formData.warehouse_id)" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_id" ng-options="s.id as s.name for s in warehouses">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Nopol</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.nopol" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Driver</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.driver" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Handphone</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.phone_number" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Lembur</label>
+          <div class="col-md-9">
+            <div class="checkbox checkbox-inline checkbox-primary">
+              <input type="checkbox" ng-model="formData.is_overtime" ng-true-value="1" ng-false-value="0">
+              <label for=""></label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Detail Barang</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-3">Nama Barang</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="detailData.item_name" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jumlah</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" ng-model="detailData.qty" jnumber2 only-num>
+          </div>
+          <div class="col-md-6">
+            <select class="form-control" id="piece" data-placeholder-text-single="'Choose Satuan'" chosen allow-single-deselect="false" ng-model="detailData.piece_id" ng-options="s.id as s.name for s in data.piece">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Pengenaan</label>
+          <div class="col-md-9">
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="kubikasi" ng-model="detailData.imposition" ng-value="1">
+              <label for="kubikasi">Kubikasi</label>
+            </div>
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="tonase" ng-model="detailData.imposition" ng-value="2">
+              <label for="tonase">Tonase</label>
+            </div>
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="kubton" ng-model="detailData.imposition" ng-value="4">
+              <label for="kubton">Kubikasi & Tonase</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Dimensi & Tonase</label>
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-addon font-bold">Panjang</span>
+              <input type="text" class="form-control text-center" ng-model="detailData.long" placeholder="Panjang (cm)" jnumber2 only-num>
+              <span class="input-group-addon">cm</span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-addon font-bold">Lebar</span>
+              <input type="text" class="form-control text-center" ng-model="detailData.wide" placeholder="Lebar (cm)" jnumber2 only-num>
+              <span class="input-group-addon">cm</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3"></label>
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-addon font-bold">Tinggi</span>
+              <input type="text" class="form-control text-center" ng-model="detailData.high" placeholder="Tinggi (cm)" jnumber2 only-num>
+              <span class="input-group-addon">cm</span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-addon font-bold">Tonase</span>
+              <input type="text" class="form-control text-center" ng-model="detailData.weight" placeholder="Tonase (Kg)" jnumber2 only-num>
+              <span class="input-group-addon">Kg</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jenis Vehicle</label>
+          <div class="col-md-9">
+            <select class="form-control" id="vehicle_type" data-placeholder-text-single="'Choose Jenis Vehicle'" chosen allow-single-deselect="false" ng-model="detailData.vehicle_type_id" ng-options="s.id as s.name for s in data.vehicle_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Bin Location</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Rack / Bin'" chosen allow-single-deselect="false" ng-model="detailData.rack_id" ng-options="s.id as s.name for s in racks">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3"></label>
+          <div class="col-md-9">
+            <button type="button" ng-disabled="!detailData.item_name||!detailData.rack_id" ng-click="appendTable()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add ke Tabel</button>
+          </div>
+        </div>
+        <hr>
+        <table class="table display compact nowrap table-bordered" id="appendTable" style="width:100%; overflow:scroll;">
+          <thead>
+            <tr>
+              <th>Nama Barang</th>
+              <th>Perhitungan Barang</th>
+              <th>Panjang</th>
+              <th>Lebar</th>
+              <th>Tinggi</th>
+              <th>Tonase (Kg)</th>
+              <th>Jumlah</th>
+              <th>Satuan</th>
+              <th>Vehicle</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+        <!-- <pre><% jStyle(formData) %></pre>
+        <pre><% jStyle(detailData) %></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational_warehouse.receipt_report" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary" name="button">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

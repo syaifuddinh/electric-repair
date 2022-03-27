@@ -1,0 +1,74 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% pageTitle %></h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+       <div class="form-group">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-6">
+            <select class="form-control" ng-disabled="isEdit" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Asset</label>
+          <div class="col-md-6">
+            <select class="form-control" ng-disabled="isEdit" ng-change="changeAsset(formData.asset_id)" allow-single-deselect="false" chosen data-placeholder="Choose Asset" ng-model="formData.asset_id" ng-options="s.id as s.name group by s.asset_group.name for s in data.asset">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Akumulasi Depresiasi</label>
+          <div class="col-md-4">
+            <input type="text" jnumber2 only-num readonly class="form-control" ng-model="formData.akumulasi_depresiasi" >
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Akun Kerugian</label>
+          <div class="col-md-6">
+            <select class="form-control"
+              allow-single-deselect="true" chosen
+              data-placeholder="Choose Akun"
+              ng-model="formData.account_loss_id"
+              ng-options="s.id as s.code+' - '+s.name group by s.parent.name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Nilai Kerugian</label>
+          <div class="col-md-4">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="formData.loss_amount" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-6">
+            <textarea ng-model="formData.description" rows="4" class="form-control"></textarea>
+          </div>
+        </div>
+        <hr>
+        <a ui-sref="finance.pengafkiran_asset" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

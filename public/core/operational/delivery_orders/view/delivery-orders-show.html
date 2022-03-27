@@ -1,0 +1,133 @@
+<div class="ibox" ng-cloak>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td><h4>Detail Surat Jalan Driver</h4></td>
+            <td class="text-right"><a target="_blank" class="btn btn-xs btn-primary font-bold" href="<% baseUrl+'/operational/manifest_ftl/print_sj/'+item.manifest_id %>"><i class="fa fa-file-o"></i> Surat Jalan Driver</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table display compact nowrap table-borderless">
+        <tbody>
+          <tr>
+            <td style="width:20%;">No. Surat Jalan</td>
+            <td>: <span><% item.code %></span></td>
+          </tr>
+          <tr>
+            <td>Jadwal</td>
+            <td>: <span ng-if="item.pick_date"><%item.pick_date|fullDateTime%></span></td>
+          </tr>
+          <tr>
+            <td>Route</td>
+            <td>: <span><% item.route_name %></span></td>
+          </tr>
+          <tr>
+            <td>No. Manifest / Packing List</td>
+            <td>: <span><% item.manifest_code %></span></td>
+          </tr>
+          <tr>
+            <td>Vehicle</td>
+            <td>: <span><% item.nopol %></span></td>
+          </tr>
+          <tr>
+            <td>Driver</td>
+            <td>: <span><% item.driver_name %></span></td>
+          </tr>
+          <tr>
+            <td>KM Tempuh</td>
+            <td>: <span><% item.journey_distance %> KM</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>: <% item.status_name %> </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+      <solog-map-with-marker 
+                  is-draggable='true' 
+                  is-route-mode='true' 
+                  waypoints='data.tracking'
+                  with-popup='true'>
+      </solog-map-with-marker>
+      <hr>
+      <table class="table display compact nowrap table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>No. Job Order</th>
+            <th>Komoditas</th>
+            <th>Qty</th>
+            <th>Tonase/Vol</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i,val) in data.detail">
+            <td><% i+1 %></td>
+            <td><a ui-sref="operational.job_order.show.detail({id: val.job_order_detail.job_order.id})"> <% val.job_order_code %></a></td>
+            <td><% val.item_name %></td>
+            <td><% val.transported|number %> <% val.piece_name %></td>
+            <td><% (val.weight|number:3)+' Kg / '+(val.volume|number:3)+' m3' %></td>
+          </tr>
+        </tbody>
+      </table>
+
+        <hr>
+        <h5><% $root.solog.label.general.status_log %></h5>
+        <table class="table display compact nowrap table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Status</th>
+                <th>Waktu Update</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(i,val) in data.history">
+                <td><% i+1 %></td>
+                <td><% val.name %></td>
+                <td><% val.created_at|fullDateTime %></td>
+            </tr>
+            </tbody>
+        </table>
+
+      
+        <hr>
+        <h5><% $root.solog.label.general.proof_of_delivery %></h5>
+        <table class="table display compact nowrap table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Filename</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="data.documents.length == 0">
+                    <td colspan="2" class='text-center'>
+                        <% $root.solog.label.general.no_data %>
+                    </td>
+                </tr>
+                <tr ng-repeat="(i,val) in data.documents">
+                    <td><% i+1 %></td>
+                    <td>
+                        <a href="<% val.url %>" target="_blank">
+                            <% val.filename %>        
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="ibox-footer">
+        <a ng-click="back()" class="btn btn-sm btn-warning">
+            <% $root.solog.label.general.back %>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<span ng-show='type == "radio"'>
+    <label class="radio-inline">
+        <input type="radio" id="rack" ng-model="chosen" ng-change='change()' ng-value='"RACK"' ><% $root.solog.label.general.rack %>
+    </label>
+    <label class="radio-inline">
+        <input type="radio"  id="handling" ng-model="chosen" ng-change='change()' ng-value='"HANDLING"'>Handling Area
+    </label>
+</span>

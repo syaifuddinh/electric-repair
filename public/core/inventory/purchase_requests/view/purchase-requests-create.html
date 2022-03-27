@@ -1,0 +1,104 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% $root.solog.label.general.add %> <% $root.solog.label.general.purchase_request %></h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-md-3 control-label"><% $root.solog.label.general.branch %></label>
+              <div class="col-md-9">
+                <branch-select-input ng-model="formData.company_id">
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3 control-label"><% $root.solog.label.general.warehouse %></label>
+              <div class="col-md-9">
+                    <warehouses-select-input company-id='formData.company_id' ng-model="formData.warehouse_id" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label"><% $root.solog.label.general.requested_by %></label>
+              <div class="col-md-9">
+                <input readonly type="text" class="form-control" ng-model='data.user_name'>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3 control-label"><% $root.solog.label.general.requested_date %></label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.date_request" datepick class="form-control">
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3 control-label"><% $root.solog.label.general.realization_date %></label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.date_needed" datepick class="form-control">
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3 control-label"><% $root.solog.label.general.supplier %></label>
+              <div class="col-md-9">
+                    <supplier-select-input ng-model="formData.supplier_id" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label"><% $root.solog.label.general.description %></label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.description" class="form-control">
+              </div>
+            </div>
+
+          </div>
+          <hr>
+          <div class="col-md-12">
+            <div class='mg-b9'>
+                <button type='button' ng-click='showItems()' class='btn btn-sm btn-success pull-right'><% $root.solog.label.general.add %> <% $root.solog.label.general.item %></button>
+            </div>
+            <table class="table display compact nowrap table-bordered" id="appendTable">
+              <thead>
+                <tr>
+                  <th><% $root.solog.label.item.name %></th>
+                  <th style="width:20%;">Qty</th>
+                  <th style="width:5%;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr ng-if='formData.detail.length == 0'>
+                      <td class="text-center" colspan='3'><% $root.solog.label.general.no_data %></td>
+                  </tr>
+                  <tr ng-repeat='(i, v) in formData.detail'>
+                        <td><% v.item_name %></td>
+                      <td>
+                          <input only-num jnumber2 type="text" class="form-control" ng-model='formData.detail[i].qty'>
+                      </td>
+                      <td class='text-center'>
+                            <a ng-click='deleteRow(v.id)'>
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- <%formData%> -->
+      </div>
+      <div class="ibox-footer">
+        <a ng-click='backward()' class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+        <button type="submit" id="submitButton" ng-disabled="$root.disBtn" class="btn btn-sm btn-primary"><% $root.solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>
+<items-modal 
+    is-multiple-select='1'
+    is-pallet='is_pallet'
+    is-merchandise='is_merchandise'
+/>

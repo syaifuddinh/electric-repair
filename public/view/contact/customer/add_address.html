@@ -1,0 +1,237 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Data Alamat</h3>
+  </div>
+  <form class="form-horizontal" ng-submit="submitForm()" onkeypress="return event.keyCode != 13;">
+    <div class="panel-body">
+      <!-- start -->
+      <a ui-sref="contact.contact.show.address.create_f({id:params.id})" class="btn btn-lg btn-block btn-rounded btn-default"><i class="fa fa-users"></i> Choose Dari Kontak</a>
+      <hr>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-md-3">Branch</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3">Nama</label>
+            <div class="col-md-9">
+              <input type="text"  ng-model="formData.name" class="form-control">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3">Alamat</label>
+            <div class="col-md-9">
+              <input type="text"  ng-model="formData.address" class="form-control" id="place_search">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3">Kota</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Kota'" chosen allow-single-deselect="true" ng-model="formData.city_id" ng-options="s.id as s.city_name for s in data.city">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Kode Pos</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.postal_code" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Telepon</label>
+            <div class="col-md-5">
+              <input type="text" ng-model="formData.phone" class="form-control" placeholder='Telepon 1'>
+            </div>
+            <div class="col-md-4">
+              <input type="text" ng-model="formData.phone2" class="form-control"  placeholder='Telepon 2'>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Fax</label>
+            <div class="col-md-5">
+              <input type="text" ng-model="formData.fax" class="form-control">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3">Email</label>
+            <div class="col-md-6">
+              <input type="text" ng-model="formData.email" class="form-control">
+            </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <label class="col-md-3">Contact Person</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.contact_person" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Email Contact Person</label>
+            <div class="col-md-6">
+              <input type="text" ng-model="formData.contact_person_email" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">No. Contact Person</label>
+            <div class="col-md-6">
+              <input type="text" ng-model="formData.contact_person_no" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Jenis</label>
+            <div class="col-md-5">
+              <input type="checkbox"  ng-model="formData.is_pegawai" ng-true-value="1" ng-false-value="0"> Pegawai <br><br>
+              <input type="checkbox"  ng-model="formData.is_investor" ng-true-value="1" ng-false-value="0"> Investor <br><br>
+              <input type="checkbox"  ng-model="formData.is_pelanggan" ng-true-value="1" ng-false-value="0"> Customer <br><br>
+              <input type="checkbox"  ng-model="formData.is_asuransi" ng-true-value="1" ng-false-value="0"> Asuransi <br><br>
+              <input type="checkbox"  ng-model="formData.is_supplier" ng-true-value="1" ng-false-value="0"> Supplier <br><br>
+              <input type="checkbox"  ng-model="formData.is_depo_bongkar" ng-true-value="1" ng-false-value="0"> Depo Bongkar <br><br>
+              <input type="checkbox"  ng-model="formData.is_helper" ng-true-value="1" ng-false-value="0"> Helper <br><br>
+            </div>
+            <div class="col-md-4">
+              <input type="checkbox"  ng-model="formData.is_driver" ng-true-value="1" ng-false-value="0"> Sopir <br><br>
+              <input type="checkbox"  ng-model="formData.is_vendor" ng-true-value="1" ng-false-value="0"> Vendor <br><br>
+              <input type="checkbox"  ng-model="formData.is_sales" ng-true-value="1" ng-false-value="0"> Sales <br><br>
+              <input type="checkbox"  ng-model="formData.is_kurir" ng-true-value="1" ng-false-value="0"> Kurir <br><br>
+              <input type="checkbox"  ng-model="formData.is_pengirim" ng-true-value="1" ng-false-value="0"> Pengirim <br><br>
+              <input type="checkbox"  ng-model="formData.is_penerima" ng-true-value="1" ng-false-value="0"> Penerima <br><br>
+            </div>
+          </div>
+          <div class="form-group" ng-hide="formData.is_vendor==0">
+            <label class="col-md-3">Tipe Vendor</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Tipe Vendor'" chosen allow-single-deselect="true" ng-model="formData.vendor_type_id" ng-options="s.id as s.name for s in data.vendor_type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-hide="formData.is_pegawai==0">
+            <label class="col-md-3">No. Pegawai</label>
+            <div class="col-md-6">
+              <input type="text" ng-model="formData.pegawai_no" class="form-control">
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-md-3">Akun Hutang</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formData.akun_hutang" ng-options="s.id as s.name for s in data.account">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Akun Piutang</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formData.akun_piutang" ng-options="s.id as s.name for s in data.account">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Akun Uang Muka Supplier</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formData.akun_um_supplier" ng-options="s.id as s.name for s in data.account">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Akun Uang Muka Customer</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formData.akun_um_customer" ng-options="s.id as s.name for s in data.account">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Term of Payment</label>
+            <div class="col-md-3">
+              <input type="text" jnumber2 only-num ng-model="formData.term_of_payment" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Limit Piutang</label>
+            <div class="col-md-3">
+              <input type="text" jnumber2 only-num ng-model="formData.limit_piutang" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Limit Hutang</label>
+            <div class="col-md-3">
+              <input type="text" jnumber2 only-num ng-model="formData.limit_hutang" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">NPWP</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.npwp" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">PKP</label>
+            <div class="col-md-3">
+              <input type="checkbox"  ng-model="formData.pkp" ng-true-value="1" ng-false-value="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Keterangan</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.description" class="form-control">
+            </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <label class="col-md-3">No. Rek bank</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.rek_no" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Pemilik Rekening</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.rek_milik" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Bank</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Bank'" chosen allow-single-deselect="true" ng-model="formData.rek_bank_id" ng-options="s.id as s.name for s in data.bank">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">Rekening Branch</label>
+            <div class="col-md-9">
+              <input type="text" ng-model="formData.rek_cabang" class="form-control">
+            </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <label class="col-md-3">Tipe Alamat</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Tipe Alamat'" chosen allow-single-deselect="false" ng-model="formData.address_type_id" ng-options="s.id as s.name for s in data.address_type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- end -->
+    </div>
+    <div class="panel-footer">
+      <a ui-sref="contact.customer.show.address({id:params.id})" class="btn btn-sm btn-warning">Kembali</a>
+      <button type="submit" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </form>
+</div>

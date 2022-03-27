@@ -1,0 +1,122 @@
+<h4>Add Perawatan</h4>
+<hr>
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-md-3">Internal / Eksternal</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Perawatan Internal/Eksternal'" chosen allow-single-deselect="false" ng-model="formData.is_internal" ng-options="s.id as s.name for s in internal_eksternal">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Nama Perawatan</label>
+        <div class="col-md-9">
+          <input type="text" ng-model="formData.name" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">KM Perawatan</label>
+        <div class="col-md-9">
+          <input type="text" ng-model="formData.km_rencana" jnumber2 only-num class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Tanggal Rencana</label>
+        <div class="col-md-9">
+          <input type="text" ng-model="formData.date_rencana" datepick class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Biaya Jasa</label>
+        <div class="col-md-9">
+          <input type="text" ng-model="formData.cost_rencana" jnumber2 only-num class="form-control">
+        </div>
+      </div>
+      <div class="form-group" ng-if="!formData.is_internal">
+        <label class="col-md-3">Vendor</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Vendor'" chosen allow-single-deselect="true" ng-model="formData.vendor_id" ng-options="s.id as s.name for s in data.vendor">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Keterangan</label>
+        <div class="col-md-9">
+          <input type="text" ng-model="formData.description" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <hr>
+      <div class='ibox-tools mg-b2'>
+          <button type='button' class='btn btn-sm btn-primary' ng-click='addDetail()'>
+              <% solog.label.general.add %>
+          </button>
+      </div>
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th>Jenis Perawatan</th>
+            <th>Jenis Kegiatan</th>
+            <th><% solog.label.item.name %></th>
+            <th><% solog.label.general.rack %></th>
+            <th><% solog.label.general.qty %></th>
+            <th><% solog.label.general.price %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr ng-if='formData.detail.length == 0'>
+                <td colspan='7' class='text-center'>
+                    <% solog.label.general.no_data %>
+                </td>
+            </tr>
+            <tr ng-repeat="(i, v) in formData.detail">
+                <td>
+                    <select class="form-control" data-placeholder-text-single="'Choose Jenis Perawatan'" id="vmtype" chosen allow-single-deselect="false" ng-model="formData.detail[i].vehicle_maintenance_type_id" ng-options="s.id as s.name for s in data.vehicle_maintenance_type">
+                        <option value=""></option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" data-placeholder-text-single="'Choose Jenis Kegiatan'" id="tktype" chosen allow-single-deselect="false" ng-model="formData.detail[i].tipe_kegiatan" ng-options="s.id as s.name for s in tipe_kegiatan">
+                        <option value=""></option>
+                    </select>
+                </td>
+
+                <td>
+                    <div ng-click="openItem(formData.detail[i].id)">
+                        <item-warehouses-modal-input 
+                            ng-model='formData.detail[i].item_id' 
+                            show-jasa="1"
+                        />
+                    </div>
+                </td>
+
+                <td>
+                    <% formData.detail[i].rack_code %>
+                </td>
+
+                <td>
+                    <input type="text" ng-model="formData.detail[i].qty" jnumber2 only-num class="form-control">
+                </td>
+
+                <td>
+                    <input type="text" ng-model="formData.detail[i].price" jnumber2 only-num class="form-control">
+                </td>
+
+                <td>
+                    <a ng-click='deleteRow(formData.detail[i].id)'><span class='fa fa-trash'></span></a>
+                </td>
+            </tr>
+        </tbody>
+      </table>
+      <!-- <pre><% formData %></pre><br> -->
+      <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</form>

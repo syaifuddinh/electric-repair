@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="ibox" ng-show="isFilter">
+      <div class="ibox-title">
+        <h5>Filter Summary WO</h5>
+      </div>
+      <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+        <div class="ibox-content">
+          <div class="form-group" ng-if="is_admin==1">
+            <label class="col-md-3 control-label">Branch</label>
+            <div class="col-md-9">
+              <branch-select-input ng-change="refreshTable()" ng-model="filterData.company_id" />
+            </div>
+          </div>
+          <div class="form-group">
+                <label class="col-md-3 control-label">Periode</label>
+                <div class="col-md-9">
+                  <div class="input-daterange input-group" style="width:100%;">
+                    <input ng-click="refreshTable()" type="text" class="input-sm form-control" ng-model="filterData.start_date" datepick/>
+                    <span class="input-group-addon">to</span>
+                    <input ng-click="refreshTable()" type="text" class="input-sm form-control" ng-model="filterData.end_date" datepick />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Customer</label>
+                <div class="col-md-9">
+                  <customer-select-input ng-change="refreshTable()" ng-model="filterData.customer_id" />
+                </div>
+              </div>
+        </div>
+        <div class="ibox-footer">
+<!--          <button type="button" ng-click="refreshTable()" class="btn btn-sm btn-primary font-bold"><i class="fa fa-search"></i> Cari</button>-->
+          <button type="button" ng-change="reset()" class="btn btn-sm btn-warning"><i class="fa fa-times"></i> Reset</button>
+          <span id="export_button"></span>
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="ibox">
+      <div class="ibox-title">
+      <h5>Summary WO</h5>
+      <div class="ibox-tools">
+           <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+      </div>
+    </div>
+      <div class="ibox-content form-horizontal">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-bordered table-striped table-hover context-menu" id="datatable">
+          <thead>
+            <tr>
+              <th>Branch</th>
+              <th>No. WO</th>
+              <th>Tgl. WO</th>
+              <th>Customer</th>
+              <th>Operasional</th>
+              <th>Reimburse</th>
+              <th>Invoice</th>
+              <th>Profit</th>
+              <th>Presentase</th>
+              <th>No. Invoice</th>
+              <th>Tgl. Invoice</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

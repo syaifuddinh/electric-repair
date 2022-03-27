@@ -1,0 +1,105 @@
+<div class="col-lg-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Pengajuan</h5>
+    </div>
+    <div class="ibox-content" ng-class="{'sk-loading' : !item}">
+      <div class="sk-spinner sk-spinner-wave" ng-include="'view/spinner.html'"></div>
+      <table class="table display compact nowrap table-borderless">
+        <tbody>
+          <tr>
+            <td style="width:30%;">Tanggal Pengajuan</td>
+            <td>: <span ng-if="item.date_submission"><% item.date_submission|fullDate %></span></td>
+          </tr>
+          <tr>
+            <td>Sumber</td>
+            <td>: <span ng-bind-html="findJsonId(item.type_submission,type_submission).name"></span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>: <span ng-bind-html="findJsonId(item.status,status).name"></span></td>
+          </tr>
+          <tr>
+            <td>Kode</td>
+            <td>: <span><% item.codes %></span></td>
+          </tr>
+          <tr>
+            <td>No. AJU / No. BL</td>
+            <td>: <span><% item.aju_bl %></span></td>
+          </tr>
+          <tr ng-if="item.type_submission==2">
+            <td>No. Kontainer</td>
+            <td>: <span><% item.container?item.comtainer:'-' %></span></td>
+          </tr>
+          <tr>
+            <td>Customer</td>
+            <td>: <span class="font-bold"><% item.customer?item.customer:'-' %></span></td>
+          </tr>
+          <tr>
+            <td>Uraian</td>
+            <td>: <span><% item.description %></span></td>
+          </tr>
+          <tr ng-if="item.status==5">
+            <td>Tgl. Revisi</td>
+            <td>: <span ng-if="item.revision_date"><% item.revision_date|fullDate %></span></td>
+          </tr>
+          <tr ng-if="in_array(item.status,[1]) && in_array(item.type_submission,[1,2])">
+            <td>Biaya Quotation</td>
+            <td>: <span><% item.quotation_costs|number %></span></td>
+          </tr>
+          <tr ng-if="in_array(item.type_submission,[1,2])">
+            <td>Biaya Sebelumnya</td>
+            <td>: <span><% item.before_revision_cost|number %></span></td>
+          </tr>
+          <tr>
+            <td>Biaya</td>
+            <td>: <span><% item.amount|number %></span></td>
+          </tr>
+          <tr>
+            <td>Diajukan Oleh</td>
+            <td>: <span><% item.user_request %></span></td>
+          </tr>
+          <tr ng-if="in_array(item.type_submission,[1,2])">
+            <td>Biaya JO Disetujui Oleh</td>
+            <td>: <span><% item.user_approve_jo %></span></td>
+          </tr>
+          <tr ng-if="item.status>=2">
+            <td>Disetujui Oleh</td>
+            <td>: <span><% item.user_approve %></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table display compact nowrap table-borderless" ng-if="item.type_submission==4">
+        <tbody>
+          <tr>
+            <td colspan="3"><span class="font-bold">Pengajuan Transaksi Kas</span></td>
+          </tr>
+          <tr>
+            <td style="width:30%;">Jenis</td>
+            <td colspan="2">: <span ng-bind="findJsonId(cash.jenis,jenis).name"></span></td>
+          </tr>
+          <tr>
+            <td>Akun Kas / Bank</td>
+            <td style="width:40%;">: <span ng-bind="cash.account.account_name"></span></td>
+            <td ng-class="{'text-right': cash.jenis==2}"><span ng-bind="cash.total|number"></span></td>
+          </tr>
+          <tr ng-repeat="(i,val) in cash_detail">
+            <td>Akun <% cash.jenis==1?'Pendapatan':'Biaya' %> #<% i+1 %></td>
+            <td>: <span ng-bind="val.account.account_name"></span></td>
+            <td ng-class="{'text-right': cash.jenis==1}"><span ng-bind="val.amount|number"></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <pre><%jStyle(item)%></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.submission_cost" class="btn btn-sm btn-warning">Kembali</a> |
+      <button ng-show="roleList.includes('finance.submission_cost.detail.approve_submission')" ng-if="in_array(item.status,[1,5])" type="button" ng-click="approve()" class="btn btn-sm btn-success"><i class="fa fa-check"></i> Setujui</button>
+      <button ng-show="roleList.includes('finance.submission_cost.detail.reject_submission')" ng-if="in_array(item.status,[1,5])" type="button" ng-click="reject()" class="btn btn-sm btn-danger"><i class="fa fa-times"></i> Tolak</button>
+      <button ng-show="roleList.includes('finance.submission_cost.detail.revision_submission')" ng-if="in_array(item.status,[1,5])" type="button" ng-click="revisi()" class="btn btn-sm btn-primary"><i class="fa fa-commenting"></i> Revisi</button>
+      <button ng-show="roleList.includes('finance.submission_cost.detail.posting')" ng-if="item.status==2" type="button" ng-click="posting()" class="btn btn-sm btn-info">Entry Jurnal</button>
+      <button ng-show="roleList.includes('finance.submission_cost.detail.approve_submission')" ng-if="item.status==2" type="button" ng-click="cancel_approve()" class="btn btn-sm btn-danger">Cancelkan Persetujuan</button>
+      <button ng-show="roleList.includes('finance.submission_cost.detail.posting')" ng-if="item.status==4" type="button" ng-click="cancel_posting()" class="btn btn-sm btn-danger">Cancelkan Posting</button>
+    </div>
+  </div>
+</div>

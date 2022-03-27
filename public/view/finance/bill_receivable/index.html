@@ -1,0 +1,76 @@
+<div class="col-md-12">
+  <div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5><% solog.label.general.filter %></h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% solog.label.general.branch %></label>
+        <div class="col-md-9">
+            <branch-select-input ng-model='formData.company_id' ng-change='searchData()' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% solog.label.general.customer %></label>
+        <div class="col-md-9">
+           <customer-select-input ng-model='formData.customer_id' ng-change='searchData()' />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% solog.label.general.period %></label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" ng-change='searchData()' datepick="">
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" ng-change='searchData()' datepick="">
+          </div>
+        </div>
+      </div>
+    
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% solog.label.general.status %></label>
+        <div class="col-md-9">
+          <select class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" data-placeholder-text-single="'Semua Status'" chosen="" allow-single-deselect="true" ng-model="formData.status" ng-change='searchData()'>
+            <option value="" class="" selected="selected"></option>
+            <option value='1'>Belum Terbayar</option>
+            <option value='2'>Terbayar</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()"><% solog.label.general.reset %></a>
+    </div>
+  </form>
+</div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% $rootScope.pageTitle %></h5>
+      <div class="ibox-tools export_button">
+        <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> <% solog.label.general.filter %></button>
+        <button class="btn btn-sm btn-primary" ng-show="roleList.includes('finance.debt.draft.create')" ui-sref="finance.bill_receivable.create"><i class="fa fa-plus"></i> <% solog.label.general.add %></button>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+        <thead>
+          <tr>
+            <th><% solog.label.general.code %></th>
+            <th><% solog.label.general.branch %></th>
+            <th><% solog.label.general.date %></th>
+            <th><% solog.label.general.customer %></th>
+            <th><% solog.label.invoice.code %></th>
+            <th>Jumlah Ditagihkan</th>
+            <th><% solog.label.general.status %></th>
+            <th style="width:8%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

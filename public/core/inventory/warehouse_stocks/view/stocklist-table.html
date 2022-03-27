@@ -1,0 +1,102 @@
+<style>
+    tbody tr {
+        cursor:context-menu;
+    }
+</style>
+<span ng-hide="hideFilter">
+    <div class="ibox" ng-show="isFilter">
+        <div class="ibox-title">
+            <h5><% $root.solog.label.general.filter %></h5>
+        </div>
+        <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+            <div class="ibox-content">
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><% $root.solog.label.general.customer %></label>
+                    <div class="col-md-7">
+                        <customer-select-input ng-change='searchData()' ng-model="formData.customer_id" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><% $root.solog.label.general.warehouse %></label>
+                    <div class="col-md-7">
+                        <warehouses-select-input ng-change='searchData()' ng-model="formData.warehouse_id" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><% $root.solog.label.general.period %></label>
+                    <div class="col-md-7">
+                        <div class="input-daterange input-group" style="width:100%;">
+                            <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+                            <span class="input-group-addon">s/d</span>
+                            <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><% $root.solog.label.general.qty %></label>
+                    <div class="col-md-7">
+                        <div class="input-daterange input-group" style="width:100%;">
+                            <input ng-change='searchData()' type="text" class="input-sm form-control" ng-model="formData.start_qty" only-num>
+                            <span class="input-group-addon">s/d</span>
+                            <input ng-change='searchData()' type="text" class="input-sm form-control" ng-model="formData.end_qty" only-num>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+
+                    </div>
+                    <label class="col-md-5">
+                        <label class="checkbox-inline">
+                            <input ng-change='searchData()' type="checkbox" ng-model='formData.is_not_cancel' ng-true-value="1" ng-false-value="0">
+                            Tampilkan barang yang penerimaan barangnya tidak dibatalkan ?
+                        </label>
+                    </label>
+                </div>
+
+                <span ng-hide="hide_is_merchandise_filter">
+                    <div class="form-group">
+                        <div class="col-md-2">
+
+                        </div>
+                        <label class="col-md-5">
+                            <label class="checkbox-inline">
+                                <input ng-change='searchData()' type="checkbox" ng-model='formData.is_merchandise' ng-true-value="1" ng-false-value="0">
+                                Hanya tampilkan stok barang dagang
+                            </label>
+                        </label>
+                    </div>
+                </span>
+
+            </div>
+            <div class="ibox-footer">
+                <div class="btn-group">
+                    <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+                    <!--                <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button>-->
+                    <button type="button" ng-click='exportExcel()' class="btn btn-sm btn-default">Export Excel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</span>
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Stock List</h5>
+        <div class="ibox-tools" id="export_button">
+            <span ng-hide="hideFilter">
+                <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+            </span>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div style="overflow-x:scroll">
+            <table class="table display compact nowrap table-bordered" id="stocklist_datatable"></table>
+        </div>
+    </div>
+</div>
+
+

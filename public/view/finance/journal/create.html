@@ -1,0 +1,96 @@
+<form class="form-horizontal" name="myForm" ng-submit="submitForm()" id="submitForm">
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Add Jurnal Umum</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-9">
+                <branch-select-input ng-model="formData.company_id" />
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tipe Transaksi</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Tipe Transaksi'" chosen allow-single-deselect="false" ng-model="formData.type_transaction_id" ng-options="s.id as s.name for s in data.type_transaction">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <!-- <div class="form-group required">
+          <label class="col-md-3 control-label">Kode Reff</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.code" name="code">
+          </div>
+        </div> -->
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Tanggal Transaksi</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" datepick ng-model="formData.date_transaction">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.description">
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Jurnal</h5>
+      <div class="ibox-tools">
+        <a class="btn btn-sm btn-rounded btn-primary" ng-click="append()"><i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th>Akun</th>
+            <th style="width: 20%;">Kategori Kas</th>
+            <th style="width: 20%;">Debet</th>
+            <th style="width: 20%;">Credit</th>
+            <th style="width: 20%;">Keterangan</th>
+            <th style="width: 6%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="2"></th>
+            <th><input type="text" jnumber2 only-num class="form-control" ng-model="totDebet" disabled></th>
+            <th><input type="text" jnumber2 only-num class="form-control" ng-model="totCredit" disabled></th>
+            <th colspan="2"></th>
+          </tr>
+        </tfoot>
+      </table>
+
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.journal" class="btn btn-sm btn-warning">Kembali</a>
+      <button type="submit" ng-model="submitBtn" id="sbtBtn" ng-disabled="totDebet!=totCredit || totDebet==0 || disBtn" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+</form>

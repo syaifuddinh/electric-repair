@@ -1,0 +1,139 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Driver</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()" onkeypress="return event.keyCode != 13;">
+      <div class="ibox-content">
+      <!--  -->
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">Branch</label>
+              <div class="col-md-9">
+                <select class="form-control" ng-change="getVehicle(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Nama</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.name" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Alamat</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.address" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Kota</label>
+              <div class="col-md-5">
+                <select class="form-control" data-placeholder-text-single="'Choose Kota'" chosen allow-single-deselect="false" ng-model="formData.city_id" ng-options="s.id as s.city_name for s in data.city">
+                  <option value=""></option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <input type="text" ng-model="formData.postal_code" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Telephone</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formData.phone" class="form-control">
+              </div>
+              <div class="col-md-4">
+                <input type="text" ng-model="formData.phone2" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Email</label>
+              <div class="col-md-6">
+                <input type="text" ng-model="formData.email" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Status Driver</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Status Driver'" chosen allow-single-deselect="true" ng-model="formData.driver_status" ng-options="s.id as s.name for s in driver_status">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" ng-hide="formData.is_pegawai==0">
+              <label class="col-md-3">No. Pegawai</label>
+              <div class="col-md-6">
+                <input type="text" ng-model="formData.pegawai_no" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" ng-if="isNotEdit">
+              <label class="col-md-3">Vehicle</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="true" ng-model="formData.vehicle_id" ng-options="s.id as s.name for s in vehicles">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">NPWP</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.npwp" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Keterangan</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.description" class="form-control">
+              </div>
+            </div>
+            <hr>
+            <div class="form-group">
+              <label class="col-md-3">No. Rek bank</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.rek_no" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Pemilik Rekening</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.rek_milik" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Bank</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Bank'" chosen allow-single-deselect="true" ng-model="formData.rek_bank_id" ng-options="s.id as s.name for s in data.bank">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Rekening Branch</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.rek_cabang" class="form-control">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      <!--  -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="contact.driver" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places&key=AIzaSyCYHxT3gwgKMB59YAsXF0MG2oiVZwuNXu4"></script> -->

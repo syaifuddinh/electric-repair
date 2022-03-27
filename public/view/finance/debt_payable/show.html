@@ -1,0 +1,152 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-fax"></i> Detail Penagihan</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:25%">Branch</td>
+                <td>: <span><% item.company.name %></span></td>
+              </tr>
+              <tr>
+                <td>Kode</td>
+                <td>: <span><% item.code %></span></td>
+              </tr>
+              <tr>
+                <td>Tanggal Transaksi</td>
+                <td>: <span ng-if="item.date_request"><% item.date_request|fullDate %></span></td>
+              </tr>
+              <!-- <tr>
+                <td>Tanggal Diterima</td>
+                <td>: <span ng-if="item.date_receive"><% item.date_receive|fullDate %></span></td>
+              </tr> -->
+              <!-- <tr>
+                <td>Supplier</td>
+                <td>: <span class="font-bold"><% item.customer.name %></span></td>
+              </tr> -->
+              <tr>
+                <td>Alamat</td>
+                <td>: <span><% item.company.address %></span></td>
+              </tr>
+              <tr>
+                <td>Keterangan</td>
+                <td>: <span><% item.description %></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:25%">Akun selisih</td>
+                <td>: <% item.akun_selisih_name %></td>
+              </tr>
+              <tr>
+                <td style="width:25%">Status</td>
+                <td>: <span ng-bind-html="findJsonId(item.status,status).name"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-money"></i> Daftar Tagihan</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-striped">
+        <thead>
+          <tr>
+            <th>No Transaksi</th>
+            <th>Sumber Transaksi</th>
+            <th>Supplier</th>
+            <th class="text-right">Jumlah Tagihan</th>
+            <th class="text-right">Ditagihkan</th>
+            <th class="text-right">Selisih Tagihan</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="val in detail">
+            <td><% val.code %></td>
+            <td><% val.type_transaction.name %></td>
+            <td><% val.payable.contact.name %></td>
+            <td class="text-right"><% val.total_debt|number %></td>
+            <td class="text-right"><% val.debt|number %></td>
+            <td class="text-right"><% val.leftover|number %></td>
+            <td><% val.description %></td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-right font-bold">TOTAL DITAGIHKAN : </td>
+            <td class="text-right"><% totalAll|number %></td>
+            <td colspan="2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+      <div class="ibox-content">
+      <table class="table table-striped">
+        <thead ng-if="totalPaymentBP > 0">
+          <tr>
+            <th>No Bukti Potong</th>
+            <th>Nominal</th>
+            <th class="text-right">COA Bukti Potong</th>
+            <th></th>
+            <th class="text-right">File Bukti Potong</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i,val) in paymentbp | filter:{reff: ''}">
+            <td><% val.reff %></td>
+            <td><% val.total|number%></td>
+            <td class="text-right"><% val.payment_type?val.cash_account.name:val.cek_giro.code %></td>
+            <td ></td>
+            <td class="text-right"><a href="<% baseUrl+'/files/'+val.filename%>" target="_blank" ng-if="val.filename!=''"><% val.filename %></a></td>
+            <!-- <td class="text-right"><a ng-if="val.filename==''">-</a></td> -->
+            <!-- <td class="text-right"><b ng-if="val.valid==1">ter-validasi</b></td> -->
+            <td></td>
+           <!--  <td class="text-right"><a ng-click="validBP(i)" ng-if="val.filename!='' && val.valid==0"><span class="fa fa-check"></span></a></td>
+
+            <td class="text-right"><a ng-click="uploadfileny(val.id)" ng-if="val.valid==0"><span class="fa fa-edit"></span></a></td> -->
+            <!-- <td class="text-right">file</td> -->
+            <!-- <td></td> -->
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right font-bold">Total Bukti Potong : </td>
+            <td class="text-right"><% totalPaymentBP|number %></td>
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right font-bold">Total Bayar : </td>
+            <td class="text-right"><% totalPayment|number %></td>
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right font-bold">Kurang/Lebih Bayar : </td>
+            <td class="text-right"><% leftOver|number %></td>
+            <td colspan="2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.debt_payable" class="btn btn-sm btn-warning">Kembali</a>
+      <a ng-if="item.status==1" ng-show="roleList.includes('finance.credit.draft.detail.input_payment')" ui-sref="finance.debt_payable.payment({id:item.id})" class="btn btn-sm btn-success"><i class="fa fa-fax"></i> Input Pembayaran</a>
+    </div>
+  </div>
+</div>

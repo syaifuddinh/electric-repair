@@ -1,0 +1,170 @@
+<div class="row">
+  <div class="col-md-6" ng-show="roleList.includes('setting.general_setting.lead.status_lead')">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Lead Status</h5>
+        <div class="ibox-tools">
+          <!-- <a ng-click="addPort()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</a> -->
+        </div>
+      </div>
+      <div class="ibox-content">
+        <table class="table display compact nowrap table-bordered" id="status_datatable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Active ?</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6" ng-show="roleList.includes('setting.general_setting.lead.source_lead')">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Source Lead</h5>
+        <div class="ibox-tools">
+        </div>
+      </div>
+      <div class="ibox-content">
+        <table class="table display compact nowrap table-bordered" id="source_datatable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Active ?</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" ng-show="roleList.includes('setting.general_setting.lead.industries')">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Industri</h5>
+        <div class="ibox-tools">
+          <a ng-show="roleList.includes('setting.general_setting.lead.industries.create')" ng-click="addIndustry()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</a>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <table class="table display compact nowrap table-bordered" id="industry_datatable">
+          <thead>
+            <tr>
+              <th>Kode</th>
+              <th>Nama</th>
+              <th>Aktif</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalStatus" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id=""><%modalTitleStatus%></h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitStatus()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3 control-label">Nama</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" required ng-model="formStatus.status" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Aktif</label>
+            <div class="col-md-4">
+              <div class="checkbox checkbox-inline checkbox-primary">
+                <input type="checkbox" id="is_active_status" ng-model="formStatus.is_active" ng-true-value="1" ng-false-value="0">
+                <label for="is_active_status"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-sm btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalSource" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Source</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitSource()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3 control-label">Nama</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" required ng-model="formSource.name" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Aktif</label>
+            <div class="col-md-4">
+              <div class="checkbox checkbox-inline checkbox-primary">
+                <input type="checkbox" id="is_active_source" ng-model="formSource.is_active" ng-true-value="1" ng-false-value="0">
+                <label for="is_active_source"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-sm btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalIndustry" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id=""><%modalTitleIndustry%></h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitIndustry()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3 control-label">Kode</label>
+            <div class="col-md-4">
+              <input type="text" class="form-control" required ng-model="formIndustry.code" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Nama</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" required ng-model="formIndustry.name" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Aktif</label>
+            <div class="col-md-4">
+              <div class="checkbox checkbox-inline checkbox-primary">
+                <input type="checkbox" id="is_active_industry" ng-model="formIndustry.is_active" ng-true-value="1" ng-false-value="0">
+                <label for="is_active_industry"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-sm btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

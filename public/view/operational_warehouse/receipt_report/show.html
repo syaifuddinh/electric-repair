@@ -1,0 +1,124 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:25%;">Kode Penerimaan</td>
+                <td>: <span><% item.code %></span></td>
+              </tr>
+              <tr>
+                <td>Customer</td>
+                <td>: <span><% item.customer.name %></span></td>
+              </tr>
+              <tr>
+                <td>Pengirim</td>
+                <td>: <span><% item.sender.name+', '+item.sender.address %></span></td>
+              </tr>
+              <tr>
+                <td>Penerima</td>
+                <td>: <span><% item.receiver.name+', '+item.receiver.address %></span></td>
+              </tr>
+              <!-- <tr>
+                <td>Tertagih</td>
+                <td>: <span><% item.collectible.name %></span></td>
+              </tr> -->
+              <tr>
+                <td>Tanggal Terima</td>
+                <td>: <span ng-if="item.receive_date"><% item.receive_date|fullDateTime %></span></td>
+              </tr>
+              <tr>
+                <td>Selesai Stripping</td>
+                <td>: <span ng-if="item.stripping_done"><% item.stripping_done|fullDateTime %></span></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td style="width:25%;">Staff Warehouse</td>
+                <td>: <span><% item.staff.name %></span></td>
+              </tr>
+              <tr>
+                <td>Jenis Pengiriman</td>
+                <td>: <span><% findJsonId(item.is_export,is_export).name %></span></td>
+              </tr>
+              <tr>
+                <td>Tujuan</td>
+                <td>: <span><% item.city_to %></span></td>
+              </tr>
+              <tr>
+                <td>Mark / Reff</td>
+                <td>: <span><% item.reff_no %></span></td>
+              </tr>
+              <tr>
+                <td>Gudang</td>
+                <td>: <span><% item.warehouse.name %></span></td>
+              </tr>
+              <!-- <tr>
+                <td>Status</td>
+                <td>: <span><% item.status %></span></td>
+              </tr> -->
+              <tr>
+                <td>Nopol</td>
+                <td>: <span><% item.nopol %></span></td>
+              </tr>
+              <tr>
+                <td>Driver</td>
+                <td>: <span><% item.driver %></span></td>
+              </tr>
+              <tr>
+                <td>No. Telfon</td>
+                <td>: <span><% item.phone_number %></span></td>
+              </tr>
+              <tr>
+                <td>Lembur</td>
+                <td>: <span><% findJsonId(item.is_overtime,is_overtime).name %></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-12">
+          <table class="table display compact nowrap table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nama Barang</th>
+                <th>Perhitungan Barang</th>
+                <th>Panjang</th>
+                <th>Lebar</th>
+                <th>Tinggi</th>
+                <th>Tonase</th>
+                <th>Jumlah</th>
+                <th>Satuan</th>
+                <th>Vehicle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(i,val) in detail">
+                <td class="text-right"><% i+1 %>.</td>
+                <td><% val.item_name %></td>
+                <td><% findJsonId(val.imposition,imposition).name %></td>
+                <td class="text-right"><% val.long|number:3 %> m</td>
+                <td class="text-right"><% val.wide|number:3 %> m</td>
+                <td class="text-right"><% val.high|number:3 %> m</td>
+                <td class="text-right"><% val.weight|number:3 %> kg</td>
+                <td class="text-right"><% val.qty|number %></td>
+                <td><% val.piece.name %></td>
+                <td><% val.vehicle_type.name %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="operational_warehouse.receipt_report" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Laporan Jurnal Umum</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="exportJournal()">
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Semua Branch'" chosen allow-single-deselect="true" data-placeholder="Choose Header Akun" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Periode</label>
+          <div class="col-md-9">
+            <div class="input-daterange input-group" style="width:100%;">
+              <input type="text" class="input-sm form-control" ng-model="formData.start_date" datepick/>
+              <span class="input-group-addon">to</span>
+              <input type="text" class="input-sm form-control" ng-model="formData.end_date" datepick />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Tipe Transaksi</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Semua Tipe Transaksi'" chosen allow-single-deselect="true" ng-model="formData.type_transaction_id" ng-options="s.id as s.name for s in data.type_transaction">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Status</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Semua Status'" chosen allow-single-deselect="true" ng-model="formData.status" ng-options="s.id as s.name for s in status">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3"> </div>
+          <div class="col-md-3">
+              <label for="prevent_zero">
+                
+                <input type="checkbox" ng-model='formData.prevent_zero' name="prevent_zero" id="prevent_zero" style="margin-right: 1.2mm">
+                Tampilkan Tidak Nol
+              </label>
+          </div>
+        </div>
+
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="finance.report" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" class="btn btn-sm btn-primary">Export</button>
+      </div>
+    </form>
+  </div>
+</div>

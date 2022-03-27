@@ -1,0 +1,112 @@
+<div class="ibox" ng-show='is_filter'>
+  <div class="ibox-title">
+    <h5><i class="fa fa-filter"></i> <% solog.label.general.filter %></h5>
+  </div>
+  <div class="ibox-content form-horizontal">
+    <div class="row">
+      <div class="col-md-6">
+
+        <div class="form-group">
+            <label class="col-md-3"><% solog.label.general.customer %></label>
+            <div class="col-md-9">
+                <customer-select-input ng-change='refreshTable()' ng-model="filterData.customer_id" />
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Update By</label>
+          <div class="col-md-9">
+            <select ng-change='refreshTable()' class="form-control" data-placeholder-text-single="'Semua Update'" chosen allow-single-deselect="true" ng-model="filterData.create_by" ng-options="s.id as s.name for s in data.user">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3"><% solog.label.general.period %></label>
+          <div class="col-md-9">
+            <div class="input-daterange input-group" style="width:100%;">
+              <input ng-change='refreshTable()' type="text" class="input-sm form-control" ng-model="filterData.start_date" datepick/>
+              <span class="input-group-addon">to</span>
+              <input ng-change='refreshTable()' type="text" class="input-sm form-control" ng-model="filterData.end_date" datepick />
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+
+        <div class="form-group">
+          <label class="col-md-3">Job Order</label>
+          <div class="col-md-9">
+            <input ng-change='refreshTable()' type="text" class="form-control" ng-model="filterData.job_order">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3"><% solog.label.general.service %></label>
+          <div class="col-md-9">
+            <select ng-change='refreshTable()' class="form-control" data-placeholder-text-single="'Choose Service'" chosen allow-single-deselect="true" ng-model="filterData.service" ng-options="s.id as s.name group by s.service_type.name for s in data.service">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Status</label>
+          <div class="col-md-9">
+            <select ng-change='refreshTable()' class="form-control" data-placeholder-text-single="'Choose Status'" chosen allow-single-deselect="true" ng-model="filterData.kpi_status_id" ng-options="s.id as s.name group by s.parent for s in data.kpi_status">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <!-- <pre><% jStyle(filterData) %></pre> -->
+    </div>
+  </div>
+  <div class="ibox-footer">
+    <button class="btn btn-warning" ng-click='reset_filter()'>Reset</button>
+<!--    <button class="btn btn-primary" ng-click='refreshTable()'>Cari</button>-->
+    <a ng-click="exportExcel()" class="btn btn-default font-bold"><i class="fa fa-file-excel-o"></i> Export</a>
+    <span id="export_button"></span>
+  </div>
+</div>
+<div class="ibox">
+  <div class="ibox-title">
+    <h5><% solog.label.operational_progress.title %></h5>
+    <div class="ibox-tools">
+        <a ng-click='is_filter = !is_filter' class="btn btn-success btn-sm font-bold"><i class="fa fa-filter"></i> <% solog.label.general.filter %></a>
+      <a ng-show="roleList.includes('operational.progress.create')" class="btn btn-sm btn-primary" ui-sref="operational.progress.create"><i class="fa fa-plus"></i> Add</a>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+    </table>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Progress</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="col-md-3">Tanggal</label>
+          <div class="col-md-5">
+            <input type="text" datepick ng-model="formData.date_update" class="form-control">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="submitForm()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

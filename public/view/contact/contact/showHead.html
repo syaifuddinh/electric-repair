@@ -1,0 +1,44 @@
+<div class="col-md-12">
+  <div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li ui-sref-active="active">
+            <a ui-sref="contact.contact.show.detail"><i class="fa fa-dashboard"></i> Detail</a>
+        </li>
+
+        <li ng-if="showShipperConsignee" ui-sref-active="active">
+            <a ui-sref="contact.contact.show.address"><i class="fa fa-users"></i> Shipper & consignee</a>
+        </li>
+
+        <li ui-sref-active="active">
+            <a ui-sref="contact.contact.show.document"><i class="fa fa-files-o"></i> Documents</a>
+        </li>
+
+        <li ng-if="showContractHistory" ui-sref-active="active">
+            <a ui-sref="contact.contact.show.contract"><i class="fa fa-bar-chart-o"></i> Contracts History</a>
+        </li>
+
+        <li ng-if="showReceivable" ui-sref-active="active">
+            <a ui-sref="contact.contact.show.receivable"><i class="fa fa-bar-chart-o"></i> Receivables</a>
+        </li>
+
+        <li  ng-if="showCustomerChannel" ui-sref-active="active">
+            <a ui-sref="contact.contact.show.user"><i class="fa fa-user"></i> Akses Customer Channel</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+      <!-- <div ng-if="states.current.name='contact.contact.show'">
+        <% states.go('contact.contact.show.detail',{id:statesParams.id},{location:'replace'}) %>
+      </div> -->
+      <span ng-if="state.current.name=='contact.contact.show'" ng-init="state.go('contact.contact.show.detail',{id:stateParams.id},{location:'replace'})"></span>
+      <div class="tab-pane active">
+        <div class="panel-body">
+          <!-- main body -->
+          <div ui-view="">
+
+          </div>
+          <!-- end main body -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<form class="form-horizontal" >
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% solog.label.general.detail %></h5>
+      <div class="ibox-tools">
+      </div>
+    </div>
+      <div class="ibox-content">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" id="info_tab" ng-click='openInfo()'>
+                        <% solog.label.general.info %> 
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="tab" id="rack_tab" ng-click='openRack()'>
+                        <% solog.label.general.rack %>
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="tab" id="receipt_tab" ng-click='openReceipt()'>
+                        <% solog.label.warehouse_receipt.title %>
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="tab" id="map_tab" ng-click='openMap()'>
+                        <% solog.label.general.map %>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content pd-t2">
+                <div id='info_detail' class='tab-item'>
+                    <table class="table display compact nowrap table-borderless">
+                      <tbody>
+                        <tr>
+                          <td style="width:20%;"><% solog.label.general.code %></td>
+                          <td>: <% formData.code %></td>
+                        </tr>
+                        <tr>
+                          <td style="width:20%;"><% solog.label.general.name %></td>
+                          <td>: <% formData.name %></td>
+                        </tr>
+                        <tr>
+                          <td><% solog.label.general.address %></td>
+                          <td class="font-bold">: <% formData.address %></td>
+                        </tr>
+                        <tr>
+                          <td><% solog.label.general.branch %></td>
+                          <td>: <% formData.company %></td>
+                        </tr>
+                        <tr>
+                          <td><% solog.label.general.volume_capacity %></td>
+                          <td>: <% formData.capacity_volume %></td>
+                        </tr>
+                        <tr>
+                          <td><% solog.label.general.weight_capacity %></td>
+                          <td>: <% formData.capacity_tonase %></td>
+                        </tr>
+                        <tr>
+                          <td><% solog.label.warehouse.luas_gudang %></td>
+                          <td>: <% formData.luas_gudang %></td>
+                        </tr>
+                        <tr>
+                          <td><% solog.label.warehouse.luas_lahan %></td>
+                          <td>: <% formData.luas_lahan %></td>
+                        </tr>
+                        <tr>
+                          <td><% solog.label.warehouse.luas_bangunan %></td>
+                          <td>: <% formData.luas_bangunan %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+
+                <div id='rack_detail' class='tab-item'>
+                    <racks-table warehouse-id='formData.id'></racks-table>
+                </div>
+
+                <div id='receipt_detail' class='tab-item'>
+                    <warehouse-receipts-table warehouse-id='formData.id'></warehouse-receipts-table>
+                </div>
+                <div id='map_detail' class='tab-item'>
+                    <warehouse-maps-create warehouse-id='formData.id' />
+                </div>
+            </div>
+      </div>
+
+      <div class="ibox-footer">
+          <button class='btn btn-warning' ui-sref='operational_warehouse.setting.warehouse'><% solog.label.general.back %></button>
+      </div>
+  </div>
+</div>
+

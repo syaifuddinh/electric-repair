@@ -1,0 +1,64 @@
+<div class="col-md-6" ng-show="roleList.includes('operational.job_order.detail.document.upload')">
+  <form class="form-horizontal" ng-submit="submitForm()" id="uploadForm">
+    <div class="form-group">
+      <label class="col-md-3">Nama File</label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" id="name" name="name" >
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3">File</label>
+      <div class="col-md-9">
+        <input type="file" class="form-control" name="file" >
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3">Customer View ?</label>
+      <div class="col-md-9">
+        <div class="checkbox checkbox-inline checkbox-primary">
+          <input type="checkbox" id="is_customer_view" value="<% formData.is_customer_view %>" name="is_customer_view" ng-model="formData.is_customer_view" ng-true-value="1" ng-false-value="0">
+          <label for="is_customer_view"></label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3">Keterangan</label>
+      <div class="col-md-9">
+        <textarea name="description" rows="4" class="form-control"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3"></label>
+      <div class="col-md-9">
+        <button  type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary"><i class="fa fa-upload"></i> Upload</button>
+      </div>
+    </div>
+
+  </form>
+</div>
+<div class="col-md-12">
+  <table class="table display compact nowrap table-bordered">
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Nama</th>
+        <th>Tanggal Upload</th>
+        <th>Keterangan</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="value in detail">
+        <td>
+          <a download="<% value.name+'.'+value.extension %>" href="<% urls+'/'+value.file_name %>"><i class="fa fa-file"></i></a>
+        </td>
+        <td><% value.name %></td>
+        <td><% value.upload_date|fullDate %></td>
+        <td><% value.description %></td>
+        <td class="text-center">
+          <a ng-click="delete_file(value.id)"><i class="fa fa-trash"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

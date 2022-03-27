@@ -1,0 +1,39 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"></h3>
+  </div>
+  <form class="form-horizontal" ng-submit="submitForm()">
+    <div class="panel-body">
+      <a ui-sref="contact.contact.show.address.create({id:params.id})" class="btn btn-lg btn-block btn-rounded btn-default"><i class="fa fa-users"></i> Buat Kontak Baru</a>
+      <hr>
+      <div class="form-group required">
+        <label class="col-md-3">Nama Kontak</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Kontak'" chosen allow-single-deselect="false" ng-model="formData.contact_address_id" ng-options="s.id as s.name for s in data.contact">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-md-3">Jenis Alamat</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Tipe Alamat'" chosen allow-single-deselect="false" ng-model="formData.address_type_id" ng-options="s.id as s.name for s in data.address_type">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Customer Tagih</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Customer Tagih'" chosen allow-single-deselect="true" ng-model="formData.contact_bill_id" ng-options="s.id as s.name for s in data.contact">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <a ui-sref="contact.contact.show.address({id:params.id})" class="btn btn-sm btn-warning">Kembali</a>
+      <button type="submit" id="sbtBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </form>
+</div>

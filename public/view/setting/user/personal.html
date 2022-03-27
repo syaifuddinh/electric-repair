@@ -1,0 +1,24 @@
+<table class="table display compact nowrap table-borderless">
+  <tbody>
+    <tr>
+      <td style="width:25%;">Name</td>
+      <td>: <% masterItem.name %></td>
+    </tr>
+    <tr>
+      <td>Username / Email</td>
+      <td>: <% masterItem.username %> / <% masterItem.email %></td>
+    </tr>
+    <tr>
+      <td>Branch</td>
+      <td>: <% masterItem.company.name %></td>
+    </tr>
+    <tr>
+      <td>Last Login</td>
+      <td>: <span ng-if="masterItem.last_login"><% masterItem.last_login|fullDateTime %></span> </td>
+    </tr>
+    <tr>
+      <td>Administrator</td>
+      <td>: <% masterItem.is_admin?'Ya':'Tidak' %></td>
+    </tr>
+  </tbody>
+</table>

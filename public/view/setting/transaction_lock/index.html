@@ -1,0 +1,49 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Kunci Transaksi</h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>Tipe Transaksi</th>
+            <th class="hidden">Batas Kunci Transaksi</th>
+            <th style="width:10%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+      <!-- modal edit -->
+      <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id=""><% modalEditTitle %></h4>
+            </div>
+            <form class="form-horizontal form-transaction_lock">
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="">Tipe Transaksi</label>
+                  <input type="text" class="form-control" name="name" ng-disabled="true" ng-model="name" placeholder="Nama Area">
+                </div>
+                <div class="form-group">
+                  <label for="">Tanggal Transaksi</label>
+                  <input type="text" class="form-control" datepick ng-disabled="isDisabled" ng-model="last_date_lock" value="<%dateNow%>">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancel</button>
+                <button type="submit" ng-disabled="isDisabled" ng-click="submitForm()" class="btn btn-sm btn-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

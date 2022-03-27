@@ -1,0 +1,35 @@
+<div class="col-md-12">
+  <!-- <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <td class="pull-right">
+        <a ui-sref="vehicle.vehicle.show.maintenance.create" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Perawatan</a>
+      </td>
+    </tbody>
+  </table> -->
+  <div class="tabs-container">
+    <div class="tabs-left">
+      <ul class="nav nav-tabs">
+        <li ui-sref-active="active">
+          <a ng-show="roleList.includes('vehicle.vehicle.detail.maintenance.create')" ui-sref="vehicle.vehicle.show.maintenance.create"><span class="btn btn-primary" style="font-size: 13px;"><i class="fa fa-plus"></i> Add Perawatan</span></a>
+        </li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.maintenance.submission')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.maintenance.pengajuan">Pengajuan <span class="badge badge-primary pull-right"><% tot.pengajuan %></span></a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.maintenance.plan')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.maintenance.rencana">Rencana <span class="badge badge-warning pull-right"><% tot.rencana %></span></a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.maintenance.process')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.maintenance.perawatan">Perawatan <span class="badge badge-info pull-right"><% tot.perawatan %></span></a></li>
+        <li ng-show="roleList.includes('vehicle.vehicle.detail.maintenance.realisation')" ui-sref-active="active"><a ui-sref="vehicle.vehicle.show.maintenance.selesai">Selesai <span class="badge badge-success pull-right"><% tot.selesai %></span></a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active">
+          <div class="panel-body">
+            <!-- main body -->
+            <div class="col-md-12 table-responsive">
+              <div ui-view="">
+              </div>
+            </div>
+            <!-- end main body -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

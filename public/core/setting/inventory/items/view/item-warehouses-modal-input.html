@@ -1,0 +1,47 @@
+<span ng-hide='hide_input'>
+    <div class="input-group" ng-click="cariItem()">
+        <input type="text" readonly class="form-control" ng-model="item_name">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+    </div>
+</span>
+<span ng-hide='hide_button'>
+    <button type='button' class='btn btn-sm btn-success' ng-click="cariItem()"><% button_label %></button>
+</span>
+
+<solog-modal ref='item_warehouse_modal' title='"Items"' hide-save='1' width-percent='80'>
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" id="item_tab" ng-click='openItem()'>
+                <% $root.solog.label.general.item %> 
+            </a>
+        </li>
+        <li ng-show="show_jasa">
+            <a data-toggle="tab" id="service_tab" ng-click='openService()'>
+                <% $root.solog.label.general.service %> 
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content mg-t5">
+        <div id='item_detail' class='tab-item'>
+            <item-warehouses-table 
+                is-pallet="isPallet" 
+                is-multiple='is_multiple' 
+                customer-id='customer_id' 
+                warehouse-id='warehouses_id' 
+                show-jasa="show_jasa"
+                show-sale-price="show_sale_price"
+                is-merchandise="is_merchandise"
+                quotation-id='quotationId'
+            />
+        </div>
+
+        <div id='service_detail' ng-show="show_jasa" class='tab-item'>
+            <item-table 
+                hide-export="1"
+                is-service="1" 
+                input-mode="1"
+            />
+        </div>
+    </div>
+</solog-modal>

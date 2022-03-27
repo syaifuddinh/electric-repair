@@ -1,0 +1,115 @@
+<div class="col-md-7">
+  <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+      <h3 class="panel-title">Remark Cetak</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal" >
+        <div class="form-group">
+          <label class="col-md-3">Attn</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.attn" class="form-control">
+          </div>
+        </div>
+        <hr>
+        <h4>Rekening Transfer</h4>
+        <div class="form-group">
+          <label class="col-md-3">Nomor Rekening</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.account" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Nama Pemilik</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.person" class="form-control">
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label class="col-md-3">Alamat</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.address" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3">Telepon</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.phone" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3">Fax</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.fax" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3">Email</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.email" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3">SMS Center</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.sms_center" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3">Bank</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.bank" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3">NPWP</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.additional.npwp" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3">Logo</label>
+          <div class="col-md-9" id='attachment_container'>
+            <div class="col-md-12">
+                <input type="file" name='files' id='files' style='display:none' accept="image/png, image/jpeg" multiple>
+                <label for="files" class='btn btn-success btn-sm' style='margin-top:1.5mm'>
+                    <i class="fa fa-upload"></i> Upload logo
+                </label>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <h4>Penanda Tangan</h4>
+        <div class="form-group">
+          <label class="col-md-3">Nama</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.signature" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jabatan</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="formData.position" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3"></label>
+          <div class="col-md-9">
+            <button type="submit" ng-disabled='disBtn' ng-click="submitForm()" class="btn btn-sm btn-primary">Save</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

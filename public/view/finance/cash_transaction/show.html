@@ -1,0 +1,160 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Detail Transaksi</h5>
+        <div class="ibox-tools">
+          <button ng-if="item.status_cost_slug == 'draft' && can_approve && item.status != 3" type="button" ng-disabled='disBtn' ng-click="approve(item.id)" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Approve</button>
+          <button ng-if="item.status_cost_slug == 'finished'" ng-disabled='disBtn' type="button" ng-click="reject(item.id)" class="btn btn-sm btn-danger"><i class="fa fa-check"></i> Cancel</button>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td class="font-bold" style="width: 25%;">Branch</td>
+              <td>: <% item.company.name %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Kode Transaksi</td>
+              <td>: <% item.code %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Tgl Transaksi</td>
+              <td>: <% item.date_transaction|fullDate %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Tipe</td>
+              <td>: <% item.type_name %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Masuk/Keluar</td>
+              <td>: <% item.jenis_name %></td>
+            </tr>
+            <!-- <tr>
+              <td class="font-bold">Kode Reff</td>
+              <td>: <% item.reff %></td>
+            </tr> -->
+            <tr>
+              <td class="font-bold">Akun Kas/Bank</td>
+              <td>: <% item.account.account_name %></td>
+            </tr>
+
+            <tr>
+              <td class="font-bold">Status Approval</td>
+              <td>: <% item.status_cost_name %></td>
+            </tr>
+
+            <tr>
+              <td class="font-bold">Keterangan</td>
+              <td>: <% item.description %></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="ibox-footer">
+        <a ng-click='back()' class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="ibox">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-bordered">
+          <thead>
+            <tr>
+              <th>Kode PL / JO</th>
+            <th>Biaya</th>
+              <th>Akun</th>
+              <th>File</th>
+              <th>Keterangan</th>
+              <th>Nominal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(i,value) in detail">
+              <td ng-click="showCostModal(1, i)"><% value.code %></td>
+            <td ng-click="showCostModal(1, i)"><% value.name %></td>
+              <td><% value.account.account_name %></td>
+              <td><a ng-show="value.hasFile" href="<% value.fileLink %>" download>
+                <i class="fa fa-download" title="Download File"></i></a></td>
+              <td><% value.description %></td>
+              <td><% value.amount|number %></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="3">Total</th>
+              <th><%totalAll|number%></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal -->
+<div class="modal fade" id="costModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Daftar Biaya</h4>
+    </div>
+        <div class="modal-body">
+            <ul class="nav nav-tabs nav-justified">
+              <li id='job_order_cost_btn'><a ng-click='openJobOrderCost()'>Biaya Job Order</a></li>
+              <li id='manifest_cost_btn'><a ng-click='openManifestCost()'>Biaya Packing List</a></li>
+            </ul>
+
+            <div class="tab-content">
+              <div id="job_order_cost" class="pd-top-3">
+                    <table class='table context-menu' id="job_order_cost_datatable">
+                        <thead>
+                            <tr>
+                                <th>No. Job Order</th>
+                                <th>Biaya</th>
+                                <th>Vendor</th>
+                                <th>Qty</th>
+                                <th>Harga Satuan</th>
+                                <th>Harga Total</th>
+                            </tr>
+                        </thead>
+                    </table>
+              </div>
+              <div id="manifest_cost">
+                    <table class='table context-menu' id="manifest_cost_datatable">
+                        <thead>
+                            <tr>
+                                <th>No. Packing List</th>
+                                <th>Biaya</th>
+                                <th>Vendor</th>
+                                <th>Qty</th>
+                                <th>Harga Satuan</th>
+                                <th>Harga Total</th>
+                            </tr>
+                        </thead>
+                    </table>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+      </div>
+
+</div>
+</div>
+</div>

@@ -1,0 +1,143 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Data</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <!--tr>
+              <td style="width: 40%;" class="font-bold">Kode</td>
+              <td>: <%data.code%></td>
+            </tr-->
+            <tr>
+              <td class="font-bold">Nama</td>
+              <td class="font-bold">: <%data.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Alamat</td>
+              <td>: <%data.address%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Telephone</td>
+              <td>: <% data.phone +' / '+data.phone2 %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Fax</td>
+              <td>: <% data.fax %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Email</td>
+              <td>: <% data.email %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Contact Person</td>
+              <td>: <% data.contact_person %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Email Contact Person</td>
+              <td>: <% data.contact_person_email %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Telfon Contact Person</td>
+              <td>: <% data.contact_person_no %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Branch</td>
+              <td>: <% data.company.name %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Tanggal Registrasi</td>
+              <td>: <% data.vendor_register_date|fullDate %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Data Aktif</td>
+              <td class="font-bold">: <% data.active_name %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Status Approval</td>
+              <td class="font-bold" >: <span ng-bind-html="data.approve_name"></span></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width: 40%;" class="font-bold">Tipe Vendor</td>
+              <td>: <%data.vendor_type.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Term of Payment</td>
+              <td>: <%data.term_of_payment%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Limit Hutang</td>
+              <td>: <%data.limit_hutang|number%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Limit Piutang</td>
+              <td>: <%data.limit_piutang|number%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Akun Hutang</td>
+              <td>: <%data.hutang.code+' - '+data.hutang.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Akun Piutang</td>
+              <td>: <%data.piutang.code+' - '+data.piutang.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Akun Uang Muka Supplier</td>
+              <td>: <%data.um_supplier.code+' - '+data.um_supplier.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Akun Uang Muka Customer</td>
+              <td>: <%data.um_customer.code+' - '+data.um_customer.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">No NPWP</td>
+              <td>: <%data.npwp%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">PKP</td>
+              <td>: <%data.pkp%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Pajak</td>
+              <td>: <%data.tax.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Keterangan</td>
+              <td>: <%data.description%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">No. Rekening</td>
+              <td>: <%data.rek_no%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Pemilik Rekening</td>
+              <td>: <%data.rek_milik%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Bank</td>
+              <td>: <%data.bank.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Branch Bank</td>
+              <td>: <%data.rek_cabang%></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <!-- <a ui-sref="vendor.register_vendor" class="btn btn-sm btn-warning">Kembali</a> -->
+    <a ng-show="roleList.includes('vendor.register.detail.detail.edit')" ui-sref="vendor.register_vendor.edit({id:data.id})" class="btn btn-sm btn-success"><i class="fa fa-edit"></i> Edit</a>
+    <a ng-show="roleList.includes('vendor.register.detail.detail.approve')" ng-click="approve()" ng-if="data.vendor_status_approve==1" class="btn btn-info btn-sm"><i class="fa fa-check"></i> Approve</a>
+  </div>
+</div>

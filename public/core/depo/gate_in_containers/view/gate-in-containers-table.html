@@ -1,0 +1,49 @@
+<div class="ibox">
+  <div class="ibox" ng-show="isFilter">
+    <div class="ibox-title">
+      <h5><% $root.solog.label.general.filter %></h5>
+    </div>
+    <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" ng-submit="filterJobOrder()">
+      <div class="ibox-content">
+        <div class="form-group">
+          <label class="col-md-1 control-label"><% $root.solog.label.general.branch %></label>
+          <div class="col-md-9">
+                <branch-select-input ng-model='formData.company_id' ng-change='searchData()' />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-1 control-label"><% $root.solog.label.general.period %></label>
+          <div class="col-md-9">
+            <div class="input-daterange input-group" style="width:100%;">
+              <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="" ng-change='searchData()'>
+              <span class="input-group-addon">to</span>
+              <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="" ng-change='searchData()'>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="ibox-footer">
+        <a class="btn btn-sm btn-warning" ng-click="resetFilter()"><% $root.solog.label.general.reset %></a>
+      </div>
+    </form>
+  </div>
+
+  <div class="ibox-title">
+    <h5><% $root.solog.label.general.gate_in_container %></h5>
+    <div class="ibox-tools">
+      <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> <% $root.solog.label.general.filter %></button>
+      <span ng-hide="hide_add">
+          <button type='button' class="btn btn-sm btn-primary" ng-click='add()'><i class="fa fa-plus"></i> <% $root.solog.label.general.add %></button>
+      </span>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <solog-datatable options='options' id='datatable'></solog-datatable>
+  </div>
+</div>

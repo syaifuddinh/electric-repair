@@ -1,0 +1,172 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="ibox">
+            <div class="ibox-title">
+                <b>
+                    RF Navigator Index
+                </b>
+            </div>
+            <div class="ibox-content">
+                <div class="row table table-bordered" style='border:0'>
+                        <div class='col-md-9' style='border-right:1px solid #ececec'>
+                            Index Scale
+                            <div class='mg-t1' style='position:relative;width:100%;height:8mm;background:linear-gradient(to right, red, yellow, green)'>
+                                <div style='height:10mm;width:2mm;border-left:1mm solid black;left:70%;top:-10%;position:absolute;'></div>
+                            </div>
+                        </div>
+                        <div class='col-md-3'>
+                            Index Number
+                            <h3 class='text-primary'>880</h3>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="ibox">
+            <div class="ibox-title">
+                <b>
+                    Workloads Overview
+                </b>
+            </div>
+            <div class="ibox-content">
+                <div class="row table table-bordered" style='border:0'>
+                        <div class='col-md-2' style='border-right:1px solid #ececec'>
+                            Total Task To Do
+                            <h3 class='text-primary'>415</h3>
+                        </div>
+                        <div class='col-md-2' style='border-right:1px solid #ececec'>
+                            Total Task Completed
+                            <h3 class='text-primary'>1419</h3>
+                        </div>
+                        <div class='col-md-2' style='border-right:1px solid #ececec'>
+                            Percent Completed
+                            <h3 class='text-primary'>75%</h3>
+                        </div>
+                        <div class='col-md-3' style='border-right:1px solid #ececec'>
+                            Hours Until All Tasks Completed
+                            <h3 class='text-primary'>-</h3>
+                        </div>
+                        <div class='col-md-3'>
+                            Operator Logged In RFN
+                            <h3 class='text-primary'>9</h3>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <b>
+                    Today Tasks
+                </b>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class='doughnut_chart' title='Customer Selects'></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class='doughnut_chart' title='Receipts'></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class='doughnut_chart' title='Shipments'></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class='doughnut_chart' title='Put Aways'></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class='doughnut_chart' title='Will Calls'></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class='doughnut_chart' title='Cycle Counts'></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class='doughnut_chart' title='Small Parcels'></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class='doughnut_chart' title='Replenishments'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="ibox">
+            <div class="ibox-title">
+                <b>
+                    Monthly Executive Overview
+                </b>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>Metric</h4>
+                        <hr>
+                        <ul class="list-group" id='list_chart'>
+                        </ul>
+                    </div>
+                    <div class="col-md-8">
+                        <h4>
+                            Monthly Overview
+                        </h4>
+                        <hr>
+                        <div>
+                            <canvas id='overview_chart'></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="ibox">
+            <div class="ibox-title">
+                <b>
+                    RFN Alert
+                </b>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-4 flex" style='background:#b3b3b3;height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Exported Shortage</h5>
+                    </div>
+                    <div class="col-md-4 flex" style='background:#b3b3b3;height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Merged Shortage</h5>
+                    </div>
+                    <div class="col-md-4 flex" style='height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Sorted Orders</h5>
+                    </div>
+                    <div class="col-md-4 flex" style='background:#b3b3b3;height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Last Orders</h5>
+                    </div>
+                    <div class="col-md-4 flex" style='background:#b3b3b3;height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Outstanding Order Completed</h5>
+                    </div>
+                    <div class="col-md-4 flex" style='height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Last Damaged Material</h5>
+                    </div>
+                    <div class="col-md-4 flex" style='height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Will Calls</h5>
+                    </div>
+                    <div class="col-md-4 flex" style='background:#b3b3b3;height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Will Calls</h5>
+                    </div>
+                    <div class="col-md-4 flex" style='background:#b3b3b3;height:20mm;justify-content:center;align-items:center;border:1px solid black'>
+                        <h5 class='text-center'>Cart to be requested</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

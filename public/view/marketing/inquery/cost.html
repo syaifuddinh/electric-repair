@@ -1,0 +1,71 @@
+<div class="col-md-9">
+  <h4>Operational Cost</h4>
+</div>
+<div class="sk-container col-md-12">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+  <table class="table display compact nowrap table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Service</th>
+        <th>Route</th>
+        <th>Commodity</th>
+        <th>Vehicle</th>
+        <th>Charge In</th>
+        <th>Inquery Price</th>
+        <th>Contract Price</th>
+        <th>Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-if="data.details.length == 0">
+          <td class="text-center" colspan='10'>Tidak ada data</td>
+      </tr>    
+      <tr ng-repeat="(i, val) in data.details">
+        <td><% i+1 %></td>
+        <td><% val.service.name %></td>
+        <td><% val.route.name %></td>
+        <td><% val.commodity.name %></td>
+        <td><% val.vehicle_type.name %></td>
+        <td><% imposition_name_arr[i] %></td>
+        <td class="text-right"><% val.price_inquery_tonase+val.price_inquery_volume+val.price_inquery_item+val.price_inquery_full|number %></td>
+        <td class="text-right"><% val.price_contract_tonase+val.price_contract_volume+val.price_contract_item+val.price_contract_full|number %></td>
+        <td class="text-right"><% val.cost|number %></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <table class="table display compact nowrap table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Cost Name</th>
+        <!-- <th>Status</th> -->
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Total Price</th>
+        <th>Vendor</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-if="data.cost.length == 0">
+          <td class="text-center" colspan='7'>Tidak ada data</td>
+      </tr>
+      <tr ng-repeat="val in data.cost">
+        <td><% val.quotation_detail.service.name %></td>
+        <td><% val.cost_type.name %></td>
+        <!-- <td><% val.is_internal %></td> -->
+        <td class="text-right"><% val.total %></td>
+        <td class="text-right"><% val.cost|number %></td>
+        <td class="text-right"><% val.total_cost|number %></td>
+        <td><strong><% val.vendor.name %></strong></td>
+        <td><% val.description %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

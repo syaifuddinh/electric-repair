@@ -1,0 +1,37 @@
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>Detail Komoditas dan Tarif</h5>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Layanan</th>
+          <th>Route</th>
+          <th>Tipe Vehicle</th>
+          <th>Pengenaan</th>
+          <th>Penawaran</th>
+          <th>Harga Kontrak</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(i, val) in data_item.details">
+          <td><% i+1 %></td>
+          <td><% val.service.name %></td>
+          <td><% val.route.name %></td>
+          <td><% val.vehicle_type_id?val.vehicle_type.name:val.container_type.code %></td>
+          <td><% imposition_name_arr[i] %></td>
+          <td class='text-right'><% val.penawaran | number %></td>
+          <td class='text-right'><% val.penawaran | number %></td>
+          <!-- <td><% val.cost|number %></td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

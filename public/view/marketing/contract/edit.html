@@ -1,0 +1,95 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Edit Kontrak</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Kode Inquery</label>
+          <div class="col-md-9">
+            <span>: <% data.code %></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Branch</label>
+          <div class="col-md-9">
+            <span>: <% data.company.name %></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tgl. Inquery</label>
+          <div class="col-md-9">
+            <span>: <% data.date_inquery|fullDate %></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Customer</label>
+          <div class="col-md-9">
+            <span>: <strong><% data.customer.name %></strong></span>
+          </div>
+        </div>
+        <hr>
+        <div class="form-group">
+          <label class="col-md-3">Tgl. Kontrak</label>
+          <div class="col-md-4">
+            <input type="text" datepick class="form-control" ng-model="formData.date_start_contract">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tgl. Berakhir</label>
+          <div class="col-md-4">
+            <input type="text" datepick class="form-control" ng-model="formData.date_end_contract">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Periode Pengiriman</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Periode Pengiriman'" chosen allow-single-deselect="false" ng-model="formData.send_type" ng-options="s.id as s.name for s in send_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Status Kontrak</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="''" chosen allow-single-deselect="false" ng-model="formData.is_active" ng-options="s.id as s.name for s in is_active">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3">Salesman</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Salesman'" chosen allow-single-deselect="false" ng-model="formData.sales_id" ng-options="s.id as s.name for s in sales">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Komisi Sales</label>
+          <div class="col-md-3">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="formData.sales_commision">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Keterangan Kontrak</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.description_contract">
+          </div>
+        </div>
+
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="marketing.contract" class="btn btn-warning btn-sm">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

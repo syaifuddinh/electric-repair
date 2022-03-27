@@ -1,0 +1,1089 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 mg-l4">
+                <div class="form-group required">
+                    <label class="col-md-3"><% $root.solog.label.general.customer %></label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <customer-select-input ng-model='formData.customer_id' ng-change="changeCustomer(formData.customer_id)"></customer-select-input>
+                            <span class="input-group-addon"  style="white-space: normal !important;">
+                                <!-- <button type="button" class="btn btn-md btn-success" ng-show="$root.roleList.includes('contact.contact.create')" ng-click='addCustomer()'>
+                                    <i class="fa fa-plus pd-08"></i>
+                                </button> -->
+                                <contacts-create-modal is-pelanggan='1' hide-type="true"></contacts-create-modal>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <span ng-hide='!disable_job_order_mode'>
+                    <div class="form-group">
+                        <label class="col-md-3"><% $root.solog.label.general.contract %></label>
+                        <div class="col-md-9">
+                            <contract-modal-input 
+                                ng-model='formData.quotation_id' customer-id='formData.customer_id' 
+                                is-sales-contract="is_sales_contract"
+                            />
+                        </div>
+                    </div>
+                </span>
+
+                <span ng-hide='disable_job_order_mode'>
+                    <div class="form-group required">
+                        <label class="col-md-3">Price List</label>
+                        <div class="col-md-9">
+                            <div class="input-group" ng-click="cariWO()">
+                                <input placeholder="Choose Price List" type="text" class="form-control" readonly ng-model="formData.work_order_name">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+
+                <span ng-hide='disable_job_order_mode'>
+                    <div class="form-group" ng-repeat='v in additional_fields'>
+                        <label class="col-md-3"><% v.name %></label>
+                        <div class="col-md-9">
+                            <custom-field ng-model='formData.additional[v.slug]' type='v.type_field' />
+                        </div>
+                    </div>
+                </span>
+
+                <span ng-hide='disable_job_order_mode'>
+                    <div class="form-group" ng-if='(formData.service_type_id == 1 && formData.moda_id == 2) || formData.service_type_id == 2'>
+                        <label class="col-md-3">No BL</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="formData.bl_no">
+                        </div>
+                    </div>
+                </span>
+                
+            </div>
+            <div class="col-md-12">
+                <hr>
+            </div>
+            <div class='col-md-12'>
+                <div ng-if="div_main" class='relative row' >
+                    
+                    <div class="col-md-6" style='padding-left:8mm;padding-right:18mm' id='main-form'>
+                        <div class="form-group required" ng-if="div_sender">
+                            <label class="col-md-3">Sender</label>
+                            <div class="col-md-9">
+                                <div class="input-group sender">
+                                    <!-- <select class="form-control" data-placeholder-text-single="'Choose Sender'" chosen allow-single-deselect="false" ng-model="formData.sender_id" ng-options="s.id as s.name for s in contact_address">
+                                        <option value=""></option>
+                                    </select> -->
+                                    <customer-select-input jo-customer-id="formData.customer_id" ng-model='formData.sender_id'></customer-select-input>
+                                    <!-- <div class="input-group-btn">
+                                        <button type="button" ng-click="addContact()" class="btn btn-block btn-success font-bold"><i class="fa fa-plus pd-08"></i></button>
+                                    </div> -->
+                                    <span class="input-group-addon" style="white-space: normal !important;">
+                                        <contacts-create-modal is-pelanggan='1' hide-type="true" jo-customer-id="formData.customer_id"></contacts-create-modal>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group required" ng-if="div_receive">
+                            <label class="col-md-3">Receiver</label>
+                            <div class="col-md-9">
+                                <div class="input-group receiver">
+                                    <!-- <select class="form-control" ng-change="formData.collectible_id=$root.findJsonId(formData.receiver_id,contact_address).collectible_id" data-placeholder-text-single="'Choose Receiver'" chosen allow-single-deselect="false" ng-model="formData.receiver_id" ng-options="s.id as s.name for s in contact_address">
+                                        <option value=""></option>
+                                    </select> -->
+                                    <customer-select-input jo-customer-id="formData.customer_id" ng-model='formData.receiver_id' ng-change="formData.collectible_id=$root.findJsonId(formData.receiver_id,contact_address).collectible_id"></customer-select-input>
+                                    <!-- <div class="input-group-btn">
+                                        <button type="button" ng-click="addContact()" class="btn btn-block btn-success font-bold"><i class="fa fa-plus pd-08"></i></button>
+                                    </div>         -->
+                                    <span class="input-group-addon" style="white-space: normal !important;">
+                                        <contacts-create-modal is-pelanggan='1' hide-type="true" jo-customer-id="formData.customer_id"></contacts-create-modal>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="div_trayek">
+                            <label class="col-md-3">Route</label>
+                            <div class="col-md-9">
+                                <routes-select-input ng-disabled='1' ng-model="formData.route_id" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="div_armada">
+                            <label class="col-md-3">Fleet</label>
+                            <div class="col-md-6">
+                                <vehicle-types-select-input ng-model="formData.vehicle_type_id" ng-disabled='1'>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="div_commodity">
+                            <label class="col-md-3">Commodity</label>
+                            <div class="col-md-9">
+                                <select class="form-control" disabled data-placeholder-text-single="'Choose Commodity'" chosen allow-single-deselect="false" ng-model="formData.commodity_id" ng-options="s.id as s.name for s in data.commodity">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="div_moda">
+                            <label class="col-md-3">Moda</label>
+                            <div class="col-md-6">
+                                <select class="form-control" disabled data-placeholder-text-single="'Choose Moda'" chosen allow-single-deselect="false" ng-model="formData.moda_id" ng-options="s.id as s.name for s in data.moda">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" ng-if="div_container">
+                            <label class="col-md-3">Container Type</label>
+                            <div class="col-md-9">
+                                <select class="form-control" disabled data-placeholder-text-single="'Choose Tipe Kontainer'" chosen allow-single-deselect="false" ng-model="formData.container_type_id" ng-options="s.id as s.full_name for s in data.container_type">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group required" ng-if="div_unit">
+                            <label class="col-md-3">Total Unit</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="formData.total_unit" jnumber2 only-num>
+                                    <span class="input-group-addon">Unit</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div ng-if="div_document">
+                            <span ng-hide='disable_job_order_mode'>
+                                <div class="form-group required">
+                                    <label class="col-md-3">Nama Dokumen</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" ng-model="formData.document_name">
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label class="col-md-3">Item Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" ng-model="formData.item_name">
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label class="col-md-3">No Reff</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" ng-model="formData.reff_no">
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label class="col-md-3">No Dokumen</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" ng-model="formData.docs_no">
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label class="col-md-3">No Reff Dokumen</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" ng-model="formData.docs_reff_no">
+                                    </div>
+                                </div>
+                            </span>
+
+                            <div class="form-group required">
+                                <label class="col-md-3">Date</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="formData.shipment_date" datepick>
+                                </div>
+                            </div>
+
+                            <span ng-hide='disable_job_order_mode'>
+                                <div class="form-group">
+                                    <label class="col-md-3">Jumlah</label>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" ng-model="formData.total_unit" jnumber2 only-num>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <units-select-input ng-model="formData.piece_id" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3">Nama Kapal</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" ng-model="formData.vessel_name" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3">No. Voyage</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" ng-model="formData.voyage_no" >
+                                    </div>
+                                </div>
+                            </span>
+
+                        </div>
+                        <div ng-if="div_jasa">
+                            <div class="form-group required">
+                                <label class="col-md-3">No Reff</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" ng-model="formData.reff_no">
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="col-md-3">Date</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="formData.shipment_date" datepick>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Jumlah</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" ng-model="formData.total_unit" jnumber2 only-num>
+                                </div>
+                                <div class="col-md-6">
+                                    <units-select-input ng-model="formData.piece_id" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-md-3">No. WO/PO Customer</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.wo_customer">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">HS Code</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.hs_code">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">Agent Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.agent_name">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">No AWB</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.awb_number">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">House AWB</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.house_awb">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if='(formData.service_type_id == 1 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                            <label class="col-md-3">Cargo Ready Date</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="formData.cargo_ready_date" datepick>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="div_shipment_date">
+                            <label class="col-md-3">Shipment Date</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" ng-model="formData.shipment_date" datepick>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Description</label>
+                            <div class="col-md-9">
+                                <textarea class="form-control" ng-model="formData.description" rows="2"></textarea>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-6" ng-if="div_detail_ftl" >
+                        <h4>Detail Item Barang</h4>
+                        <span ng-hide='disable_job_order_mode'>
+                            <div class="form-group">
+                                <label class="col-md-3">Source</label>
+                                <div class="col-md-9">
+                                    <label for="" class="radio-inline">
+                                        <input type="radio" ng-model='detailData.is_warehouse' ng-value='0'> Non Warehouse
+                                    </label>
+                                    <label for="" class="radio-inline">
+                                        <input type="radio" ng-model='detailData.is_warehouse' ng-value='1'> Warehouse
+                                    </label>
+                                </div>
+                            </div>
+                        </span>
+                        <div class="form-group">
+                            <label class="col-md-3">No Reff</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="detailData.reff_no">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">No Manifest</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="detailData.manifest_no">
+                            </div>
+                        </div>
+                        
+                        <span ng-if='!disable_job_order_mode'>
+                            <div class="form-group" ng-if='detailData.is_warehouse == 1'>
+                                <label class="col-md-3">Item Name</label>
+                                <div class="col-md-9">
+                                    <item-warehouses-modal-input 
+                                        is-pallet="isPallet" 
+                                        is-merchandise="is_merchandise" 
+                                        show-sale-price="show_sale_price"
+                                        customer-id='formData.customer_id'
+                                        ng-model='detailData.item_id' 
+                                    />
+                                    <div class="mg-t2"> 
+
+                                        <b class='text-primary pull-right'><% (detailData.volume || 0) | number %> m<sup>3</sup></b>
+
+                                        <b class='text-primary pull-right mg-r2'><% (detailData.weight || 0) | number %> kg</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                        
+                        <span ng-if='disable_job_order_mode'>
+                            <div class="form-group" ng-if='detailData.is_warehouse == 1'>
+                                <label class="col-md-3">Item Name</label>
+                                <div class="col-md-9">
+                                    <item-warehouses-modal-input 
+                                        is-pallet="isPallet" 
+                                        ng-model='detailData.item_id' 
+                                        show-sale-price="show_sale_price"
+                                        is-merchandise="is_merchandise" 
+                                    />
+
+                                    <div class="mg-t2">
+                                        
+                                        <b class='text-primary pull-right'><% (detailData.volume || 0) | number %> m<sup>3</sup></b>
+
+                                        <b class='text-primary pull-right mg-r2'><% (detailData.weight || 0) | number %> kg</b>
+
+                                        <b class='text-primary pull-right mg-r2'>
+                                            <i class="fa fa-money mg-r1"></i>
+                                            <% (detailData.harga_jual || 0) | number %>
+                                        </b>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                        
+                        <div class="form-group" ng-if='detailData.is_warehouse != 1'>
+                            <label class="col-md-3">Item Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="detailData.item_name">
+                            </div>
+                        </div>
+                        <div class="form-group"  ng-if='detailData.is_warehouse == 1'>
+                            <label class="col-md-3"><% $root.solog.label.general.stock %></label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" jnumber2 only-num ng-model="detailData.stock" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3"><% $root.solog.label.job_order.qty %></label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" jnumber2 only-num ng-model="detailData.total_item" ng-change="adjustSizeTotal()">
+                            </div>
+                            <div class="col-md-4">
+                                <units-select-input ng-model="detailData.piece_id" ng-change='getUnit()' />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3"><% $root.solog.label.general.weight_total %></label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" jnumber2 only-num ng-model="detailData.total_tonase" ng-readonly='detailData.is_warehouse == 1'>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3"><% $root.solog.label.general.volume_total %></label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" jnumber2 only-num ng-model="detailData.total_volume" ng-readonly='detailData.is_warehouse == 1'>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3"><% $root.solog.label.general.description %></label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" ng-model="detailData.description">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3"></label>
+                            <div class="col-md-9">
+                                <button type="button" ng-click="appendFTL()" ng-disabled="appendBtn" class="btn btn-sm btn-success pull-right mg-r6"><i class="fa fa-plus"></i> Add To Table</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" style='display:flex;align-items:flex-end' ng-if="div_detail_retail" id='detail-retail'>
+                        <div>
+                            
+                            <div class="form-group">
+                                <label class="col-md-3">Source</label>
+                                <div class="col-md-9">
+                                    <label for="" class="radio-inline">
+                                        <input type="radio" ng-model='detailData.is_warehouse' ng-value='0'> Non Warehouse
+                                    </label>
+                                    <label for="" class="radio-inline">
+                                        <input type="radio" ng-model='detailData.is_warehouse' ng-value='1'> Warehouse
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group" ng-if='detailData.is_warehouse == 1'>
+                                <label class="col-md-3">Item Name</label>
+                                <div class="col-md-9">
+                                    <item-warehouses-modal-input is-pallet="isPallet" customer-id='formData.customer_id' ng-model='detailData.item_id' />
+                                    <b class='text-primary pull-right'><% (detailData.volume || 0) | number %> m<sup>3</sup></b>
+                                    <b class='text-primary pull-right mg-r2'><% (detailData.weight || 0) | number %> kg</b>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" ng-if='detailData.is_warehouse != 1'>
+                                <label class="col-md-3">Item Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" ng-model="detailData.item_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Charge In</label>
+                                <div class="col-md-9">
+                                    <div class="radio radio-primary radio-inline">
+                                        <input type="radio" ng-model="detailData.imposition" ng-disabled="detailData.imposition!=1 && !formData.price_list_id" ng-value="1">
+                                        <label for="">Kubikasi</label>
+                                    </div>
+                                    <div class="radio radio-primary radio-inline">
+                                        <input type="radio" ng-model="detailData.imposition" ng-disabled="detailData.imposition!=2 && !formData.price_list_id" ng-value="2">
+                                        <label for="">Tonase</label>
+                                    </div>
+                                    <div class="radio radio-primary radio-inline">
+                                        <input type="radio" ng-model="detailData.imposition" ng-disabled="detailData.imposition!=3 && !formData.price_list_id" ng-value="3">
+                                        <label for="">Item</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if='detailData.is_warehouse == 1'>
+                                <label class="col-md-3">Stok</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" jnumber2 only-num ng-model="detailData.stock" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Qty Total</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" jnumber2 only-num ng-model="detailData.total_item" ng-change="adjustSizeTotal()">
+                                </div>
+                                <div class="col-md-4">
+                                    <units-select-input ng-model="detailData.piece_id" ng-change='getUnit()' />
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if='detailData.is_warehouse == 0 && formData.service_type_id == 1'>
+                                <label class="col-md-3">P x L x T</label>
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        <input type="text"  ng-change="adjustSizeTotal()" class="form-control mg-r1" jnumber2 only-num ng-model="detailData.long">
+                                        <div class="input-group-addon">
+                                            <span class='inline-block'> x </span>
+                                        </div>
+                                        <input type="text"  ng-change="adjustSizeTotal()" class="form-control" jnumber2 only-num ng-model="detailData.wide">
+                                        <div class="input-group-addon">
+                                            <span class='inline-block'> x </span>
+                                        </div>
+                                        <input type="text"  ng-change="adjustSizeTotal()" class="form-control" jnumber2 only-num ng-model="detailData.high">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3">Volume Total (m3)</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" only-num ng-model="detailData.total_volume" ng-readonly='detailData.is_warehouse == 1 || (detailData.is_warehouse == 0 && formData.service_type_id == 1)'>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3">Tonase Total (Kg)</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" jnumber2 only-num ng-model="detailData.total_tonase" ng-readonly='detailData.is_warehouse == 1'>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if='formData.service_type_id == 1'>
+                                <label class="col-md-3">Volumetric Weight (Kg)</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" only-num ng-model="detailData.volumetric_weight" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3">Description</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" ng-model="detailData.description">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3"></label>
+                                <div class="col-md-9" style='padding-right:10mm'>
+                                    <button type="button" ng-click="appendRetail()" ng-disabled="appendBtn" class="btn btn-sm btn-success pull-right"><i class="fa fa-plus"></i> Add To Table</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style='padding:9.5mm' id="ftl_append" ng-if="div_table_ftl">
+                        <div class='mg-b10'>
+                            <h4 class='pull-left'><i class="fa fa-cubes"></i> List Item</h4>
+                            <div class="btn-group pull-right">
+                                <span ng-show="!disable_job_order_mode">
+                                    <button type="button" class="btn btn-success btn-sm font-bold" ng-click="browseJobOrder()"><i class="fa fa-globe"></i> Browse Existing Job Order</button>
+                                </span>
+                            </div>
+                        </div>
+                        <table class="table display compact nowrap table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><% $root.solog.label.general.no_reff %></th>
+                                    <th><% $root.solog.label.manifest.code %></th>
+                                    <th><% $root.solog.label.item.name %></th>
+                                    <th><% $root.solog.label.general.qty %></th>
+                                    <th><% $root.solog.label.general.volume_total %></th>
+                                    <th><% $root.solog.label.general.weight_total %></th>
+                                    <th><% $root.solog.label.general.description %></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if='formData.detail.length == 0'>
+                                    <td colspan='8' class='text-center'>No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-md-12" style='padding:9.5mm' ng-if="div_detail_retail">
+                        <div class='mg-b10'>
+                            <h4 class='pull-left'><i class="fa fa-cubes"></i> List Item</h4>
+                            <div class="btn-group pull-right">
+                                <button class='btn btn-sm btn-success' type='button' ng-click='downloadImportData()'>
+                                    Download Import Item Warehouse Format
+                                </button>
+                                
+                                <label for='import_item_warehouse_file' class='btn btn-sm btn-primary' ng-click='uploadImportItem'>
+                                    Import Item in Warehouse
+                                </label>
+                                <input type="file" class='hidden' id='import_item_warehouse_file'>
+                                <button type="button" class="btn btn-success btn-sm font-bold" ng-click="browseJobOrder()"><i class="fa fa-globe"></i> Browse Existing Job Order</button>
+                            </div>
+                        </div>
+                        <table class="table display compact nowrap table-bordered" id="retail_append">
+                            <thead>
+                                <tr>
+                                    <th>Commodity</th>
+                                    <th>Qty</th>
+                                    <th ng-if='formData.service_type_id == 1'>P x L x T (cm)</th>
+                                    <th>Kubikasi (m<sup>3</sup>)</th>
+                                    <th>Tonase Total(Kg)</th>
+                                    <th ng-if='formData.service_type_id == 1'>Volumetric Weight(Kg)</th>
+                                    <th>Charge In</th>
+                                    <th>Description</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if='formData.detail.length == 0'>
+                                    <td colspan='<% retail_append_thead %>' class='text-center'>No Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+
+                <div>
+                    <span ng-if='(formData.service_type_id == 1 || formData.service_type_id == 2 || formData.service_type_id == 3) && formData.moda_id == 3'>
+                        <div class="col-md-12 pd-r7">
+                            <div class='mg-b10'>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <div class="col-md-7"></div>
+                                    <label class="col-md-2">
+                                        <h4 class=''><i class="fa fa-cubes"></i> Flight Transit</h4>
+                                    </label>
+                                    <div class="col-md-3">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-7"></div>
+                                    <label class="col-md-1">Code</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" ng-model="formTransit.code">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-7"></div>
+                                    <label class="col-md-1">Route</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" ng-model="formTransit.route_name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-7"></div>
+                                    <label class="col-md-1">Date</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" ng-model="formTransit.date" datepick>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-12">
+                                        <button type='button' class='btn btn-sm btn-success pull-right' ng-click='saveTransit()'><% btnTitle %></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 pd-10" style='margin-top:10mm'>
+                            <table class="table display compact nowrap table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Route</th>
+                                        <th>Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-if='formData.transits.length == 0'>
+                                        <td colspan='3' class='text-center'>No Data</td>
+                                    </tr>
+                                    <tr ng-repeat='(i, val) in formData.transits'>
+                                        <td><% val.code %></td>
+                                        <td><% val.route_name %></td>
+                                        <td><% val.date %></td>
+                                        <td class='text-center'>
+                                            <a ng-click="editTransit(val.id)"><i class="fa fa-edit"></i></a>&nbsp;
+                                            <a ng-click="deleteTransit(val.id)"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="ibox-footer">
+        <a ng-click="back()" class="mg-l4 btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn || (in_array(formData.service_type_id,[1,2,3]) && !formData.total_append)" class="btn btn-sm btn-primary"><% $root.solog.label.general.save %></button>
+    </div>
+</form>
+</div>
+
+
+
+<!-- modal master item-->
+<div class="modal fade" id="modalJobOrder" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Job Order</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover" id="job_order_datatable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Kode</th>
+                            <th>Customer</th>
+                            <th>Layanan</th>
+                        </tr>
+                    </thead>
+                </table>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal kontrak -->
+<div class="modal fade" id="modalWO" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Cari Tarif</h4>
+            </div>
+            <div class="modal-body">
+                <nav class="navbar navbar-primary">
+                    <div class="container-fluid">
+                        <ul class="nav navbar-nav">
+                            <li ng-class="priceOption == 1 ? 'active' : ''"><a ng-click='priceOption = 1'>Work Order</a></li>
+                            <li ng-class="priceOption == 2 ? 'active' : ''"><a ng-click='priceOption = 2'>Price List</a></li>
+                            <li ng-class="priceOption == 3 ? 'active' : ''"><a ng-click='priceOption = 3'>Contract Price</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <div style="overflow-x:scroll" ng-show='priceOption == 1'>
+                    <table class="table display compact nowrap table-bordered" style="width:100%;" id="wo_datatable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>No. Work Order</th>
+                                <th>No. BL</th>
+                                <th>No. AJU</th>
+                                <th>Service</th>
+                                <th>Route</th>
+                                <th>Commodity</th>
+                                <th>Price Type</th>
+                                <th>Unit</th>
+                                <th>Leftover WO</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div  style="overflow-x:scroll" ng-show='priceOption == 2'>
+                    <table class="table display compact nowrap table-bordered" style="width:100%;" id="price_list_datatable"></table>
+                </div>
+                <div style="overflow-x:scroll" ng-show='priceOption == 3'>
+                    <table class="table display compact nowrap table-bordered" style="width:100%;" id="quotation_detail_datatable"></table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal fade" id="modalContact" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width: 100%;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="">Add Data Kontak</h4>
+        </div>
+        <div class="modal-content">
+            <div class="modal-body ">
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- modal tambah kontak -->
+<div class="modal fade" id="modalsContact" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Add Data Kontak</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <!-- -- -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" style="display: none">
+                            <label class="col-md-3">Branch</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formSave.company_id" ng-options="s.id as s.name for s in data2.company">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-md-3">Nama</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-md-3">Alamat</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.address" class="form-control" id="place_search">
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-md-3">Kota</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Kota'" chosen allow-single-deselect="false" ng-model="formSave.city_id" ng-options="s.id as s.city_name for s in data2.city">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Postal Code</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.postal_code" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Telepon</label>
+                            <div class="col-md-5">
+                                <input type="text" ng-model="formSave.phone" class="form-control" placeholder="Telepon 1">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" ng-model="formSave.phone2" class="form-control" placeholder="Telepon 2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Fax</label>
+                            <div class="col-md-5">
+                                <input type="text" ng-model="formSave.fax" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-md-3">Email</label>
+                            <div class="col-md-6">
+                                <input type="text" ng-model="formSave.email" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Tertagih</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Tertagih'" chosen allow-single-deselect="true" ng-model="formSave.tertagih_id" ng-options="s.id as s.name for s in data2.customer">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="col-md-3">Contact Person</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.contact_person" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Email Contact Person</label>
+                            <div class="col-md-6">
+                                <input type="text" ng-model="formSave.contact_person_email" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">No. Contact Person</label>
+                            <div class="col-md-6">
+                                <input type="text" ng-model="formSave.contact_person_no" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Jenis</label>
+                            <div class="col-md-5">
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox" id="checkbox1" ng-model="formSave.is_pegawai" ng-true-value="1" ng-false-value="0">
+                                    <label for="checkbox1">Pegawai</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_investor" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Investor</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_pelanggan" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Customer / Pembayar</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_asuransi" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Asuransi</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_supplier" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Supplier</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_depo_bongkar" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Depo Bongkar</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_helper" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Helper</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_driver" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Sopir</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_vendor" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Vendor</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_sales" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Sales</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_kurir" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Kurir</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_pengirim" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Pengirim</label>
+                                </div>
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox"  ng-model="formSave.is_penerima" ng-true-value="1" ng-false-value="0">
+                                    <label for="">Penerima</label>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group required" ng-hide="formSave.is_vendor==0">
+                            <label class="col-md-3">Tipe Vendor</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Tipe Vendor'" chosen allow-single-deselect="true" ng-model="formSave.vendor_type_id" ng-options="s.id as s.name for s in data2.vendor_type">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group required" ng-if="formSave.is_pengirim==1 || formSave.is_penerima==1">
+                            <label class="col-md-3">Tipe Alamat</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Tipe Alamat'" chosen allow-single-deselect="true" ng-model="formSave.address_type_id" ng-options="s.id as s.name for s in data2.address_type">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group required" ng-hide="formSave.is_pegawai==0">
+                            <label class="col-md-3">No. Pegawai</label>
+                            <div class="col-md-6">
+                                <input type="text" ng-model="formSave.pegawai_no" class="form-control">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3">Akun Hutang</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formSave.akun_hutang" ng-options="s.id as s.name for s in data2.account">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Akun Piutang</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formSave.akun_piutang" ng-options="s.id as s.name for s in data2.account">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Akun Uang Muka Supplier</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formSave.akun_um_supplier" ng-options="s.id as s.name for s in data2.account">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Akun Uang Muka Customer</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formSave.akun_um_customer" ng-options="s.id as s.name for s in data2.account">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Term of Payment</label>
+                            <div class="col-md-3">
+                                <input type="text" jnumber2 only-num ng-model="formSave.term_of_payment" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Limit Piutang</label>
+                            <div class="col-md-3">
+                                <input type="text" jnumber2 only-num ng-model="formSave.limit_piutang" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Limit Hutang</label>
+                            <div class="col-md-3">
+                                <input type="text" jnumber2 only-num ng-model="formSave.limit_hutang" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-md-3">No. KTP / NIK</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.no_ktp" class="form-control" maxlength='16'>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-md-3">NPWP Induk</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.npwp_induk" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-md-3">NPWP</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.npwp" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">PKP</label>
+                            <div class="col-md-3">
+                                <input type="checkbox"  ng-model="formSave.pkp" ng-true-value="1" ng-false-value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Keterangan</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.description" class="form-control">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="col-md-3">No. Rek bank</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.rek_no" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Pemilik Rekening</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.rek_milik" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Bank</label>
+                            <div class="col-md-9">
+                                <select class="form-control" data-placeholder-text-single="'Choose Bank'" chosen allow-single-deselect="true" ng-model="formSave.rek_bank_id" ng-options="s.id as s.name for s in data2.bank">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3">Rekening Branch</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="formSave.rek_cabang" class="form-control">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <!-- -- -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" ng-show="data2" ng-disabled="disBtn" ng-click="submitSave()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

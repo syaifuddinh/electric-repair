@@ -1,0 +1,568 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Data</h3>
+
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-12">
+            <button type="button"  ng-click='approveCustomer()' class="btn btn-sm btn-primary pull-right" ng-show='data.is_approved_customer == 0 && data.is_pelanggan == 1 && $root.roleList.includes("contact.contact.detail.detail.approve_customer")'>Setujui</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <!--tr>
+              <td style="width: 40%;" class="font-bold">Kode</td>
+              <td>: <%data.code%></td>
+            </tr-->
+            <tr>
+              <th colspan="2">General Info</th>
+            </tr>
+            <tr>
+              <td class="font-bold">Nama Perusahaan</td>
+              <td>: <%data.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Nama Pemilik</td>
+              <td>: <%data.owner_name%></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Status customer</td>
+              <td>: <% data.is_approved_customer == 1 ? 'Disetujui' : 'Belum Disetujui' %></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Jabatan</td>
+              <td>: <% data.position %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Address</td>
+              <td>: <%data.address%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Kategori</td>
+              <td>: <%data.category == 'company' ? 'Badan Usaha' : 'Perseorangan' %></td>
+            </tr>
+
+            <tr>
+              <td class="font-bold">Latitude</td>
+              <td>: <% data.latitude %></td>
+            </tr>
+
+            <tr>
+              <td class="font-bold">Longitude</td>
+              <td>: <% data.longitude %></td>
+            </tr>
+
+            <tr>
+              <td class="font-bold">Phone</td>
+              <td>:
+                <span ng-if="data.phone"><% data.phone %></span> <span ng-if="!data.phone">- </span>
+                /
+                <span ng-if="data.phone2"><% data.phone2 %></span> <span ng-if="!data.phone2"> -</span>
+            </tr>
+            <tr>
+              <td class="font-bold">Fax</td>
+              <td>: <% data.fax %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Email</td>
+              <td>: <% data.email %></td>
+            </tr>
+            <tr>
+              <th colspan="2">Contact Person</th>
+            </tr>
+            <tr>
+              <td class="font-bold">Contact Person</td>
+              <td>: <% data.contact_person %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Contact Person Position</td>
+              <td>: <% data.contact_person_position %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Email Contact Person</td>
+              <td>: <% data.contact_person_email %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">No. NPWP</td>
+              <td>: <% data.contact_person_npwp %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Contact Person Phone</td>
+              <td>: 
+                <span ng-if="data.contact_person_no"><% data.contact_person_no %></span> <span ng-if="!data.contact_person_no">- </span>
+                /
+                <span ng-if="data.contact_person_no_2"><% data.contact_person_no_2 %></span> <span ng-if="!data.contact_person_no_2"> -</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-bold">Branch</td>
+              <td>: <% data.company.name %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Status</td>
+              <td>: <% data.status_contact_name %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Actived Status</td>
+              <td class="font-bold">: <% data.active_name %></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Nama Customer Service</td>
+              <td class="font-bold">: <% data.customer_service_name %></td>
+            </tr>
+
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Nama Sales</td>
+              <td class="font-bold">: <% data.sales_name %></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Facebook Account</td>
+              <td >: <% data.personal_facebook_account %></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Instagram Account</td>
+              <td >: <% data.personal_instagram_account %></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <th colspan="2">Company Account Info</th>
+            </tr>
+            <tr ng-show="data.is_pelanggan!=1">
+              <td style="width: 40%;" class="font-bold">Vendor Type</td>
+              <td>: <%data.vendor_type.name%></td>
+            </tr>
+            <tr>
+              <td style="width: 40%;" class="font-bold">Term of Payment</td>
+              <td>: <%data.term_of_payment%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Limit Hutang</td>
+              <td>: Rp. <%data.limit_hutang|number%> <span class="badge badge-success" ng-cloak ng-if="!data.limit_hutang">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Total Hutang</td>
+              <td>: Rp. <%payable_value|number%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Limit Piutang</td>
+              <td>: Rp. <%data.limit_piutang|number%> <span class="badge badge-success" ng-cloak ng-if="!data.limit_piutang">Unlimited</span></td>
+            </tr>
+            <tr ng-show="data.is_pelanggan!=1">
+              <td class="font-bold">Akun Hutang</td>
+              <td>: <%data.hutang.code+' - '+data.hutang.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Akun Piutang</td>
+              <td>: <%data.piutang.code+' - '+data.piutang.name%></td>
+            </tr>
+            <tr ng-show="data.is_pelanggan!=1">
+              <td class="font-bold">Akun Uang Muka Supplier</td>
+              <td>: <%data.um_supplier.code+' - '+data.um_supplier.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Akun Uang Muka Customer</td>
+              <td>: <%data.um_customer.code+' - '+data.um_customer.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">No. KTP</td>
+              <td>: <%data.no_ktp%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">No. NPWP Induk</td>
+              <td>: <%data.npwp%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">No. NPWP</td>
+              <td>: <%data.npwp_cabang%></td>
+            </tr>
+            <tr ng-show="data.is_pelanggan!=1">
+              <td class="font-bold">PKP</td>
+              <td>: <%data.pkp%></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">No. TDP</td>
+              <td>: <%data.no_tdp%></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">No. SIUP / NIB</td>
+              <td>: <%data.no_siup%></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">No. SPPKP</td>
+              <td>: <%data.no_sppkp%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Pajak</td>
+              <td>: <%data.tax.name%></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Website</td>
+              <td>: <%data.website %></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Customer Service</td>
+              <td>: <%data.company_customer_service%></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Facebook Account</td>
+              <td >: <% data.personal_facebook_account %></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Instagram Account</td>
+              <td >: <% data.personal_instagram_account %></td>
+            </tr>
+            <tr ng-show='data.is_pelanggan == 1'>
+              <td class="font-bold">Purchase Purpose</td>
+              <td>: <%data.purchase_purpose %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Description</td>
+              <td>: <%data.description%></td>
+            </tr>
+            <tr>
+              <th colspan="2">Bank Account Info</th>
+            </tr>
+            <tr>
+              <td class="font-bold">Bank Account Number</td>
+              <td>: <%data.rek_no%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Account Owner</td>
+              <td>: <%data.rek_milik%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Bank Name</td>
+              <td>: <%data.bank.name%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Branch Account</td>
+              <td>: <%data.rek_cabang%></td>
+            </tr>
+            <tr>
+              <th colspan="2">Transaction Info</th>
+            </tr>
+            <tr>
+              <td class="font-bold">Jumlah Invoice</td>
+              <td class="font-bold">: <%receivable_count%></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Total Piutang Invoice</td>
+              <td>: Rp. <%receivable_value|number%></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <a ui-sref="contact.contact.edit({id:data.id})" class="btn btn-sm btn-success"><i class="fa fa-edit"></i> Edit</a>
+    <button type="button" ng-click="saveAs()" class="btn btn-sm btn-default font-bold"><i class="fa fa-floppy-o"></i>&nbsp;Save As</button>
+  </div>
+</div>
+<div class="modal fade" id="modalSaveAs" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width: 80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Save As Kontak</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <!-- -- -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">Branch</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formSave.company_id" ng-options="s.id as s.name for s in data2.company">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3" ng-if="formSave.is_pelanggan == 1">Nama Perusahaan</label>
+              <label class="col-md-3" ng-if="formSave.is_pelanggan == 0">Nama</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.name" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" ng-if="formSave.is_pelanggan == 1">
+              <label class="col-md-3">Nama Pemilik</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.owner_name" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Alamat</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.address" class="form-control" id="place_search">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Kota</label>
+              <div class="col-md-5">
+                <select class="form-control" data-placeholder-text-single="'Choose Kota'" chosen allow-single-deselect="false" ng-model="formSave.city_id" ng-options="s.id as s.city_name for s in data2.city">
+                  <option value=""></option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <input type="text" ng-model="formSave.postal_code" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Telephone</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formSave.phone" class="form-control">
+              </div>
+              <div class="col-md-4">
+                <input type="text" ng-model="formSave.phone2" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Fax</label>
+              <div class="col-md-5">
+                <input type="text" ng-model="formSave.fax" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Email</label>
+              <div class="col-md-6">
+                <input type="text" ng-model="formSave.email" class="form-control">
+              </div>
+            </div>
+            <hr>
+            <div class="form-group">
+              <label class="col-md-3">Contact Person</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.contact_person" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Email Contact Person</label>
+              <div class="col-md-6">
+                <input type="text" ng-model="formSave.contact_person_email" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">No. Contact Person</label>
+              <div class="col-md-6">
+                <input type="text" ng-model="formSave.contact_person_no" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Jenis</label>
+              <div class="col-md-5">
+                <!-- <switch ng-model="formSave.is_pegawai" on="1" off="0" small class="green"></switch> Pegawai <br><br> -->
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox" id="checkbox1" ng-model="formSave.is_pegawai" ng-true-value="1" ng-false-value="0">
+                  <label for="checkbox1">Pegawai</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_investor" ng-true-value="1" ng-false-value="0">
+                  <label for="">Investor</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_pelanggan" ng-true-value="1" ng-false-value="0">
+                  <label for="">Customer</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_asuransi" ng-true-value="1" ng-false-value="0">
+                  <label for="">Asuransi</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_supplier" ng-true-value="1" ng-false-value="0">
+                  <label for="">Supplier</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_depo_bongkar" ng-true-value="1" ng-false-value="0">
+                  <label for="">Depo Bongkar</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_helper" ng-true-value="1" ng-false-value="0">
+                  <label for="">Helper</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_driver" ng-true-value="1" ng-false-value="0">
+                  <label for="">Sopir</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_vendor" ng-true-value="1" ng-false-value="0">
+                  <label for="">Vendor</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_sales" ng-true-value="1" ng-false-value="0">
+                  <label for="">Sales</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_kurir" ng-true-value="1" ng-false-value="0">
+                  <label for="">Kurir</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_pengirim" ng-true-value="1" ng-false-value="0">
+                  <label for="">Pengirim</label>
+                </div>
+                <div class="checkbox checkbox-primary">
+                  <input type="checkbox"  ng-model="formSave.is_penerima" ng-true-value="1" ng-false-value="0">
+                  <label for="">Penerima</label>
+                </div>
+
+              </div>
+            </div>
+            <div class="form-group" ng-show="formSave.is_pelanggan==1">
+              <h5>Files</h5>
+              <div class="form-group required">
+                <label class="col-md-3">KTP</label>
+                <div class="col-md-9">
+                  <input type="file" name="file_ktp_save_as" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-hide="formSave.is_vendor==0">
+              <label class="col-md-3">Tipe Vendor</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Tipe Vendor'" chosen allow-single-deselect="true" ng-model="formSave.vendor_type_id" ng-options="s.id as s.name for s in data2.vendor_type">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" ng-if="formSave.is_pengirim==1 || formSave.is_penerima==1">
+              <label class="col-md-3">Tipe Alamat</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Tipe Alamat'" chosen allow-single-deselect="true" ng-model="formSave.address_type_id" ng-options="s.id as s.name for s in data2.address_type">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" ng-hide="formSave.is_pegawai==0">
+              <label class="col-md-3">No. Pegawai</label>
+              <div class="col-md-6">
+                <input type="text" ng-model="formSave.pegawai_no" class="form-control">
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3">Akun Hutang</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formSave.akun_hutang" ng-options="s.id as s.name for s in data2.account">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Akun Piutang</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formSave.akun_piutang" ng-options="s.id as s.name for s in data2.account">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Akun Uang Muka Supplier</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formSave.akun_um_supplier" ng-options="s.id as s.name for s in data2.account">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Akun Uang Muka Customer</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Akun / Kosongkan bila Default'" chosen allow-single-deselect="true" ng-model="formSave.akun_um_customer" ng-options="s.id as s.name for s in data2.account">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Term of Payment</label>
+              <div class="col-md-3">
+                <input type="text" jnumber2 only-num ng-model="formSave.term_of_payment" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Limit Piutang</label>
+              <div class="col-md-3">
+                <input type="text" jnumber2 only-num ng-model="formSave.limit_piutang" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Limit Hutang</label>
+              <div class="col-md-3">
+                <input type="text" jnumber2 only-num ng-model="formSave.limit_hutang" class="form-control">
+              </div>
+            </div>
+            <div class="form-group required" ng-show="formSave.is_pelanggan==1">
+              <label class="col-md-3">No. KTP</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.no_ktp" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">NPWP</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.npwp" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" ng-show="formSave.is_pelanggan!=1">
+              <label class="col-md-3">PKP</label>
+              <div class="col-md-3">
+                <input type="checkbox"  ng-model="formSave.pkp" ng-true-value="1" ng-false-value="0">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Keterangan</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.description" class="form-control">
+              </div>
+            </div>
+            <hr>
+            <div class="form-group">
+              <label class="col-md-3">No. Rek bank</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.rek_no" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Pemilik Rekening</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.rek_milik" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Bank</label>
+              <div class="col-md-9">
+                <select class="form-control" data-placeholder-text-single="'Choose Bank'" chosen allow-single-deselect="true" ng-model="formSave.rek_bank_id" ng-options="s.id as s.name for s in data2.bank">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3">Rekening Branch</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formSave.rek_cabang" class="form-control">
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- -- -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-show="data" ng-disabled="disBtn" ng-click="submitSave()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

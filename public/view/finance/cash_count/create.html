@@ -1,0 +1,165 @@
+<div class="col-md-12">
+  <form class="form-horizontal" ng-submit="submitForm()">
+    <div class="row">
+      <div class="col-md-6">
+
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>Penghitungan Kas Kecil</h5>
+            
+          </div>
+          <div class="ibox-content">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Branch</label>
+              <div class="col-md-9">
+                <select class="form-control" ng-disabled="is_freeze" ng-change="companyChange(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3 control-label">Tanggal</label>
+              <div class="col-md-9">
+                <input type="text" datepick readonly class="form-control" ng-model="formData.date_transaction">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Saldo Awal</label>
+              <div class="col-md-9">
+                <input type="text" jnumber2 only-num class="form-control" ng-model="formData.saldo_awal" readonly>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3 control-label">BKK Hari Ini</label>
+              <div class="col-md-9">
+                <input type="text" jnumber2 only-num class="form-control" ng-model="formData.bkk_hari_ini" readonly>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3 control-label">BKM Hari Ini</label>
+              <div class="col-md-9">
+                <input type="text" jnumber2 only-num class="form-control" ng-model="formData.bkm_hari_ini" readonly>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3 control-label">Saldo Akhir</label>
+              <div class="col-md-9">
+                <input type="text" jnumber2 only-num class="form-control" ng-model="formData.saldo_akhir" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <hr>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-3 control-label">Total Kas Fisik</label>
+              <div class="col-md-9">
+                <input type="text" jnumber2 only-num class="form-control" ng-model="formData.total_cash_fisik" readonly>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3 control-label">Total Kasbon</label>
+              <div class="col-md-9">
+                <input type="text" jnumber2 only-num class="form-control" ng-model="formData.total_kasbon" readonly>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-3 control-label">Keterangan</label>
+              <div class="col-md-9">
+                <textarea ng-model="formData.description" rows="4" class="form-control"></textarea>
+              </div>
+            </div>
+
+          </div>
+          <div class="ibox-footer">
+            <button type="button" ng-click="goBack(formData.company_id)" class="btn btn-sm btn-warning">Kembali</button>
+            <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>Daftar Uang Kas</h5>
+          </div>
+          <div class="ibox-content">
+            <table class="table display compact nowrap table-bordered">
+              <thead>
+                <tr>
+                  <th>Nominal</th>
+                  <th>Jumlah</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="(i, val) in cash">
+                  <td ng-if='!val.is_editable'><%val.name%></td>
+                  <td ng-if='val.is_editable'>
+                      <input type="text" jnumber2 only-num ng-change="cash[i].total=(cash[i].amount || 0)*(cash[i].value || 0);hitungTotal()" class="form-control" ng-model="cash[i].value">
+                  </td>
+                  <td>
+                    <input type="text" jnumber2 only-num ng-change="cash[i].total=(cash[i].amount || 0)*(cash[i].value || 0);hitungTotal()" class="form-control" ng-model="cash[i].amount">
+                  </td>
+                  <td>
+                    <input type="text" jnumber2 only-num disabled class="form-control" ng-model="cash[i].total">
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="2" class="text-right">TOTAL SALDO KAS</th>
+                  <th><% formData.total_saldo|number %></th>
+                </tr>
+                <!-- <tr>
+                  <th colspan="2" class="text-right">Talangan Kasir</th>
+                  <th><% formData.bailout|number %></th>
+                </tr> -->
+              </tfoot>
+            </table>
+            <div class="btn-group">
+              <button type='button' class='btn btn-sm btn-primary' ng-click='addMoney()'>
+                  <i class='fa fa-plus'></i>
+              </button>
+              <button type='button' class='btn btn-sm btn-danger' ng-click='removeMoney()'>
+                  <i class='fa fa-close'></i>
+              </button>
+            </div>
+          </div>
+          <!-- <pre><% jStyle(formData) %></pre> -->
+        </div>
+
+      </div>
+
+      <div class="col-md-12 ibox-content">
+        <div>
+      
+          <table class="table table-bordered" id="kas_bon_datatable">
+            <thead>
+              <tr>
+                <th>No. Kasbon</th>
+                <th>Branch</th>
+                <th>Karyawan</th>
+                <th>Tanggal</th>
+                <th>Jml Kasbon</th>
+                <th>Keperluan</th>
+                <th>Status</th>
+                <th>Total approve</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

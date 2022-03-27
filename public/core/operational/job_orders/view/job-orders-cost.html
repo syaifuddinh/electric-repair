@@ -1,0 +1,145 @@
+<div ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.cost')">
+            <table class="table display compact nowrap table-borderless">
+                <tbody>
+                    <tr>
+                        <td><h4><i class="fa fa-money"></i> Cost</h4></td>
+                        <td class="text-right">
+                            <span ng-if="!hideAddButton">
+                                <button ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.cost.create')" ng-if="!item.invoice_id" type="button" class="btn btn-sm btn-primary" ng-click="addCost()"><i class="fa fa-plus"></i> Add</button>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table display compact nowrap table-bordered">
+                <thead>
+                    <tr>
+                        <th>Cost Name</th>
+                        <th>Vendor</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Total Price</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if='cost_detail.length == 0'>
+                        <td colspan='9' class='text-center'>No Data</td>
+                    </tr>
+                    <tr ng-repeat="(i,val) in cost_detail">
+                        <td><span><% val.cost_type_name %></span></td>
+                        <td><span><% val.vendor_name %></span></td>
+                        <td><span><% val.type_name %></span></td>
+                        <td class="text-right"><span><% (val.status>1 || val.is_edit ? val.price : 0)|number %></span></td>
+                        <td class="text-right"><span><% val.qty|number %></span></td>
+                        <td class="text-right"><span><% (val.status>1 || val.is_edit ? val.total_price : 0)|number %></span></td>
+                        <!-- <td class="text-right"><span ng-if="val.cost_type.is_bbm"><% (val.qty|number)+' lt @ '+(val.price|number) %></span></td> -->
+                        <td><span><% val.description %></span></td>
+                        <td><span><% val.is_invoice==1 ? 'Selesai' : $root.findJsonId(val.status,status).name %></span></td>
+                        <td class="text-center" ng-if="!val.manifest_cost_id">
+                            <span ng-if="val.status==1 && !item.invoice_id">
+                                <a ng-click="ajukanAtasan(val.id)" ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.cost.ajukan')" data-toggle="tooltip" title="Ajukan Biaya"><i class="fa fa-location-arrow"></i></a>&nbsp;
+                                <a ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.cost.edit')" ng-click="editCost(val.id)" data-toggle="tooltip" title="Edit Biaya"><i class="fa fa-edit"></i></a>&nbsp;
+                                <a ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.cost.delete')" ng-click="deleteCost(val.id)" data-toggle="tooltip" title="Hapus Biaya"><i class="fa fa-trash"></i></a>
+                            </span>
+                            <span ng-if="val.status==7 && !item.invoice_id">
+                                <a ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.cost.approve')" ng-click="approveAtasan(val.id)" title="Approve Biaya"><i class="fa fa-check"></i>&nbsp;</a>
+                                <a ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.cost.approve')" ng-click="rejectAtasan(val.id)" title="Tolak Biaya"><i class="fa fa-times"></i></a>
+                            </span>
+                            <a ng-click="cancel_posting(val.id)" ng-if="!val.is_invoice && val.status==5" title="Cancel Posting"><i class="fa fa-reply"></i></a>
+
+                            <button ng-show="$root.roleList.includes('operational.job_order.detail.detail_job_order.cost.revision')" type="button" ng-if="val.status==3 && !val.manifest_id" ng-click="revision(val)" class="btn btn-xs btn-primary">Revisi</button>
+                        </td>
+                        <td ng-if="val.manifest_cost_id"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- modal biaya -->
+        <div class="modal fade" id="modalCost" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"><% titleCost %></h4>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-md-3">Type</label>
+                                <div class="col-md-9">
+                                    <div class="radio radio-inline radio-primary">
+                                        <input type="radio" ng-model="costData.type" ng-value="1" id="oper">
+                                        <label for="oper">Operational</label>
+                                    </div>
+                                    <div class="radio radio-inline radio-primary">
+                                        <input type="radio" ng-model="costData.type" ng-value="2" id="reim">
+                                        <label for="reim">Reimbursement</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Cost Name</label>
+                                <div class="col-md-9">
+                                    <cost-types-select-input type='"operasional"' ng-model='costData.cost_type_id' ng-change="changeCT(costData.cost_type_id)" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Vendor</label>
+                                <div class="col-md-9">
+                                    <vendor-select-input ng-model='costData.vendor_id' ng-change='searchVendorPrice()' />
+                                </div>
+                            </div>
+                            <span ng-if='cost_type_f.is_insurance != 1'>
+                                <div class="form-group" ng-if="costData.cost_type_f.is_bbm">
+                                    <label class="col-md-3 ">Jumlah Liter</label>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <input type="text" ng-change="costData.total_price=costData.qty*costData.price" jnumber2 only-num class="form-control" ng-model="costData.qty" placeholder="Liter">
+                                            <span class="input-group-addon">Lt</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Rp.</span>
+                                            <input type="text" ng-change="costData.total_price=costData.qty*costData.price" jnumber2 only-num class="form-control" ng-model="costData.price" placeholder="Harga per Litar">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3"></label>
+                                    <div class="col-md-4">
+                                        <label>Price</label>
+                                        <input type="text" ng-disabled="costData.cost_type_f.is_bbm" jnumber2 only-num class="form-control" ng-change="calcCTTotalPrice()" ng-model="costData.price">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label>Qty</label>
+                                        <input type="text" ng-change="calcCTTotalPrice()" jnumber2 only-num class="form-control" ng-model="costData.qty" placeholder="jumlah">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 ">Total Price</label>
+                                    <div class="col-md-9">
+                                        <input type="text" disabled jnumber2 only-num class="form-control" ng-model="costData.total_price">
+                                    </div>
+                                </div>
+                            </span>
+                            <div class="form-group">
+                                <label class="col-md-3 ">Description</label>
+                                <div class="col-md-9">
+                                    <textarea rows="4" class="form-control" ng-model="costData.description"></textarea>
+                                </div>
+                            </div>
+                            <!-- <pre><% jStyle(costData) %></pre> -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" ng-click='submitCost()' ng-disabled="$root.disBtn" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>

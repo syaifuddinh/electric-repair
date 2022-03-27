@@ -1,0 +1,475 @@
+<div class="col-md-12">
+    <form class="form-horizontal" ng-submit="submitForm()">
+        <div class="ibox">
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2"><% $root.solog.label.general.branch %></label>
+                    <div class="col-md-5">
+                        <branch-select-input ng-model="formData.company_id" ng-change="companyChange(formData.company_id)" />
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-2">Tgl Invoice</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" ng-model="formData.date_invoice" datepick>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-2">Tgl Jurnal</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" ng-model="formData.journal_date" datepick>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-2"><% $root.solog.label.general.customer %></label>
+                    <div class="col-md-5">
+                        <customer-select-input ng-model="formData.customer_id" ng-change="resetDetail();showTermOfPayment()" />
+                    </div>
+                </div>
+                <div ng-hide="hideType">
+                    <div class="form-group">
+                        <label class="col-md-2"></label>
+                        <div class="col-md-5">
+                            <span>
+                                <div class="radio radio-inline radio-primary">
+                                    <input type="radio" id="pJO" ng-change="wo_jo={}" ng-model="formData.type" ng-value="1">
+                                    <label for="pJO">Per Job Order</label>
+                                </div>
+                                <div class="radio radio-inline radio-primary">
+                                    <input type="radio" id="pWO" ng-change="wo_jo={}" ng-model="formData.type" ng-value="2">
+                                    <label for="pWO">Per Work Order</label>
+                                </div>
+                            </span>
+    
+                            <div class="radio radio-inline radio-primary">
+                                <input type="radio" id="pSO" ng-change="wo_jo={}" ng-model="formData.type" ng-value="3">
+                                <label for="pSO">Per Sales Order</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="form-group required" ng-if="formData.type==1">
+                    <label class="col-md-2">Job Order / PO Customer</label>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <input readonly ng-click="cariJO(formData.customer_id)" type="text" class="form-control" ng-model="wo_jo.job_order_code" placeholder="Cari Job Order">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group required" ng-if="formData.type==2">
+                    <label class="col-md-2">Work Order</label>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <input readonly ng-click="cariWO(formData.customer_id)" type="text" class="form-control" ng-model="wo_jo.work_order_code" placeholder="Cari Work Order">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group required" ng-if="formData.type==3 && formData.customer_id">
+                    <label class="col-md-2">Sales Order</label>
+                    <div class="col-md-5">
+                        <sales-orders-modal-input ng-model='sales_order_id' customer-id='formData.customer_id' for-invoicing="true"  />
+                    </div>
+                </div>
+                
+                <div class="form-group required" ng-if="formData.type_bayar==2">
+                    <label class="col-md-2">Termin Pembayaran</label>
+                    <!--
+                        <div class="col-md-2">
+                            <select class="form-control" data-placeholder-text-single="'Choose Termin'" chosen allow-single-deselect="false" ng-model="formData.type_bayar" ng-options="s.id as s.name for s in termin">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" ng-if="formData.type_bayar==1">
+                            <select class="form-control" data-placeholder-text-single="'Choose Akun Kas'" chosen allow-single-deselect="false" ng-model="formData.cash_account_id" ng-options="s.id as s.account_name group by s.parent.name for s in data.account">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    -->
+                    <div class="col-md-3" >
+                        <div class="input-group">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.termin">
+                            <span class="input-group-addon">Hari</span>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                    <div class="form-group" ng-if="formData.type_bayar==2">
+                        <label class="col-md-2">Akun Piutang</label>
+                        <div class="col-md-5">
+                            <select class="form-control" data-placeholder-text-single="'Choose Akun Piutang'" chosen allow-single-deselect="false" ng-model="formData.account_receivable_id" ng-options="s.id as s.account_name group by s.parent.name for s in data.account">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                -->
+                <div class="form-group">
+                    <label class="col-md-2"><% $root.solog.label.general.description %></label>
+                    <div class="col-md-6">
+                        <textarea ng-model="formData.description" class="form-control" rows="4"></textarea>
+                    </div>
+                </div>
+                
+                <!-- <pre><%jStyle(formData.detail)%></pre> -->
+                <!-- <pre><%jStyle(wo_jo)%></pre> -->
+            </div>
+        </div>
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><i class="fa fa-fax"></i> Detail Invoice</h5>
+                <div class="ibox-tools">
+                    <button type="button" name="button" ng-click="addReimburse()" ng-disabled="!formData.customer_id" class="btn btn-sm btn-primary"><i class="fa fa-money"></i> Tagih Reimburse</button>
+                    <button type="button" ng-click="addDetail()" ng-disabled="!formData.customer_id" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Detail</button>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <style media="screen">
+                            #tableDetail tbody tr td {
+                                font-size:11px;
+                            }
+                            
+                            #table input {
+                                font-size:11px;
+                            }
+                        </style>
+                        <div style='overflow-x:scroll'>
+                            
+                            <table class="table display compact nowrap table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>No. JO / PL</th>
+                                        <th>No. PO</th>
+                                        <th>Route</th>
+                                        <th>Nopol</th>
+                                        <th>Driver</th>
+                                        <th>Container</th>
+                                        <th><% $root.solog.label.general.service %></th>
+                                        <th><% $root.solog.label.general.description %></th>
+                                        <th>Jumlah</th>
+                                        <th>Pengenaan</th>
+                                        <th>Harga Satuan</th>
+                                        <th>Harga Total</th>
+                                        <th>PPN / Diskon</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(i,val) in formData.detail" id="rowD-<%i%>">
+                                        <td><span ng-bind="i+1"></span></td>
+                                        <td><span ng-bind="val.code"></span></td>
+                                        <td><span ng-bind="val.no_po"></span></td>
+                                        <td><span ng-bind="val.trayek"></span></td>
+                                        <td><span ng-bind="val.nopol"></span></td>
+                                        <td><span ng-bind="val.driver"></span></td>
+                                        <td><span ng-bind="val.container_no"></span></td>
+                                        <td><span ng-bind="val.service"></span></td>
+                                        <td><span ng-bind="val.description"></span></td>
+                                        <td class="text-right"><span ng-bind="val.qty|number"></span></td>
+                                        <td><span ng-bind="val.imposition_name"></span></td>
+                                        <td class="text-right"><span ng-bind="val.price|number"></span></td>
+                                        <td class="text-right"><span ng-bind="val.total_price|number"></span></td>
+                                        <td class="text-right">
+                                            <a ng-click="ppnSet(i)">
+                                                <% (val.total_discount_tax ? val.total_discount_tax : 0)|number %>          
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a ng-click="deleteDetail(i)"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if='formData.detail.length == 0'>
+                                        <td colspan='15' class="text-center"><% $root.solog.label.general.no_data %></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-5 pull-right">
+                        <table class="table display compact nowrap table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>Sub Total</td>
+                                    <td colspan="2">
+                                        <input type="text" ng-model="formData.sub_total" class="form-control text-right" jnumber2 only-num readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Total Diskon</td>
+                                    <td colspan="2">
+                                        <input type="text" ng-model="formData.discount_total" class="form-control text-right" jnumber2 only-num readonly>
+                                    </td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>Total PPN</td>
+                                    <td colspan="2">
+                                        <input type="text" ng-model="formData.ppn_total" class="form-control text-right" jnumber2 only-num readonly>
+                                    </td>
+                                </tr> -->
+                                <tr>
+                                    <td>Total PPN</td>
+                                    <td colspan="2">
+                                        <input type="text" ng-model="formData.total_another_ppn" class="form-control text-right" jnumber2 only-num readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Grand Total</td>
+                                    <td colspan="2">
+                                        <input type="text" ng-model="formData.grand_total" class="form-control text-right" jnumber2 only-num readonly>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="ibox-footer">
+                <!-- <a ui-sref="operational.invoice_jual" class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a> -->
+                <button class="btn btn-sm btn-warning" ng-click="back()"><% $root.solog.label.general.back %></button>
+                <button type="submit" ng-disabled="disBtn || !formData.grand_total" class="btn btn-sm btn-primary"><% $root.solog.label.general.save %></button>
+            </div>
+        </div>
+        
+    </form>
+</div>
+
+<!-- modal edit keterangan -->
+<div class="modal fade" id="modalDescription" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Edit keterangan</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                
+                <div class="form-group">
+                    <label class="col-md-2">Keterangan</label>
+                    <div class="col-md-9">
+                        <textarea ng-model="formDescription.description" rows="4" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                
+                <button type="button" ng-disabled="!formDescription.description" ng-click="submitFormDescription()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal JO-->
+<div class="modal fade" id="modalJO" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Cari Job Order</h4>
+            </div>
+            <div class="modal-body">
+                <div style='overflow-x:scroll'>
+                    
+                    <table class="table display compact nowrap table-bordered" id="jo_datatable" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Kode JO</th>
+                                <th>Tanggal</th>
+                                <th>PO Customer</th>
+                                <th>Produk Jasa</th>
+                                <th>Jenis</th>
+                                <th>Route</th>
+                                <th>Customer</th>
+                                <th>Alamat Kirim</th>
+                                <th>Pengiriman</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal invoice tambahan -->
+<div class="modal fade" id="invoiceAddModal" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Biaya Add on</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                
+                <div class="form-group">
+                    <label class="col-md-2">Invoice Add on</label>
+                    <div class="col-md-9">
+                        <select class="form-control" ng-change="changeCT(detailInv.cost_type_id)" data-placeholder-text-single="'Choose Jenis Biaya'" chosen allow-single-deselect="false" ng-model="detailInv.cost_type_id" ng-options="s.id as s.name group by s.parent for s in costList">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Qty</label>
+                    <div class="col-md-3">
+                        <input type="text" ng-change="calculateTotalPrice()" class="form-control" jnumber2 only-num ng-model="detailInv.qty">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Harga Satuan</label>
+                    <div class="col-md-5">
+                        <input type="text" ng-change="calculateTotalPrice()" class="form-control" jnumber2 only-num ng-model="detailInv.price">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Total Price</label>
+                    <div class="col-md-5">
+                        <input type="text" readonly class="form-control" jnumber2 only-num ng-model="detailInv.total_price">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Keterangan</label>
+                    <div class="col-md-9">
+                        <textarea ng-model="detailInv.description" rows="4" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-if="is_using_ppn" ng-disabled="!detailInv.cost_type_id" ng-click="addInvoiceOther()" class="btn btn-primary"><i class="fa fa-plus"></i> Add Ke Tabel</button>
+                <button type="button" ng-if="!is_using_ppn" ng-disabled="!detailInv.cost_type_id" ng-click="addInvoiceAdditional()" class="btn btn-primary"><i class="fa fa-plus"></i> Add Ke Tabel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal pajak -->
+<div class="modal fade" id="modalTax" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Pajak & Diskon</h4>
+            </div>
+            <div class="modal-body form-horizontal" id="detailHtml">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Selesai</button>
+                <!-- <button type="button" class="btn btn-primary">Masukkan Pajak</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal WO-->
+<div class="modal fade" id="modalWO" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Cari Work Order</h4>
+            </div>
+            <div class="modal-body">
+                <div style="overflow-x:scroll">
+                    
+                    <table class="table display compact nowrap table-bordered" id="wo_datatable" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Kode WO</th>
+                                <th>No. AJU</th>
+                                <th>No. BL</th>
+                                <!-- <th>Tanggal</th> -->
+                                <th>No. PO Customer</th>
+                                <th>Job Order</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal Reimbursement -->
+<div class="modal fade" id="modalReimbursement" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Add Reimbursement</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-2">Job Order</label>
+                    <div class="col-md-9">
+                        <select class="form-control" data-placeholder-text-single="'Choose Job Order'" chosen allow-single-deselect="false" ng-model="rData.job_order_id" ng-options="s.id as s.name for s in jo_list" ng-change="get_job_order_costs()">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Biaya Reimburse</label>
+                    <div class="col-md-9">
+                        <select class="form-control" ng-change="changeCTre()" data-placeholder-text-single="'Choose Jenis Biaya'" chosen allow-single-deselect="false" ng-model="rData.cost_type" ng-options="ct as ct.name group by ct.parent for ct in data.cost_types">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Qty</label>
+                    <div class="col-md-3">
+                        <input type="text" ng-keyup="rData.total_price=rData.qty*rData.price" class="form-control" jnumber2 only-num ng-model="rData.qty">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Harga Satuan</label>
+                    <div class="col-md-5">
+                        <input type="text" ng-keyup="rData.total_price=rData.qty*rData.price" class="form-control" jnumber2 only-num ng-model="rData.price">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Total Price</label>
+                    <div class="col-md-5">
+                        <input type="text" readonly class="form-control" jnumber2 only-num ng-model="rData.total_price">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2">Keterangan</label>
+                    <div class="col-md-9">
+                        <textarea ng-model="rData.description" rows="4" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" ng-click="appendReimbursement()" ng-disabled="!rData.job_order_id" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

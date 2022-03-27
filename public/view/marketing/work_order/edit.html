@@ -1,0 +1,64 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-md-3"><% solog.label.general.branch %></label>
+            <div class="col-md-9">
+                <branch-select-input ng-model="formData.company_id" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3"><% solog.label.general.customer %></label>
+            <div class="col-md-9">
+                <customer-select-input ng-model="formData.customer_id" />
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3"><% solog.label.work_order.name %></label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">No. BL</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.no_bl">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3">No. AJU</label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" ng-model="formData.aju_number">
+            </div>
+          </div>
+            <div class="form-group required">
+                <label class="col-md-3"><% solog.label.general.date %></label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" ng-model="formData.date" datepick>
+                </div>
+            </div>
+
+            <div class="form-group" ng-repeat='v in additional_fields'>
+                <label class="col-md-3"><% v.name %></label>
+                    <div class="col-md-9">
+                        <custom-field ng-model='formData.additional[v.slug]' type='v.type_field' />
+                    </div>
+            </div>
+
+        </div>
+      </div>
+      <!-- <pre><%jStyle(formData)%></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="marketing.work_order" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+      <button type="submit" ng-disabled="disBtn" ng-click="submitForm()" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+    </div>
+  </div>
+</div>

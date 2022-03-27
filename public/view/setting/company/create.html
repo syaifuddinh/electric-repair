@@ -1,0 +1,150 @@
+<div class="col-md-7">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><%pageTitle%></h5>
+      <div class="ibox-tools">
+      </div>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group required">
+    	    <label class="col-md-3 control-label">Area</label>
+    	    <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Area'" chosen ng-model="formData.area_id" ng-options="s.id as s.name for s in data.area">
+              <option value=""></option>
+            </select>
+    	    </div>
+    	  </div>
+        <div class="form-group required">
+    	    <label class="col-md-3 control-label">Code</label>
+    	    <div class="col-md-4">
+            <input type="text" ng-model="formData.code"  class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group required">
+    	    <label class="col-md-3 control-label">Branch Name</label>
+    	    <div class="col-md-9">
+            <input type="text" ng-model="formData.name"  class="form-control">
+    	    </div>
+    	</div>
+        <div class="form-group required">
+    	    <label class="col-md-3 control-label">Address</label>
+    	    <div class="col-md-9">
+            <input type="text" ng-model="formData.address" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group required">
+    	    <label class="col-md-3 control-label">City</label>
+    	    <div class="col-md-9">
+            <select class="form-control" chosen  ng-model="formData.city_id" data-placeholder-text-single="'Choose City'" ng-options="s.id as s.name for s in list.city">
+              <option value=""></option>
+            </select>
+    	    </div>
+    	  </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Phone</label>
+    	    <div class="col-md-5">
+            <input type="text" ng-model="formData.phone" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group required">
+    	    <label class="col-md-3 control-label">Email</label>
+    	    <div class="col-md-5">
+            <input type="text" ng-model="formData.email" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Website</label>
+    	    <div class="col-md-5">
+            <input type="text" ng-model="formData.website" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">No. Rekening 1</label>
+          <div class="col-md-5">
+            <input type="text" ng-model="formData.rek_no_1" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Nama Rekening 1</label>
+    	    <div class="col-md-9">
+            <input type="text" ng-model="formData.rek_name_1" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Bank Rekening 1</label>
+    	    <div class="col-md-9">
+            <input type="text" ng-model="formData.rek_bank_1" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">No. Rekening 2</label>
+          <div class="col-md-5">
+            <input type="text" ng-model="formData.rek_no_2" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Nama Rekening 2</label>
+    	    <div class="col-md-9">
+            <input type="text" ng-model="formData.rek_name_2" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Bank Rekening 2</label>
+    	    <div class="col-md-9">
+            <input type="text" ng-model="formData.rek_bank_2" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Plafond</label>
+    	    <div class="col-md-5">
+            <input type="text" jnumber2 only-num ng-model="formData.plafond" class="form-control">
+    	    </div>
+    	  </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Akun Kas</label>
+    	    <div class="col-md-9">
+            <select class="form-control" chosen  ng-model="formData.cash_account_id" data-placeholder-text-single="'Choose Akun Kas'" ng-options="s.id as s.account_name group by parent.name for s in data.account">
+              <option value=""></option>
+            </select>
+    	    </div>
+    	  </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Akun Bank</label>
+    	    <div class="col-md-9">
+            <select class="form-control" chosen  ng-model="formData.bank_account_id" data-placeholder-text-single="'Choose Akun Bank'" ng-options="s.id as s.account_name group by parent.name for s in data.account">
+              <option value=""></option>
+            </select>
+    	    </div>
+    	  </div>
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">Akun Mutasi Kas/Bank</label>
+    	    <div class="col-md-9">
+            <select class="form-control" chosen  ng-model="formData.mutation_account_id" data-placeholder-text-single="'Choose Akun Mutasi Kas/Bank'" ng-options="s.id as s.account_name group by parent.name for s in data.account">
+              <option value=""></option>
+            </select>
+    	    </div>
+    	  </div>
+
+        <div class="form-group">
+    	    <label class="col-md-3 control-label">HQ ?</label>
+    	    <div class="col-md-5">
+            <div class="checkbox checkbox-inline checkbox-primary">
+              <input type="checkbox" ng-model="formData.is_pusat" ng-true-value="1" ng-false-value="0">              
+              <label for=""></label>
+            </div>
+    	    </div>
+    	  </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="setting.company" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

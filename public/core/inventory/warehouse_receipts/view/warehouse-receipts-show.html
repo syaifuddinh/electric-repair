@@ -1,0 +1,477 @@
+<style>
+    th {
+        text-align:center;
+        vertical-align: middle;
+    }
+</style>
+    <div class="ibox">
+        <div class="ibox-title">
+            <div class="ibox-tools">
+                <button ng-click='delete(item.id)' ng-if="item.status != 1" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> <% $root.solog.label.general.delete %></button>
+
+
+                <button ng-show="$root.roleList.includes('operational_warehouse.receive.cancel')" ng-if="item.status == 1" ng-click='cancel()' ng-disabled='disBtn' class="btn btn-sm btn-danger"><i class="fa fa-rotate-left"></i> <% $root.solog.label.general.cancel %></button>
+
+                <span ng-if='item.id'>
+                    <warehouse-receipts-edit-button id='item.id' type='"button"' />
+                </span>
+
+                <span ng-if='item.id'>
+                    <warehouse-receipts-approve-button on-submit='show()' id='item.id' type='"button"' />
+                </span>
+
+                <button ng-show="roleList.includes('operational_warehouse.receive.approve')" ng-disabled='disBtn' ng-click="approve()" ng-if="item.status == 0 || item.status == 2" class="btn btn-sm btn-success"><i class="fa fa-check"></i> <% $root.solog.label.general.approve %></button>
+                <button class="btn btn-sm btn-primary" ng-click="showPrint()"><i class="fa fa-print"></i> <% $root.solog.label.general.print %></button>
+                <button class="btn btn-sm btn-success" ng-click="previewEmail()" ng-disabled='disBtn'> Preview Email</button>
+                <button class="btn btn-sm btn-success" ng-click="sendEmail()" ng-disabled='disBtn'> Send Email</button>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table display compact nowrap table-borderless">
+                        <tbody>
+                            <tr>
+                                <td style="width:25%;">No. BSTB</td>
+                                <td>: <span><% item.code %></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%;">Status</td>
+                                <td>: <span ng-class="item.status == 0 ? 'label label-warning' : (item.status == 1 ? 'label label-primary' : 'label label-danger')"><% item.status == 0 ? 'Draft' : (item.status == 1 ? 'Disetujui' : 'Dibatalkan') %></span></td>
+                            </tr>
+                            <tr>
+                                <td><% $root.solog.label.general.branch %></td>
+                                <td>: <span><% item.company.name %></span></td>
+                            </tr>
+                            <tr>
+                                <td><% $root.solog.label.general.receipt_type %></td>
+                                <td>: <span><% item.receipt_type_name %></span></td>
+                            </tr>
+                            <tr ng-if='show_purchase_order'>
+                                <td><% $root.solog.label.purchase_order.code %></td>
+                                <td>: <span><% item.purchase_order_code %></span></td>
+                            </tr>
+                            <tr ng-if='show_customer'>
+                                <td><% $root.solog.label.general.customer %></td>
+                                <td>: <span><% item.customer.name %></span></td>
+                            </tr>
+                            <tr ng-if='show_shipper'>
+                                <td><% $root.solog.label.general.shipper %></td>
+                                <td>: <span><% item.sender %></span></td>
+                            </tr>
+                            <tr ng-if='show_consignee'>
+                                <td><% $root.solog.label.general.consignee %></td>
+                                <td>: <span><% item.receiver %></span></td>
+                            </tr>
+
+                            <tr>
+                                <td><% $root.solog.label.general.receive_date %></td>
+                                <td>: <span ng-if="item.receive_date"><% item.receive_date|fullDateTime %></span></td>
+                            </tr>
+                            <tr>
+                                <td>Selesai Stripping</td>
+                                <td>: <span ng-if="item.stripping_done"><% item.stripping_done|fullDateTime %></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="col-md-6">
+                    <table class="table display compact nowrap table-borderless">
+                        <tbody>
+                            <tr ng-if='show_lembur'>
+                                <td style="width:25%;">Tagihkan lembur ?</td>
+                                <td>: <span><% item.is_overtime == 1 ? 'Ya' : 'Tidak' %></span></td>
+                            </tr>
+                            <tr ng-show='show_vehicle_type'>
+                                <td style="width:25%;"><% $root.solog.label.general.vehicle_type %></td>
+                                <td>: <span><% item.vehicle_type_name %></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%;">Staff Warehouse</td>
+                                <td>: <span><% item.staff.name %></span></td>
+                            </tr>
+                            <tr ng-if='show_destination'>
+                                <td><% $root.solog.label.general.destination %></td>
+                                <td>: <span><% item.city_to %></span></td>
+                            </tr>
+                            <tr ng-show='show_reff_no'>
+                                <td>No Surat Jalan Pengirim</td>
+                                <td>: <span><% item.reff_no %></span></td>
+                            </tr>
+                            <tr>
+                                <td><% $root.solog.label.general.warehouse %></td>
+                                <td>: <span><% item.warehouse.name %></span></td>
+                            </tr>
+
+                            <tr ng-show='show_nopol'>
+                                <td>Nopol</td>
+                                <td>: <span><% item.nopol || '' %></span></td>
+                            </tr>
+                            <tr ng-show='show_driver'>
+                                <td>Driver Pengirim</td>
+                                <td>: <span><% item.driver || ''%></span></td>
+                            </tr>
+                            <tr ng-show='show_phone_number'>
+                                <td><% $root.solog.label.general.handphone %></td>
+                                <td>: <span><% item.phone_number || '' %></span></td>
+                            </tr>
+                            <tr>
+                                <td>TTD Driver</td>
+                                <td ng-show='item.ttd'>
+                                    <img ng-src="<% item.ttd %>"  class="img-responsive" alt="" style='height:50mm;width:auto'>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><% $root.solog.label.general.description %></td>
+                                <td >: <span><% item.description %></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div style="height: 210px">
+
+                        <div style="overflow-x:scroll;height:90mm">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">#</th>
+                                        <th rowspan="2"><% $root.solog.label.general.rack %></th>
+                                        <th rowspan="2"><% $root.solog.label.item.name %></th>
+                                        <th rowspan="2"><% $root.solog.label.general.package %></th>
+                                        <th colspan="2"><% $root.solog.label.general.capacity %></th>
+                                        <th rowspan="2" ng-if='show_imposition'><% $root.solog.label.general.imposition %></th>
+                                        <th rowspan="2"><% $root.solog.label.general.long %></th>
+                                        <th rowspan="2"><% $root.solog.label.general.wide %></th>
+                                        <th rowspan="2"><% $root.solog.label.general.high %></th>
+                                        <th rowspan="2"><% $root.solog.label.general.weight %></th>
+                                        <th rowspan="2"><% $root.solog.label.general.qty %></th>
+                                        <th rowspan="2">UOM 2</th>
+                                        <th rowspan="2"><% $root.solog.label.general.volume_total %></th>
+                                        <th rowspan="2"><% $root.solog.label.general.weight_total %></th>
+                                        <th rowspan="2"><% $root.solog.label.general.stock %></th>
+                                        <th colspan="2"><% $root.solog.label.general.pallet %></th>
+                                        <th rowspan="2"></th>
+                                    </tr>
+                                    <tr>
+                                        <th><% $root.solog.label.general.kg %></th>
+                                        <th><% $root.solog.label.general.m3 %></th>
+                                        <th><% $root.solog.label.general.name %></th>
+                                        <th><% $root.solog.label.general.qty %></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(i,val) in detail">
+                                        <td class="text-right"><% i+1 %>.</td>
+                                        <td><% val.rack.code %></td>
+                                        <td><% val.item_name %></td>
+                                        <td><% val.kemasan %></td>
+                                        <td class="text-right"><% val.rack.capacity_tonase | number %></td>
+                                        <td class="text-right"><% val.rack.capacity_volume | number %></td>
+                                        <td ng-if='show_imposition'><% findJsonId(val.imposition,imposition).name %></td>
+                                        <td class="text-right"><% val.long|number:3 %> cm</td>
+                                        <td class="text-right"><% val.wide|number:3 %> cm</td>
+                                        <td class="text-right"><% val.high|number:3 %> cm</td>
+                                        <td class="text-right"><% val.weight|number:3 %> kg</td>
+                                        <td class="text-right"><% val.qty|number %> <% val.piece_name %></td>
+                                        <td class="text-right"><% val.qty_2|number %>  <% val.piece_name_2 %></td>
+                                        <td class="text-right"><% (val.qty * val.wide * val.high * val.long / 1000000)|number %> m<sup>3</sup></td>
+                                        <td class="text-right"><% (val.qty * val.weight)|number %> kg</td>
+                                        <td class="text-right"><% val.stock|number %></td>
+                                        <td><% val.pallet.name %></td>
+                                        <td><% val.pallet_qty %></td>
+                                        <td class="text-center">
+                                            <a href="<% val.barcode_url %>">
+                                                <i class="fa fa-print"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            
+        </div>
+        <div class="ibox-footer">
+            <div class="row" style='padding-top:40mm'>
+                
+                <div class="col-md-12" style="margin-bottom: 2mm">
+                    <h3><% $root.solog.label.general.attachment %></h3>
+                    <p ng-show='surat_jalan.length == 0'>Tidak ada lampiran</p>
+                    <span ng-repeat='(i, val) in surat_jalan' style='display:inline-block'>
+                        <a ng-href="<% val.name %>" target='_blank'>
+
+                            <img ng-src="<% val.name %>" class='img-thumbnail' width="150" alt="">
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-footer">
+            <a ng-click="back()" class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" style="width: 92%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="">Item Barang</h4>
+                </div>
+                <form class="form-horizontal" ng-submit="submitItem()">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-7 col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-md-3">Pengenaan</label>
+                                    <div class="col-md-9">
+                                        <div class="radio radio-inline radio-primary">
+                                            <input type="radio" id="kubikasi" ng-model="detailData.imposition" ng-click='detailData.weight = 0' ng-value="1">
+                                            <label for="kubikasi">Kubikasi</label>
+                                        </div>
+                                        <div class="radio radio-inline radio-primary">
+                                            <input type="radio" id="tonase" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;' ng-value="2">
+                                            <label for="tonase">Tonase</label>
+                                        </div>
+                                        <div class="radio radio-inline radio-primary">
+                                            <input type="radio" id="kubton" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;detailData.weight = 0' ng-value="3">
+                                            <label for="kubton">Item</label>
+                                        </div>
+                                        <div class="radio radio-inline radio-p  rimary">
+                                            <input type="radio" id="kubton" ng-model="detailData.imposition" ng-click='detailData.long = 0;detailData.high = 0;detailData.wide = 0;detailData.weight = 0' ng-model="detailData.imposition" ng-value="4">
+                                            <label for="kubton">Borongan</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3">Barang</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group" >
+                                            <input type="text" ng-click="cariItem()" class="form-control" ng-model="detailData.item_name" ng-readonly='!detailData.is_exists || detailData.is_exists == 1'>
+                                            <span class="input-group-addon" ng-click="detailData.is_exists = -1;detailData.item_id=null"><i class="fa fa-plus"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if='false'>
+                                    <label class="col-md-3">Barcode</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="detailData.barcode" ng-readonly='detailData.is_exists == 1' class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3">Dimensi & Tonase</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon font-bold">Panjang</span>
+                                            <input type="text" class="form-control text-right" ng-disabled='detailData.imposition != 1' ng-model="detailData.long" placeholder="Panjang (cm)" jnumber2 only-num>
+                                            <span class="input-group-addon">cm</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon font-bold">Lebar</span>
+                                            <input type="text" class="form-control text-right" ng-disabled='detailData.imposition != 1' ng-model="detailData.wide" placeholder="Lebar (cm)" jnumber2 only-num>
+                                            <span class="input-group-addon">cm</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3"></label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon font-bold">Tinggi</span>
+                                            <input type="text" class="form-control text-right" ng-disabled='detailData.imposition != 1' ng-model="detailData.high" placeholder="Tinggi (cm)" jnumber2 only-num>
+                                            <span class="input-group-addon">cm</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon font-bold">Tonase</span>
+                                            <input type="text" class="form-control text-right" ng-disabled='detailData.imposition != 2' ng-model="detailData.weight" placeholder="Tonase (Kg)" jnumber2 only-num >
+                                            <span class="input-group-addon">Kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5 col-sm-12">
+
+                                <div class="form-group">
+                                    <label class="col-md-3">Tipe Storage</label>
+                                    <div class="col-md-9">
+                                        <label class="radio-inline">
+                                            <input type="radio"  ng-model="detailData.storage_type" value='RACK' >Rack
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"  ng-model="detailData.storage_type" value='HANDLING'>Handling / Crossdocking Area
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show='detailData.storage_type == "RACK"'>
+                                    <label class="col-md-3">Bin Location</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" data-placeholder-text-single="'Choose Rack / Bin'" chosen allow-single-deselect="false" ng-model="detailData.rack_id" ng-options="s.id as s.name for s in racks">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3">Jumlah</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+
+                                            <input type="text" class="form-control text-right" ng-model="detailData.qty" ng-change='validateDetail()' jnumber2 only-num>
+                                            <span class="input-group-addon">Item</span>
+                                        </div>
+                                        <div class="text-danger" ng-show='disAppendBtn'><b>* Jumlah barang tidak boleh melebihi total</b></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3">Pakai Pallet ?</label>
+                                    <div class="col-md-9">
+                                        <input type="checkbox" ng-model="detailData.is_use_pallet" ng-true-value='1' ng-false-value='0' ng-click='switchPallet()'>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show='detailData.is_use_pallet == 1'>
+                                    <label class="col-md-3">Pallet</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group" ng-click="cariPallet()" >
+                                            <input type="text" class="form-control" ng-model="detailData.pallet_name" readonly>
+                                            <span class="input-group-addon" ><i class="fa fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-show='detailData.is_use_pallet == 1'>
+                                    <label class="col-md-3">Jumlah Pallet</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+
+                                            <input type="text" class="form-control text-right" ng-model="detailData.pallet_qty" value="0" jnumber2 only-num>
+                                            <span class="input-group-addon">Item</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" ng-init='detailData = {};disBtn = false' ng-disabled="disBtn || !detailData.item_name ||   !detailData.qty || !detailData.storage_type || (!detailData.rack_id && detailData.storage_type == 'RACK' ) || (detailData.imposition == 1 && (!detailData.long || !detailData.wide || !detailData.high)) || (detailData.imposition == 2 && !detailData.weight)" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalPreviewEmail" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" style="width: 92%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="">Email Preview</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div>
+                            <b class='inline-block w-20'>To</b>
+                            <b class='inline-block'>: </b>
+                            <span class='inline-block'> <% item.customer.email %> </span>
+                        </div>
+                        <div>
+                            <b class='inline-block w-20'>Subject</b>
+                            <b class='inline-block'>: </b>
+                            <span class='inline-block'> <% receipt_subject %> </span>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div>
+                        <div id='email_preview'></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click='sendEmail()' ng-disabled='disBtn'>Send</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal master item-->
+    <div class="modal fade" id="modalItemWarehouse" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" style="width:70%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="">Item List</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table display compact nowrap table-striped" id="pallet_datatable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Code</th>
+                                <th>Nama</th>
+                                <th class='hidden'>Barcode</th>
+                                <th>Satuan</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pallet -->
+    <div class="modal fade" id="modalPallet" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" style="width:70%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="">Daftar Pallet</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table display compact nowrap table-striped" id="item_pallet_datatable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Kode</th>
+                                <th>Nama</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>

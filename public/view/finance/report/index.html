@@ -1,0 +1,90 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Laporan Keuangan</h5>
+    </div>
+    <div class="ibox-content">
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-striped table-bordered">
+            <tbody>
+              <tr>
+                <td><a ng-click="exportUnpaidCost()" ><i class="fa fa-file-text"></i> Laporan biaya belum transaksi</a></td>
+              </tr>
+              <tr>
+                <td><a ng-click="exportCostBalance()" ><i class="fa fa-file-text"></i> Laporan biaya selisih</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.account')" ng-click="exportAccount()" ><i class="fa fa-file-text"></i> Laporan Daftar Akun</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.journal')" ui-sref="finance.report.journal" ><i class="fa fa-file-text"></i> Laporan Jurnal Umum</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.buku_besar')" ui-sref="finance.report.ledger" ><i class="fa fa-file-text"></i> Laporan Buku Besar</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.debt')" ui-sref="finance.report.ledger_receivable" ><i class="fa fa-file-text"></i> Laporan Buku Besar Piutang</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.credit')" ui-sref="finance.report.ledger_payable" ><i class="fa fa-file-text"></i> Laporan Buku Besar Hutang</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.outstanding_debt')" ui-sref="finance.report.outstanding_debt" ><i class="fa fa-file-text"></i> Laporan Outstanding Piutang</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.outstanding_credit')" ui-sref="finance.report.outstanding_credit" ><i class="fa fa-file-text"></i> Laporan Outstanding Hutang</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.buku_besar_deposit_supplier')"ui-sref="finance.report.ledger_um_supplier" ><i class="fa fa-file-text"></i> Laporan Buku Besar Uang Muka Supplier</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.buku_besar_deposit_customer')" ui-sref="finance.report.ledger_um_customer" ><i class="fa fa-file-text"></i> Laporan Buku Besar Uang Muka Customer</a></td>
+              </tr>
+               <tr>
+                <td><a ng-show="roleList.includes('finance.report.neraca')" ui-sref="finance.report.neraca_saldo" ><i class="fa fa-file-text"></i> Laporan Neraca Saldo</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table display compact nowrap table-striped table-bordered">
+            <tbody>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.neraca_perbandingan')" ui-sref="finance.report.neraca_saldo_banding" ><i class="fa fa-file-text"></i> Laporan Neraca Saldo Perbandingan</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.neraca_lajur')" ui-sref="finance.report.neraca_lajur" ><i class="fa fa-file-text"></i> Laporan Neraca Lajur</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.profit')" ui-sref="finance.report.laba_rugi" ><i class="fa fa-file-text"></i> Laporan Laba - Rugi</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.profit_comparison')" ui-sref="finance.report.laba_rugi_perbandingan" ><i class="fa fa-file-text"></i> Laporan Laba - Rugi Perbandingan</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.equity')" ui-sref="finance.report.ekuitas" ><i class="fa fa-file-text"></i> Laporan Ekuitas</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.equity_comparison')" ui-sref="finance.report.ekuitas_banding" ><i class="fa fa-file-text"></i> Laporan Ekuitas Perbandingan</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.finance_position')" ui-sref="finance.report.posisi_keuangan" ><i class="fa fa-file-text"></i> Laporan Posisi Keuangan</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.finance_position_comparison')" ui-sref="finance.report.posisi_keuangan_banding" ><i class="fa fa-file-text"></i> Laporan Posisi Keuangan Perbandingan</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.cash_flow')" ui-sref="finance.report.arus_kas" ><i class="fa fa-file-text"></i> Laporan Arus Kas</a></td>
+              </tr>
+              <tr>
+                <td><a ng-show="roleList.includes('finance.report.cash_flow_comparison')" ui-sref="finance.report.arus_kas_banding" ><i class="fa fa-file-text"></i> Laporan Arus Kas Perbandingan</a></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

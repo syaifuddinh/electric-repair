@@ -1,0 +1,49 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Nota Potong Penjualan</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-borderless">
+        <tbody>
+          <tr>
+            <td style="width:30%;">Branch</td>
+            <td>: <% item.company.name %></td>
+          </tr>
+          <tr>
+            <td>Tanggal Transaksi</td>
+            <td>: <% item.date_transaction|fullDate %></td>
+          </tr>
+          <tr>
+            <td>Customer</td>
+            <td>: <% item.contact.name %></td>
+          </tr>
+          <tr>
+            <td>No. Hutang</td>
+            <td>: <% item.receivable.code %></td>
+          </tr>
+          <tr>
+            <td>Jenis Nota Potong</td>
+            <td>: <% item.jenis_name %></td>
+          </tr>
+          <tr>
+            <td>Nominal</td>
+            <td>: <% item.amount|number %></td>
+          </tr>
+          <tr>
+            <td>Keterangan</td>
+            <td>: <% item.description %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.nota_credit" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</div>

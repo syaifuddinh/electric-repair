@@ -1,0 +1,114 @@
+<div class="ibox" ng-show="isFilter">
+  <div class="ibox-content form-horizontal">
+    <div class="form-group">
+      <label class="col-md-3">Warehouse</label>
+      <div class="col-md-9">
+        <select class="form-control" data-placeholder-text-single="'Select Warehouse'" chosen allow-single-deselect="true" ng-model="filterData.warehouse_id" ng-options="s.id as s.name for s in data.warehouse">
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3">Used > 0</label>
+      <div class="col-md-9">
+        <div class="checkbox checkbox-inline checkbox-primary">
+          <input type="checkbox" ng-model="filterData.is_used_only" ng-true-value="1" ng-false-value="0" id="isUsed">
+          <label for="isUsed"></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ibox">
+  <div class="ibox-title">
+    <div class="ibox-tools">
+      <a href="<%baseUrl+'/excel/daftar_rak_export'%>" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i></a>
+      <button type="button" class="btn btn-sm btn-default" ng-click="isFilter = !isFilter">Filter</button>
+      <button ng-show="roleList.includes('inventory.setting.bin_location.create')" type="button" ng-click="add()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add New</button>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <table class="table display compact nowrap table-bordered" id="rack_datatable">
+      <thead>
+        <tr>
+          <th rowspan='2' style='vertical-align:middle'>Company</th>
+          <th rowspan='2' style='vertical-align:middle'>Warehouse</th>
+          <th rowspan='2' style='vertical-align:middle'>Code</th>
+          <th rowspan='2' style='vertical-align:middle'>Storage Type</th>
+          <th colspan='2' class='text-center'>Volume Capacity</th>
+          <th colspan='2' class='text-center'>Kg Capacity</th>
+          <th rowspan='2'></th>
+        </tr>
+        <tr>
+            <th>Total</th>
+            <th>Used</th>
+            <th>Total</th>
+            <th>Used</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</div>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id=""><% modalTitle %></h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Warehouse</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_id" ng-options="s.id as s.name for s in data.warehouse">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Bin Code</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.code">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Barcode</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.barcode">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Storage Type</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Type Storage'" chosen allow-single-deselect="false" ng-model="formData.storage_type_id" ng-options="s.id as s.name for s in data.storage_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Volume Capacity</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.capacity_volume">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Kg Capacity</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.capacity_tonase">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Max Pallet</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.max_pallet">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="submitForm()" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

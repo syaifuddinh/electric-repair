@@ -1,0 +1,481 @@
+<div class="col-md-12">
+  <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <tr>
+        <td class="text-left">
+          <h4><% $root.solog.label.quotation.detail %></h4>
+          <h6>Entry By : <% data.item.user_create.name %></h6>
+        </td>
+        <td class="text-right">
+          <a ng-show="$root.roleList.includes('marketing.quotation.edit')" ng-if="$root.in_array(data.item.status_approve,[1,2])" class="btn btn-sm btn-success" ui-sref="marketing.inquery.edit({id:data.item.id})">Edit</a>
+          <span>
+            <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.print')" target="_blank" href="<%baseUrl+'/pdf/print_quotation/'+data.item.id%>" class="btn btn-sm btn-default"><i class="fa fa-file-pdf-o"></i> Print</a>
+
+            <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.submission')" ng-if="data.item.status_approve==1" class="btn btn-sm btn-primary" ng-click="ajukan()">Ajukan Penawaran</a>
+            <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.suppervisor_approve')" ng-if="data.item.status_approve==2" class="btn btn-sm btn-warning" ng-click="approveInquery()">Setujui Penawaran</a>
+            <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.manajer_approve')" ng-if="data.item.status_approve==2&&margin<=20&&margin>=10" class="btn btn-sm btn-warning" ng-click="approveManager()">Setujui Penawaran</a>
+            <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.direction_apporve')" ng-if="data.item.status_approve==2&&margin<10" class="btn btn-sm btn-warning" ng-click="approveDirection()">Setujui Penawaran</a>
+            <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.revision')" ng-if="$root.in_array(data.item.status_approve,[2,3])" class="btn btn-sm btn-danger" ng-click="reject()"><% data.item.status_approve==3?'Cancel Persetujuan':'Revisi Penawaran' %></a>
+
+            <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.contract_create')" ng-if="data.item.status_approve==3" ng-click="createContract()" class="btn btn-sm btn-primary">Buat Kontrak</a>
+          </span>
+          <button type="button" ng-click="cancelQuotation()" ng-if="data.item.status_approve==1" class="btn btn-sm btn-danger font-bold">Quotation Failed</button>
+          <button type="button" ng-click="cancelCancelQuotation()" ng-if="data.item.status_approve==6" class="btn btn-sm btn-success font-bold">Jadikan Quotation</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="sk-container col-md-6">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+  <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <tr>
+        <td  class="font-semibold" style="width: 30%;"><% $root.solog.label.quotation.code %></td>
+        <td class="font-bold">: <% data.item.code %></td>
+      </tr>
+      <tr>
+        <td  class="font-semibold"><% $root.solog.label.quotation.name %></td>
+        <td class="font-bold">: <% data.item.name %></td>
+      </tr>
+      <tr>
+        <td  class="font-semibold"><% $root.solog.label.general.date %></td>
+        <td>: <% data.item.date_inquery|fullDate %></td>
+      </tr>
+      <tr>
+        <td  class="font-semibold"><% $root.solog.label.general.customer %></td>
+        <td class="font-bold">: <% data.item.customer.name %></td>
+      </tr>
+      <tr>
+        <td  class="font-semibold">No Inquery Customer</td>
+        <td class="font-bold">: <% data.item.no_inquery %></td>
+      </tr>
+      <tr>
+        <td  class="font-semibold">Periode Tagihan</td>
+        <td>: <span class="" ng-bind-html="$root.findJsonId(data.item.bill_type,bill_type).name"></span></td>
+      </tr>
+      <tr>
+        <td  class="font-semibold">Periode Pengiriman</td>
+        <td>: <% data.item.send_type_name %></td>
+      </tr>
+      <tr ng-if="data.item.bill_type==2">
+        <td>Pengenaan</td>
+        <td>: <% $root.findJsonId(data.item.imposition,imposition).name %></td>
+      </tr>
+      <tr ng-if="data.item.bill_type==2 && data.item.imposition==3">
+        <td>Satuan</td>
+        <td>: <% data.item.piece.name %></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+<div class="col-md-6">
+  <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <tr>
+        <td  class="font-semibold" style="width: 30%;">Status Quotation</td>
+        <td>: <% $root.findJsonId(data.item.status_approve,status_approve).name %></td>
+      </tr>
+      <tr>
+        <td  class="font-semibold" style="width: 30%;">Stage</td>
+        <td>: <% data.item.customer_stage.name %></td>
+      </tr>
+      <tr>
+        <td  class="font-semibold">Sales</td>
+        <td class="font-bold">: <% data.item.sales.name %></td>
+      </tr>
+      <!-- <tr>
+        <td>Keterangan</td>
+        <td>: <% data.item.description_inquery %></td>
+      </tr> -->
+      <tr ng-if="data.item.status_approve==4">
+        <td>Contract Code</td>
+        <td class="font-bold">: <% data.item.no_contract %></td>
+      </tr>
+      <!-- <tr ng-if="data.item.is_contract==1">
+        <td>Keterangan Kontrak</td>
+        <td>: <% data.item.description_contract %></td>
+      </tr> -->
+
+    </tbody>
+  </table>
+  <img id='quotation_path' src="" alt="">
+</div>
+<div class="col-md-12">
+  <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <tr>
+        <td><h4>Keterangan / Syarat & Ketentuan</h4></td>
+        <td class="text-right">
+          <button ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.edit')" type="button" ng-click="editDescription()" class="btn btn-sm btn-success">Edit Keterangan</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <span ng-if="data.item.is_contract==0" ng-bind-html="data.item.description_inquery"></span>
+          <span ng-if="data.item.status_approve==4" ng-bind-html="data.item.description_contract"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table display compact nowrap table-borderless">
+    <tbody>
+      <tr>
+        <td class="text-left">
+          <h4 class="pull-left">Detail Quotation</h4>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" id="service_tab" ng-click='openService()'>
+                <% $root.solog.label.service.title %>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" id="item_tab" ng-click='openItem()'>
+                <% $root.solog.label.item.title %>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" id="cost_tab" ng-click='openCost()'>
+                <% $root.solog.label.cost.title %>
+            </a>
+        </li>
+    </ul>
+
+
+    <div class="tab-content pd-t2">
+        <div id='service_detail' class='tab-item'>
+            <div class='pd-b10'>
+                <a id='addServiceBtn' ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.create_detail')" ng-if="$root.in_array(data.item.status_approve,[1,2])" class="btn btn-sm btn-success pull-right" ui-sref="marketing.inquery.show.create_detail({id:data.item.id})"><i class="fa fa-plus"></i> <% $root.solog.label.general.add %> <% $root.solog.label.general.service %></a>
+            </div>
+            <table id='quotation_detail_datatable' class="table display compact nowrap table-bordered table-striped table-hover context-menu mg-3" style="max-width:100%;">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Service</th>
+                  <th>Route</th>
+                  <th>Commodity</th>
+                  <th>Vehicle</th>
+                  <th>Container Type</th>
+                  <th>Charge In</th>
+                  <th>Price</th>
+                  <th>Cost</th>
+                  <th style="width: 10%;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-if='data.details.length == 0'>
+                    <td colspan="10" class="text-center"><% $root.solog.label.general.no_data %></td>
+                </tr>
+                <tr ng-repeat="(i, val) in data.details">
+                  <td ng-click="detail_cost(val.id)"><% i+1 %></td>
+                  <td ng-click="detail_cost(val.id)"><% val.service.name %></td>
+                  <td ng-click="detail_cost(val.id)"><% val.route.name %></td>
+                  <td ng-click="detail_cost(val.id)"><% val.commodity.name %></td>
+                  <td ng-click="detail_cost(val.id)"><% val.vehicle_type.name?val.vehicle_type.name:'-' %></td>
+                  <td ng-click="detail_cost(val.id)"><% val.container_type_id?val.container_type.code:'-' %></td>
+                  <td ng-click="detail_cost(val.id)"><% val.charge_in %></td>
+                  <td ng-click="detail_cost(val.id)" class="text-right"><% val.price|number %></td>
+                  <td ng-click="detail_cost(val.id)" class="text-right"><% val.cost|number %></td>
+                  <td class="text-center">
+                    <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.detail_cost')" ng-if="$root.in_array(data.item.status_approve,[1,2])" ng-click="detail_cost(val.id)"><i class="fa fa-folder-o"></i>&nbsp;</a>
+                    <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.edit_detail')" ng-if="$root.in_array(data.item.status_approve,[1,2])" ui-sref="marketing.inquery.show.edit_detail({id:data.item.id,iddetail:val.id})"><i class="fa fa-edit"></i>&nbsp;</a>
+                    <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.delete_detail')" ng-if="$root.in_array(data.item.status_approve,[1,2])" ng-click="deletes(val.id)"><i class="fa fa-trash"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+
+        <div id="item_detail" class='tab-item'>
+            <div class="pd-b10">
+                
+                <div class='pull-right'>
+                    <span id='export_button'></span>
+
+                    <!-- <button  ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.create_detail')" ng-if="$root.in_array(data.item.status_approve,[1,2]) && !itemDetail.is_edit" ng-click='editItemPrice()' class="btn btn-sm btn-success pull-right mg-l2"> <% $root.solog.label.general.edit %> <% $root.solog.label.general.price %></button>
+
+                    <button ng-if='itemDetail.is_edit' ng-click='abortItemPrice()' class="btn btn-sm btn-warning pull-right mg-l2"> <% $root.solog.label.general.back %> </button> -->
+
+                    <button type='button' ng-if="$root.in_array(data.item.status_approve,[1,2])" ng-click='showItems()' class='btn btn-sm btn-success pull-right'><% $root.solog.label.general.add %> <% $root.solog.label.general.item %></button>
+                </div>
+            </div>
+            <div>
+                <table class="table display compact table-bordered" id="quotation_items_datatable">
+                  <thead>
+                    <tr>
+                      <th>Kode Item</th>
+                      <th>Nama Item</th>
+                      <th>Price List</th>
+                      <th>Item Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-if='formData.detail_items.length == 0'>
+                        <td colspan="7" class='text-center'><% $root.solog.label.general.no_data %></td>
+                    </tr>
+                    <tr ng-repeat='(i, v) in formData.detail_items'>
+                        <td><% v.item_code %></td>
+                        <td><% v.item_name %></td>
+                        <td><% v.price_list %></td>
+                        <td ng-if="$root.in_array(data.item.status_approve,[1,2])">
+                            <input type="text" class='form-control' placeholder only-num ng-model='formData.detail_items[i].price'>
+                        </td>
+                        <td ng-if="!$root.in_array(data.item.status_approve,[1,2])">
+                          <% v.price %>
+                        </td>
+                        <td class='text-center' ng-if="$root.in_array(data.item.status_approve,[1,2])">
+                            <a ng-click='deleteItem(v.id)'>
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- <item-table 
+                    hide-action='1' 
+                    hide-purchase-price='1'  
+                    show-quotation-price='1' 
+                    is-merchandise="1"
+                    harga-jual-greater-than="1"
+                    hide-description='1'
+                    quotation-id="id"
+                /> -->
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button class="btn btn-primary btn-sm" ng-if="$root.in_array(data.item.status_approve,[1,2])" ng-disabled="disBtn" ng-click="submitDetailItems()">Save Items</button>
+              </div>
+            </div>
+        </div>
+        <div id="cost_detail" class='tab-item'>
+          <div class="pd-b10">
+            <div class='pull-right'>
+              <button type='button' ng-if="$root.in_array(data.item.status_approve,[1,2])" ng-click='showCosts()' class='btn btn-sm btn-success pull-right'><% $root.solog.label.general.add %> <% $root.solog.label.general.cost %></button>
+            </div>
+          </div>
+          <div>
+            <table class="table display compact nowrap table-bordered" id="quotation_costs_datatable">
+              <thead>
+                <tr>
+                  <th>Kode</th>
+                  <th>Nama</th>
+                  <th>Vendor</th>
+                  <th>QTY</th>
+                  <th>Biaya</th>
+                  <th>Jumlah</th>
+                  <th></th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modal_detail" tabindex="99" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width: 70%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Detail Biaya</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table-borderless">
+          <tbody>
+            <tr>
+              <td class="font-bold" style="width: 35%;">Rute</td>
+              <td>: <% detailCost.route %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Komoditas</td>
+              <td>: <% detailCost.commodity %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Penawaran</td>
+              <td>: <% detailCost.penawaran|number %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Rencana Biaya</td>
+              <td>: <% total_cost|number %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Kontrak</td>
+              <td>: <% detailCost.kontrak|number %></td>
+            </tr>
+            <tr>
+              <td class="font-bold">Keterangan</td>
+              <td>: <% detailCost.description_inquery %></td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <a ng-show="$root.roleList.includes('marketing.quotation.detail.detail_info.detail_cost.create')" ng-click="addCost()" ng-if="button_form_detail" class="btn btn-success btn-sm"><i class="fa fa-money"></i> Add Detail Biaya</a> <br><br>
+        <!-- start -->
+        <form class="form-horizontal" ng-if="div_form_detail" ng-submit="submitDetailCost()">
+          <div class="form-group">
+            <label class="col-md-3 ">Jenis Biaya</label>
+            <div class="col-md-9">
+              <select class="form-control" ng-change="changeCT(formCost.cost_type_id)" data-placeholder-text-single="'Choose Jenis Biaya'" chosen allow-single-deselect="false" ng-model="formCost.cost_type_id" ng-options="s.id as s.name group by s.parent.name for s in data.cost_type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="cost_type_data.is_bbm">
+            <label class="col-md-3 ">BBM</label>
+            <div class="col-md-3">
+              <div class="input-group">
+                <input type="text" class="form-control" ng-change="formCost.total_cost=formCost.cost*formCost.total" jnumber2 only-num ng-model="formCost.total" >
+                <span class="input-group-addon">Lt</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" ng-change="formCost.total_cost=formCost.cost*formCost.total" jnumber2 only-num ng-model="formCost.cost" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Total Biaya</label>
+            <div class="col-md-4">
+              <input type="text" ng-disabled="cost_type_data.is_bbm||!formCost.cost_type_id" class="form-control" jnumber2 only-num ng-model="formCost.total_cost" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Jenis Biaya</label>
+            <div class="col-md-4">
+              <input type="radio" ng-model="formCost.is_internal" ng-value="1"> Internal
+              <input type="radio" ng-model="formCost.is_internal" ng-value="0"> Eksternal
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Vendor</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Default vendor'" chosen allow-single-deselect="false" ng-model="formCost.vendor_id" ng-options="s.id as s.name for s in data.vendor">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3">
+              <a ng-click="cancel_cost()" class="btn btn-sm btn-warning">Cancel</a>
+              <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+            </div>
+          </div>
+
+        </form>
+        <!-- end -->
+        <table class="table display compact nowrap table-bordered" id="detail_datatable" style="width:100%;">
+          <thead>
+            <tr>
+              <th>Kode</th>
+              <th>Nama</th>
+              <th>Vendor</th>
+              <th>QTY</th>
+              <th>Biaya</th>
+              <th>Jumlah</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal description -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:55%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Keterangan / Syarat & Ketentuan</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitDescription()">
+        <div class="modal-body">
+          <div config="summConfig" summernote width="300" ng-model="descriptionData.description_inquery">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /modal description -->
+<!-- items modal -->
+<items-modal 
+is-multiple-select='1' 
+is-merchandise="1"
+/>
+<!-- /items modal -->
+<!-- costs modal -->
+<div class="modal fade" id="costsModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:55%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Tambah Biaya</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitQuoCost()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3 ">Jenis Biaya</label>
+            <div class="col-md-9">
+              <select class="form-control" ng-change="changeQuoCT(formQuoCost.cost_type_id)" data-placeholder-text-single="'Choose Jenis Biaya'" chosen allow-single-deselect="false" ng-model="formQuoCost.cost_type_id" ng-options="s.id as s.name group by s.parent.name for s in data.cost_type">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="cost_type_data.is_bbm">
+            <label class="col-md-3 ">BBM</label>
+            <div class="col-md-3">
+              <div class="input-group">
+                <input type="text" class="form-control" ng-change="formQuoCost.total_cost=formQuoCost.cost*formQuoCost.total" jnumber2 only-num ng-model="formQuoCost.total" >
+                <span class="input-group-addon">Lt</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" ng-change="formQuoCost.total_cost=formQuoCost.cost*formQuoCost.total" jnumber2 only-num ng-model="formQuoCost.cost" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Total Biaya</label>
+            <div class="col-md-4">
+              <input type="text" ng-disabled="cost_type_data.is_bbm||!formQuoCost.cost_type_id" class="form-control" jnumber2 only-num ng-model="formQuoCost.total_cost" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Jenis Biaya</label>
+            <div class="col-md-4">
+              <input type="radio" ng-model="formQuoCost.is_internal" ng-value="1"> Internal
+              <input type="radio" ng-model="formQuoCost.is_internal" ng-value="0"> Eksternal
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 ">Vendor</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Default vendor'" chosen allow-single-deselect="false" ng-model="formQuoCost.vendor_id" ng-options="s.id as s.name for s in data.vendor">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="col-md-12 pull-right">
+            <button type="submit" ng-disabled="!formQuoCost.cost_type_id" class="btn btn-sm btn-primary">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /costs modal -->

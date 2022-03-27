@@ -1,0 +1,85 @@
+<form class="form-horizontal">
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><% solog.label.general.detail %></h5>
+                <div class="ibox-tools">
+                    <div class="btn-group">
+                        <a ng-click='approve()' ng-disabled='disBtn' class="btn btn-sm btn-primary"><% solog.label.general.approve %></a>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                </div>
+                <table class="table display compact nowrap table-borderless">
+                    <tbody>
+                        <tr>
+                            <td style="width:30%;"><% $root.solog.label.general.code %></td>
+                            <td>: <% formData.code %></td>
+                        </tr>
+                        <tr>
+                            <td style="width:30%;"><% $root.solog.label.general.status %></td>
+                            <td>: <% formData.status_name %></td>
+                        </tr>
+                        <tr>
+                            <td style="width:30%;"><% $root.solog.label.general.branch %></td>
+                            <td>: <% formData.company_name %></td>
+                        </tr>
+                        <tr>
+                            <td style="width:30%;"><% $root.solog.label.general.date %></td>
+                            <td>: <% formData.date %></td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="width:30%;"><% $root.solog.label.general.operator %></td>
+                            <td>: <% formData.operator_name %></td>
+                        </tr>
+                        <tr>
+                            <td style="width:30%;"><% $root.solog.label.general.description %></td>
+                            <td>: <% formData.description %></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <div>
+                        <table class="table display compact nowrap table-bordered" id="appendTable">
+                            <thead>
+                                <tr>
+                                    <th><% solog.label.gate_in_container.code %></th>
+                                    <th><% solog.label.container.code %></th>
+                                    <th><% solog.label.general.container_yard_destination %></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if='formData.detail.length == 0'>
+                                    <td class="text-center" colspan='2'><% solog.label.general.no_data %></td>
+                                </tr>
+                                <tr ng-repeat='(i, v) in formData.detail'>
+                                    <td>
+                                        <% v.gate_in_container_code %>
+                                    </td>
+                                    <td>
+                                        <% v.no_container %>
+                                    </td>
+                                    <td>
+                                        <% v.container_yard_destination_code %>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+            <div class="ibox-footer">
+                <div class="btn-group">
+                    <a ng-click='backward()' class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+                    <a ui-sref="depo.movement_container.edit({id:formData.id})" class="btn btn-sm btn-primary"><% solog.label.general.edit %></a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</form>

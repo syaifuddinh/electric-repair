@@ -1,0 +1,48 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><i class="fa fa-ship"></i> Set Kapal</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Kode Packing List</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.code" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">No. Kontainer</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.container_no" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">No. Seal</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.seal_no" readonly>
+          </div>
+        </div>
+        <hr>
+        <div class="form-group">
+          <label class="col-md-3">Kapal</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeVoyage(formData.voyage_id)" data-placeholder-text-single="'Choose Kapal'" chosen allow-single-deselect="false" ng-model="formData.voyage_id" ng-options="s.id as s.vessel.name+' - '+(s.etd|fullDateTime) for s in data.voyage">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <!-- <pre><% formData %></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <button type="button" ng-click="back()" class="btn btn-sm btn-warning">Cancel</button>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

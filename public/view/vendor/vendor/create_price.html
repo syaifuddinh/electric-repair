@@ -1,0 +1,105 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Add Tarif Umum</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+          <div class="sk-rect1"></div>
+          <div class="sk-rect2"></div>
+          <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label">Cost</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Jenis Biaya'" chosen allow-single-deselect="false" ng-model="formData.cost_type_id" ng-options="s.id as s.name for s in cost_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label">Kelompok biaya</label>
+          <div class="col-md-9">
+              <label class="radio-inline">
+                  <input type="radio" ng-model='formData.cost_category' ng-value='1'> Job Order
+              </label>
+              <label class="radio-inline">
+                  <input type="radio" ng-model='formData.cost_category' ng-value='2'> Trucking
+              </label>
+              <label class="radio-inline">
+                  <input type="radio" ng-model='formData.cost_category' ng-value='3'> Container
+              </label>
+            </select>
+          </div>
+        </div>
+        
+        <hr>
+        <div class="form-group" ng-if='formData.cost_category != 1'>
+          <label class="col-md-3 control-label">Route</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Route'" chosen allow-single-deselect="false" ng-model="formData.route_id" ng-options="s.id as s.name for s in data.route">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-if='formData.cost_category == 2'>
+          <label class="col-md-3 control-label">Tipe Vehicle</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Tipe Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_type_id" ng-options="s.id as s.name for s in data.vehicle_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-if='formData.cost_category == 3'>
+          <label class="col-md-3 control-label">Tipe Kontainer</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Tipe Kontainer'" chosen allow-single-deselect="false" ng-model="formData.container_type_id" ng-options="s.id as s.size+' '+s.code+' - '+s.name for s in data.container_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label">Biaya satuan</label>
+          <div class="col-md-9">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="formData.price_full">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label">Tanggal mulai berlaku</label>
+          <div class="col-md-9">
+            <input type="text"-num class="form-control" ng-model="formData.date" datepick>
+          </div>
+        </div>
+        
+
+        <!-- <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.description">
+          </div>
+        </div> -->
+        <!-- <code><%type_1%></code> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="vendor.vendor.show.price({'id':id})" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

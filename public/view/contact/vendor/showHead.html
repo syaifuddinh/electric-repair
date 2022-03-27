@@ -1,0 +1,22 @@
+
+<div class="col-md-12">
+  <div class="tabs-container">
+    <ul class="nav nav-tabs">
+      <li ui-sref-active="active"><a ui-sref="contact.vendor.show.detail"><i class="fa fa-dashboard"></i> Detail</a></li>
+      <li ng-show="roleList.includes('contact.vendor.detail.document')" ui-sref-active="active"><a ui-sref="contact.vendor.show.document"><i class="fa fa-files-o"></i> Dokumen</a></li>
+      <li ui-sref-active="active"><a ui-sref="contact.vendor.show.price"><i class="fa fa-money"></i> <% $root.solog.label.vendor_prices.title %></a></li>
+      <li ui-sref-active="active"><a ui-sref="contact.vendor.show.app"><i class="fa fa-key"></i> Akses Aplikasi</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <div class="panel-body">
+          <!-- main body -->
+          <div ui-view="">
+
+          </div>
+          <!-- end main body -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

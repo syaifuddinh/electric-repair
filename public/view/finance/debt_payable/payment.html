@@ -1,0 +1,411 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="col-md-12">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><i class="fa fa-fax"></i> Detail Pembayaran</h5>
+      </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td style="width:25%">Branch</td>
+                  <td>: <span><% item.company.name %></span></td>
+                </tr>
+                <tr>
+                  <td>Kode</td>
+                  <td>: <span><% item.code %></span></td>
+                </tr>
+                <tr>
+                  <td>Tanggal Permintaan</td>
+                  <td>: <span ng-if="item.date_request"><% item.date_request|fullDate %></span></td>
+                </tr>
+                <tr>
+                  <td>Tanggal Pembayaran</td>
+                  <td>: <input type="text" class="text-center" data-date-end-date="0d" data-date-end-date="0d" datepick ng-model="formData.date_receive"></td>
+                </tr>
+                <tr>
+                  <td>Keterangan</td>
+                  <td>: <span><% item.description %></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><i class="fa fa-money"></i> Daftar Tagihan</h5>
+        <div class="ibox-tools">
+          <button type="button" ng-click="addPayable()" ng-show="roleList.includes('finance.credit.draft.detail.input_payment.add_credit')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Hutang</button>
+          <button type="button" ng-click="addUM()" ng-show="roleList.includes('finance.credit.draft.detail.input_payment.add_deposit')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Uang Muka</button>
+          <!--button type="button" ng-click="addClaim()" ng-show="roleList.includes('finance.credit.draft.detail.input_payment.add_claim')"  class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Klaim</button>
+          <button type="button" ng-click="addCNDN()" ng-show="roleList.includes('finance.credit.draft.detail.input_payment.add_noted')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add CNDN</button-->
+        </div>
+      </div>
+      <div class="ibox-content">
+        <table class="table display compact nowrap table-striped" id="appendDetail">
+          <thead>
+            <tr>
+              <th>No Transaksi</th>
+              <th>Supplier</th>
+              <th class="text-right">Jumlah Tagihan</th>
+              <th class="text-right">Ditagihkan</th>
+              <th class="text-right">Sisa Tagihan</th>
+              <th>Keterangan</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(i,val) in detail">
+              <td><% val.code %></td>
+              <td><% val.payable.contact.name %></td>
+              <td class="text-right"><% val.total_debt|number %></td>
+              <td class="text-right"><input ng-keyup="hitungLeftOver(i);" ng-change="keyupZero(i)" type="text" jnumber2 only-num ng-model="formData.detail[i].debt"></td>
+              <td class="text-right"><% formData.detail[i].leftover|number %></td>
+              <td class="text-left"><input style="width:100%;" type="text" ng-model="formData.detail[i].description"></td>
+              <!-- <td class="text-center"><a ng-click="deleteAppend(i)"><i class="fa fa-trash"></i></a></td> -->
+              <td></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-right font-bold">TOTAL DITAGIHKAN : </td>
+              <td class="text-right"><% formData.total_tagih|number %></td>
+              <td colspan="3"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!-- <div class="ibox-footer">
+        <a ui-sref="finance.debt_payable.show({id:item.id})" class="btn btn-sm btn-warning">Kembali</a>
+      </div> -->
+    </div>
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><i class="fa fa-money"></i> Cara Pembayaran</h5>
+        <div class="ibox-tools">
+          <button type="button" ng-show="roleList.includes('finance.debt.draft.detail.input_payment.add_payment_method')" ng-click="addBuktiPotong()" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Bukti Potong</button>
+
+          <button type="button" ng-click="addPayment()" ng-show="roleList.includes('finance.credit.draft.detail.input_payment.add_payment_method')"  class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Payment</button>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <table class="table display compact nowrap table-striped" id="paymentTable">
+          <thead>
+            <tr>
+              <th>Cara Bayar</th>
+              <th>Referensi</th>
+              <th>Keterangan</th>
+              <th class="text-right">Jumlah</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <table class="table table-striped" id="BPTable">
+          <thead>
+            <tr>
+              <th>Bukti Potong</th>
+              <th>Nominal</th>
+              <th>COA Bukti Potong</th>
+              <th></th>
+            </tr>
+            </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr class="potong">
+                <td colspan="3" class="text-right font-bold">Bukti Potong : </td>
+                <td class="text-right"><% formData.total_paymentbp|number %></td>
+                <td></td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-right font-bold">Total Bayar : </td>
+              <td class="text-right"><% formData.total_payment|number %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-right font-bold"><%plus_minus_payment%> Bayar : </td>
+              <td class="text-right"><% formData.leftover_payment|number %></td>
+              <td></td>
+            </tr>
+            <tr class="text-right">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td ng-if="formData.leftover_payment!=0">
+                  <div class="form-group" ng-if="paymentData.type_bayar==1">
+                    <div class="col-md-9">
+                      <select class="form-control" ng-change="total_tagih()" data-placeholder-text-single="'Choose Akun Kurang/Lebih'" chosen allow-single-deselect="false" ng-model="formData.cash_account_id_krg" ng-options="s.id as s.name for s in accountsall">
+                        <option value=""></option>
+                      </select>
+                    </div>
+                  </div>
+                </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="finance.debt_payable.show({id:item.id})" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal fade" id="modalPayment" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:40%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Pembayaran</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">Tgl Pengajuan</label>
+          <div class="col-md-9">
+            <div class="radio radio-primary">
+              <input type="radio" ng-click="changeTypeBayar()" ng-model="paymentData.type_bayar" ng-value="1">
+              <label for="">Kas/Bank</label>
+            </div>
+            <div class="radio radio-primary">
+              <input type="radio" ng-click="changeTypeBayar()" ng-model="paymentData.type_bayar" ng-value="2">
+              <label for="">Cek Giro</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="paymentData.type_bayar==1">
+          <label class="col-md-3">Akun Kas / Bank</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Akun Kas'" chosen allow-single-deselect="false" ng-model="paymentData.cash_account_id" ng-options="s.id as s.name for s in accounts">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-if="paymentData.type_bayar==2">
+          <label class="col-md-3">No Cek/Giro</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeGiro(paymentData.cek_giro_id)" data-placeholder-text-single="'Choose Cek/Giro'" chosen allow-single-deselect="false" ng-model="paymentData.cek_giro_id" ng-options="s.id as s.code+' - '+(s.amount|number) for s in data.cek_giro">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jumlah</label>
+          <div class="col-md-9">
+            <input type="text" ng-disabled="paymentData.type_bayar==2" class="form-control" jnumber2 only-num ng-model="paymentData.amount">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Keterangan</label>
+          <div class="col-md-9">
+            <textarea ng-model="paymentData.description" rows="4" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-disabled="!paymentData.amount" ng-click="appendPayment()" class="btn btn-primary">Add ke Tabel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalPaymentBP" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="40%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Bukti Potong</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">No. Bukti Potong</label>
+          <div class="col-md-9">
+            <input type="text" ng-disabled="paymentData.type_bayar==2" class="form-control" ng-model="BPData.buktiptg">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Nominal</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" jnumber2 only-num ng-model="BPData.amountptg">
+          </div>
+        </div>
+
+        <!--div class="form-group" ng-if="paymentData.type_bayar==1">
+          <label class="col-md-3">Akun Kas / Bank</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Akun Kas'" chosen allow-single-deselect="false" ng-model="BPData.cash_account_id" ng-options="s.id as s.name for s in accounts">
+              <option value=""></option>
+            </select>
+          </div>
+        </div-->
+        <div class="form-group">
+          <label class="col-md-3">Akun Bukti Potong</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Akun Bukti Potong'" chosen allow-single-deselect="false" ng-model="BPData.cash_account_id" ng-options="s.id as s.name for s in accountsall">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-disabled="!BPData.amountptg" ng-click="appendBpotong()" class="btn btn-primary">Add ke Tabel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalPayable" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Hutang</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">Daftar Hutang</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change='payableChange(payableData.payable_id)' data-placeholder-text-single="'Choose Hutang'" chosen allow-single-deselect="false" ng-model="payableData.payable_id" ng-options="s.id as s.code+' '+s.name+' - '+(s.total|number) for s in data.payable">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jumlah Hutang</label>
+          <div class="col-md-9">
+            <input type="text" readonly class="form-control" jnumber2 only-num ng-model="payableData.payable_amount">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tagihkan Semua</label>
+          <div class="col-md-9">
+            <div class="checkbox checkbox-primary">
+              <input type="checkbox" ng-change="tagihkanAll()" ng-model="payableData.is_all" ng-true-value="1" ng-false-value="0">
+              <label for=""></label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jumlah Ditagihkan</label>
+          <div class="col-md-9">
+            <input type="text" ng-keyup="payableData.leftover=payableData.payable_amount-payableData.debt" ng-disabled="payableData.is_all" class="form-control" jnumber2 only-num ng-model="payableData.debt">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Sisa</label>
+          <div class="col-md-9">
+            <input type="text" readonly class="form-control" jnumber2 only-num ng-model="payableData.leftover">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Keterangan</label>
+          <div class="col-md-9">
+            <textarea ng-model="payableData.description" class="form-control" rows="4"></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-disabled="!payableData.debt && !payableData.payable_id" class="btn btn-sm btn-primary" ng-click="appendPayable()"><i class="fa fa-plus"></i> Add ke Tabel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalUm" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:50%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Uang Muka</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">Choose Uang Muka</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change='umChange(umData.um_customer_id)' data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="umData.um_customer_id" ng-options="s.id as s.code+' - '+(s.total|number) for s in data.uang_muka">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jumlah</label>
+          <div class="col-md-9">
+            <input type="text" ng-disabled="!umData.um_customer_id" class="form-control" jnumber2 only-num ng-model="umData.total">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Keterangan</label>
+          <div class="col-md-9">
+            <textarea ng-model="umData.description" rows="4" class="form-control"></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="appendUm()" ng-disabled="!umData.um_customer_id || !umData.total" class="btn btn-primary"><i class="fa fa-plus"></i> Add ke Tabel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalCNDN" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add CNDN</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3">Jenis</label>
+          <div class="col-md-9">
+            <div class="radio radio-primary radio-inline">
+              <input type="radio" id="isDb" ng-model="cndnData.jenis" ng-value="1">
+              <label for="isDb">Debet</label>
+            </div>
+            <div class="radio radio-primary radio-inline">
+              <input type="radio" id="isCr" ng-model="cndnData.jenis" ng-value="2">
+              <label for="isCr">Kredit</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Choose Akun</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Akun'" chosen allow-single-deselect="false" ng-model="cndnData.account_id" ng-options="s.id as s.code+' '+s.name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Jumlah</label>
+          <div class="col-md-9">
+            <input type="text" ng-disabled="!cndnData.account_id" class="form-control" jnumber2 only-num ng-model="cndnData.total">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Keterangan</label>
+          <div class="col-md-9">
+            <textarea ng-model="cndnData.description" rows="4" class="form-control"></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="appendCNDN()" class="btn btn-primary"><i class="fa fa-plus"></i> Add ke Tabel</button>
+      </div>
+    </div>
+  </div>
+</div>

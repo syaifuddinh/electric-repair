@@ -1,0 +1,8 @@
+<solog-modal hide-save='1' id='itemsModal' title="'Items'" width-percent='60'>
+    <div class='pd-b10' ng-if='is_multiple_select'>
+        <button class='btn btn-sm btn-success pull-right' ng-click='chooseItems()'><% $root.solog.label.general.choose %></button>
+    </div>
+    <div>
+        <solog-datatable options='options' id='item_datatable'></solog-datatable>
+    </div>
+</solog-modal>

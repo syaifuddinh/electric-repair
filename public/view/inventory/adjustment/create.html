@@ -1,0 +1,105 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Add Penyesuaian Stok</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-md-3 control-label">Branch</label>
+              <div class="col-md-9">
+                <select class="form-control" ng-change="companyChange(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3 control-label">Gudang</label>
+              <div class="col-md-9">
+                <select class="form-control" ng-change="warehouseChange(formData.warehouse_id)" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_id" ng-options="s.id as s.name for s in warehouse">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-md-3 control-label">Tgl Penyesuaian</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.date_transaction" datepick class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Keterangan</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="formData.description" class="form-control">
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Item</label>
+              <div class="col-md-9">
+                <select class="form-control" ng-change="detailData.warehouse_stock=detailData.item_id.qty" id="item" data-placeholder-text-single="'Choose Item'" chosen allow-single-deselect="false" ng-model="detailData.item_id" ng-options="s.name group by s.group for s in items">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Stock Warehouse</label>
+              <div class="col-md-4">
+                <input type="text" ng-model="detailData.warehouse_stock" readonly jnumber2 only-num class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Stok Sekarang</label>
+              <div class="col-md-4">
+                <input type="text" ng-model="detailData.qty" jnumber2 only-num class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Keterangan</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="detailData.description" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label"></label>
+              <div class="col-md-3">
+                <button type="button" ng-click="appendTable()" ng-disabled="!detailData.item_id || detailData.qty<1 || detailData.warehouse_stock<=0" class="btn btn-sm btn-primary">Add ke Tabel</button>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="col-md-12">
+            <table class="table display compact nowrap table-bordered" id="appendTable">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Stock Sekarang</th>
+                  <th style="width:5%;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr ng-if='formData.detail.length == 0'>
+                      <td colspan='3' class="text-center">Tidak ada data</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- <%formData%> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="inventory.adjustment" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<table class="table display compact nowrap table-borderless">
+  <tbody>
+    <tr>
+      <td>
+        <h4>Detail Perawatan</h4>
+      </td>
+      <td class="text-right" style="width:20%;">
+        <a ng-show="roleList.includes('vehicle.vehicle.detail.maintenance.submission.detail.plan')" ng-if="item.status==2" class="btn btn-default" ui-sref="vehicle.vehicle.show.maintenance.show.edit_rencana"><i class="fa fa-handshake-o"></i> Rencana Perawatan</a>
+        <button type="button" ng-show="roleList.includes('vehicle.vehicle.detail.maintenance.plan.detail.process')" ng-if="item.status==3" ng-disabled="disBtn" class="btn btn-default" ng-click="prosesInternalPerawatan()"><i class="fa fa-wrench"></i> Proses Perawatan</button>
+        <a ng-show="roleList.includes('vehicle.vehicle.detail.maintenance.process.detail.realisation')" ng-if="item.status==4" class="btn btn-default" ui-sref="vehicle.vehicle.show.maintenance.show.edit_realisasi"><i class="fa fa-check-square"></i> Proses Realisasi</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table display compact nowrap table-borderless">
+      <tr>
+        <td>Internal/Eksternal</td>
+        <td>: <% item.internal_eksternal %></td>
+      </tr>
+      <tr>
+        <td>Nama Perawatan</td>
+        <td>: <% item.name %></td>
+      </tr>
+      <tr>
+        <td>Tgl Rencana</td>
+        <td>: <% item.date_rencana %></td>
+      </tr>
+      <tr>
+        <td>KM Rencana</td>
+        <td>: <% item.km_rencana|number %></td>
+      </tr>
+      <tr>
+        <td>Status Perawatan</td>
+        <td>: <span ng-bind-html="item.status_name_html"></span></td>
+      </tr>
+      <tr>
+        <td>Tgl Pengajuan</td>
+        <td>: <% item.date_pengajuan %></td>
+      </tr>
+      <tr>
+        <td>Rencana Biaya Jasa</td>
+        <td>: <% item.cost_rencana|number %></td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <table class="table display compact nowrap table-borderless">
+      <tbody>
+        <tr>
+          <td>Vendor</td>
+          <td>: <% item.vendor.name %></td>
+        </tr>
+        <tr>
+          <td>Tgl Realisasi</td>
+          <td>: <% item.date_realisasi %></td>
+        </tr>
+        <tr>
+          <td>KM Realisasi</td>
+          <td>: <% item.km_realisasi|number %></td>
+        </tr>
+        <tr>
+          <td>Biaya Realisasi</td>
+          <td>: <% item.cost_realisasi|number %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-12">
+    <hr>
+    <h5>Detail Barang</h5>
+    <table class="table display compact nowrap table-striped table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nama item</th>
+          <th>Part Number</th>
+          <th>Kategori</th>
+          <th>Tipe Kegiatan</th>
+          <th>Qty Rencana</th>
+          <th>Harga Rencana</th>
+          <th>Total Rencana</th>
+          <th>Qty Realisasi</th>
+          <th>Harga Realisasi</th>
+          <th>Total Realisasi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(i,val) in detail">
+          <td><% i+1 %></td>
+          <td><% val.item.name %></td>
+          <td><% val.item.part_number %></td>
+          <td><% val.item.category.name %></td>
+          <td><% val.tipe_kegiatan_name %></td>
+          <td class='text-right'><% val.qty_rencana|number %></td>
+          <td class='text-right'><% val.cost_rencana|number %></td>
+          <td class='text-right'><% val.total_rencana|number %></td>
+          <td class='text-right'><% val.qty_realisasi|number %></td>
+          <td class='text-right'><% val.cost_realisasi|number %></td>
+          <td class='text-right'><% val.total_realisasi|number %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- modal pilih Warehouse -->
+<div class="modal fade" id="modalGudang" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:30%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Choose Warehouse</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="">Gudang</label>
+          <select class="form-control" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="false" ng-model="gudangData.warehouse_id" ng-options="s.id as s.name for s in warehouse">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-click="prosesInternalPerawatan()" class="btn btn-primary">Saves</button>
+      </div>
+    </div>
+  </div>
+</div>

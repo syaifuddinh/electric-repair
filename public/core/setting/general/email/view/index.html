@@ -1,0 +1,139 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title">Email Server</h3>
+    </div>
+
+    <div class="panel-body">
+        <form class="form-horizontal" ng-submit="submitForm()">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Nama</label>
+                <div class="col-md-9">
+                    <input type="text" ng-model="formData.name" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Mail Driver</label>
+                <div class="col-md-4">
+                    <input type="text" ng-model="formData.mail_driver" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Host</label>
+                <div class="col-md-3">
+                    <input type="text" ng-model="formData.host" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Port</label>
+                <div class="col-md-3">
+                    <input type="text" ng-model="formData.port" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Username / Email</label>
+                <div class="col-md-5">
+                    <input type="text" ng-model="formData.username" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Password</label>
+                <div class="col-md-5">
+                    <input type="password" ng-model="formData.password" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Encryption</label>
+                <div class="col-md-5">
+                    <label class='radio-inline inline-flex justify-content-center align-items-center'>
+                        <input type="radio" ng-model="formData.encryption" ng-value='"tls"' > 
+                        <span class="mg-l8">
+                            TLS
+                        </span>
+                    </label>
+                    <label class='radio-inline inline-flex justify-content-center align-items-center'>
+                        <input type="radio" ng-model="formData.encryption" ng-value='"ssl"' class="mg-r2"> 
+                        <span class="mg-l8">
+                            SSL
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <hr>
+                <div class="form-group">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+
+                        <h2><% $root.solog.label.warehouse_receipt.title %></h2>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><% $root.solog.label.general.subject %></label>
+                    <div class="col-md-5">
+                        <input type="text" ng-model="formData.receipt_subject" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><% $root.solog.label.general.body %></label>
+                    <div class="col-md-5">
+                        <textarea rows="10" ng-model="formData.receipt_body" class="form-control">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <hr>
+                <div class="form-group">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+
+                        <h2><% $root.solog.label.general.shipment %></h2>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><% $root.solog.label.general.subject %></label>
+                    <div class="col-md-5">
+                        <input type="text" ng-model="formData.shipment_subject" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3 col-sm-12">
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <button type="button" ng-repeat="(i, v) in shipment_chip" ng-click="fillShipmentBody(v)" class="btn btn-sm btn-success mg-r2">{{ $<% v %> }}</button>        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><% $root.solog.label.general.body %></label>
+                    <div class="col-md-5">
+                        <textarea  ng-model="formData.shipment_body" class="form-control" rows="10">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label"></label>
+                <div class="col-md-5">
+                    <button type="submit" ng-disabled="disBtn" class="btn btn-primary btn-sm"><% $root.solog.label.general.save %></button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

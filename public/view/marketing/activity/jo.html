@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="ibox" ng-show="isFilter">
+      <div class="ibox-title">
+        <h5><% solog.label.general.filter %></h5>
+      </div>
+      <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+        <div class="ibox-content">
+          <div class="form-group">
+              <label class="col-md-3 control-label"><% solog.label.general.period %></label>
+              <div class="col-md-9">
+                <div class="input-daterange input-group" style="width:100%;">
+                  <input ng-click="refreshTable()" type="text" class="input-sm form-control" ng-model="filterData.start_date" datepick/>
+                  <span class="input-group-addon">to</span>
+                  <input ng-click="refreshTable()" type="text" class="input-sm form-control" ng-model="filterData.end_date" datepick />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label"><% solog.label.general.customer %></label>
+              <div class="col-md-9">
+                <customer-select-input ng-click="refreshTable()" ng-model="filterData.customer_id" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label"><% solog.label.general.service %></label>
+              <div class="col-md-9">
+                <select ng-click="refreshTable()" class="form-control" data-placeholder-text-single="'Choose Service'" chosen allow-single-deselect="true" ng-model="filterData.service_id" ng-options="s.id as s.name group by s.service_type for s in data.service">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+        </div>
+        <div class="ibox-footer">
+          <button type="button" ng-click="reset()" class="btn btn-sm btn-warning"><i class="fa fa-times"></i> <% solog.label.general.reset %></button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <div class="col-md-12">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5>Summary JO</h5>
+        <div class="ibox-tools">
+             <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+            <span id="export_button"></span>
+        </div>
+      </div>
+      <div class="ibox-content form-horizontal">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-bordered table-striped table-hover context-menu" id="datatable">
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<form class="form-horizontal" ng-submit="submitForm()">
+  <div class="alert alert-warning" ng-if="!item.password"><i class="fa fa-key"></i> Vendor ini belum memiliki akses aplikasi</div>
+  <div class="form-group">
+    <label class="col-md-3">Nama</label>
+    <div class="col-md-5">
+      <input type="email" ng-model="formData.name" readonly autocomplete="off" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3">Email</label>
+    <div class="col-md-5">
+      <input type="email" ng-model="formData.email" name="email" readonly class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3">Password</label>
+    <div class="col-md-5">
+      <input type="password" ng-model="formData.password" name="password" autocomplete="new-password" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3">Ulangi Password</label>
+    <div class="col-md-5">
+      <input type="password" ng-model="formData.confirm_password" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3"></label>
+    <div class="col-md-5">
+      <button type="submit" class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </div>
+
+</form>

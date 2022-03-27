@@ -1,0 +1,193 @@
+<form class="form-horizontal" ng-submit="submitForm()" id="submitForm">
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% $root.solog.label.general.detail %></h5>
+      <div class="ibox-tools">
+      </div>
+    </div>
+      <div class="ibox-content">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+            </div>
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:30%;"><% $root.solog.label.general.branch %></td>
+              <td>: <% data.item.company.name %></td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><% $root.solog.label.general.warehouse %></td>
+              <td>: <% data.item.warehouse.name %></td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><% $root.solog.label.general.requested_by %></td>
+              <td>: <% data.item.user.name %></td>
+            </tr>
+            <tr>
+              <td><% $root.solog.label.sales_order_return.code %></td>
+              <td>: <% data.item.code %></td>
+            </tr>
+            <tr>
+              <td><% $root.solog.label.general.requested_by %></td>
+              <td>: <% data.item.date_request|fullDate %></td>
+            </tr>
+            <tr>
+              <td><% $root.solog.label.general.realization_date %></td>
+              <td>: <% data.item.date_needed|fullDate %></td>
+            </tr>
+            <tr>
+              <td><% $root.solog.label.general.created_at %></td>
+              <td>: <% data.item.created_at|fullDateTime %></td>
+            </tr>
+            <tr>
+              <td><% $root.solog.label.general.supplier %></td>
+              <td class="font-bold">: <% data.item.supplier.name %></td>
+            </tr>
+            <tr>
+              <td><% $root.solog.label.general.status %></td>
+              <td>: <span class="font-bold"><% $root.findJsonId(data.item.status,status).name %></span></td>
+            </tr>
+            <tr ng-if="data.item.status>1">
+              <td><% $root.solog.label.general.approved_date %></td>
+              <td>: <span><% data.item.date_approved|fullDate %></span></td>
+            </tr>
+            <tr ng-if="data.item.status==0">
+              <td>Tanggal Penolakan</td>
+              <td>: <span><% data.item.date_reject|fullDate %></span></td>
+            </tr>
+            <tr ng-if="data.item.status==0">
+              <td>Alasan Penolakan</td>
+              <td>: <span><% data.item.reject_reason %></span></td>
+            </tr>
+            <tr>
+              <td><% $root.solog.label.general.description %></td>
+              <td>: <% data.item.description %></td>
+            </tr>
+
+            <tr ng-if='price_po'>
+              <td>
+                Tanggal Pembelian
+                <div>
+                  <input type="text" class="form-control" ng-model="formData.purchase_date" datepick>
+                </div>
+              </td>
+            </tr>
+
+            <tr ng-if='price_po'>
+              <td>
+                Tipe Bayar
+                <div>
+                  <label for="" class="radio-inline">
+                        <input type="radio" ng-model='formData.payment_type' ng-value='1'> Debet 
+                  </label>
+                  <label for="" class="radio-inline">
+                        <input type="radio" ng-model='formData.payment_type' ng-value='2'> Kredit 
+                  </label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Barang</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th ng-if="data.item.status>1">Jumlah Persetujuan</th>
+            <th ng-if="qty_approve">Jumlah Persetujuan</th>
+            <th ng-if="price_po">Harga Barang</th>
+            <th ng-if="data.item.status==3">Harga Barang</th>
+            <th ng-if="data.item.status==3">Total Harga</th>
+            <th ng-if="data.item.status==1"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(is,value) in data.detail">
+            <td><% value.item.name %></td>
+            <td style="width:7%;" class="text-right"><% value.qty|number %></td>
+            <td style="width:7%;" ng-if="data.item.status>1" class="text-right"><% value.qty_approve|number %></td>
+            <td style="width:10%;" ng-if="qty_approve"><input type="text" class="form-control input-sm text-center" jnumber2 only-num ng-model="formData.detail[value.id].qty" ng-init="formData.detail[value.id].qty=value.qty"></td>
+            <td style="width:15%" ng-if="price_po"><input type="text" class="form-control input-sm text-center" jnumber2 only-num ng-model="formData.detail[value.id].price" ng-init="formData.detail[value.id].price=value.item.initial_cost"></td>
+            <td style="width:10%;" ng-if="data.item.status==3" class="text-right"><% value.po_detail.price|number %></td>
+            <td style="width:10%;" ng-if="data.item.status==3" class="text-right"><% value.po_detail.total|number %></td>
+            <td class="text-center" ng-if="data.item.status==1">
+              <a type="button" ng-click="editDetail(value)"><i class="fa fa-edit"></i></a>&nbsp;
+              <a type="button" ng-if="data.detail.length>1" ng-click="deleteDetail(value.id)"><i class="fa fa-trash"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <%formData%> -->
+    </div>
+    <div class="ibox-footer">
+      <a ng-click='backward()' class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+      <button ng-show="$root.roleList.includes('inventory.sales_order_return.detail.approve')" type="button" class="btn btn-sm btn-primary" ng-if="qty_approve" ng-disabled="disBtn" ng-click="approveSubmit()">Save</button>
+      <button ng-show="$root.roleList.includes('inventory.sales_order_return.detail.create_po')" type="button" class="btn btn-sm btn-primary" ng-if="price_po" ng-disabled="disBtn" ng-click="poSubmit()">Save PO</button>
+      <button ng-show="$root.roleList.includes('inventory.sales_order_return.detail.approve')" ng-if="data.item.status==1" type="button" ng-click="approve()" ng-hide="editForm" class="btn btn-sm btn-success"><% $root.solog.label.general.approve %></button>
+      <button ng-show="$root.roleList.includes('inventory.sales_order_return.detail.approve')" ng-if="data.item.status==1" type="button" ng-click="reject()" class="btn btn-sm btn-danger"><% $root.solog.label.general.reject %></button>
+      <button ng-show="$root.roleList.includes('inventory.sales_order_return.detail.create_po')" ng-if="data.item.status==2" type="button" ng-click="createPo()" ng-hide="editForm" class="btn btn-sm btn-info"><% $root.solog.label.sales_order_return.create_po %></button>
+    </div>
+  </div>
+</div>
+</form>
+
+<div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Tolak Permintaan</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label for="">Alasan Penolakan</label>
+          <input type="text" class="form-control" ng-model="rejectData.reject_reason" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="rejectSubmit()" ng-disabled="!rejectData.reject_reason" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Detail Barang</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-md-3 control-label">Qty</label>
+          <div class="col-md-4">
+            <input type="text" ng-model="detailData.qty" jnumber2 only-num class="form-control">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="submitDetail()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,135 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Pengangkutan</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">No Packing List / Manifest</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.code_manifest" disabled>
+          </div>
+        </div>
+        <!-- <div class="form-group">
+          <label class="col-md-3">Tanggal Angkut</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.pick_date" datepick>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control clockpick text-center" ng-model="formData.pick_time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Estimasi Selesai</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control text-center" ng-model="formData.finish_date" datepick>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control clockpick text-center" ng-model="formData.finish_time">
+          </div>
+        </div> -->
+        <!-- <div class="form-group">
+          <label class="col-md-3">Asal</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeCustomer1(formData.from_id)" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.from_id" ng-options="s.id as s.name for s in data.customer">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Alamat Pengambilan</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Alamat Pengambilan'" chosen allow-single-deselect="false" ng-model="formData.from_address_id" ng-options="s.id as s.name for s in contact_address1">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tujuan</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeCustomer2(formData.to_id)" data-placeholder-text-single="'Choose Customer'" chosen allow-single-deselect="false" ng-model="formData.to_id" ng-options="s.id as s.name for s in data.customer">
+              <option value=""></option>is_internal
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Alamat Tujuan</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Alamat Tujuan'" chosen allow-single-deselect="false" ng-model="formData.to_address_id" ng-options="s.id as s.name for s in contact_address2">
+              <option value=""></option>
+            </select>
+          </div>
+        </div> -->
+        <div class="form-group">
+          <label class="col-md-3"><% solog.label.general.main_commodity %></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.commodity_name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3">Tipe Driver</label>
+          <div class="col-md-9">
+            <label class="radio-inline">
+              <input type="radio" ng-change="changeExtInt()" name="is_internal" ng-model="formData.is_internal" ng-value="1">Internal
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="formData.is_internal" ng-value="0" name="is_internal">Vendor
+            </label>
+          </div>
+        </div>
+        <!-- Jika memakai driver external -->
+        <div class="form-group" ng-if='!formData.is_internal'>
+          <label class="col-md-3">Vendor</label>
+          <div class="col-md-9">
+              <vendor-select-input ng-model="formData.vendor_id" />
+          </div>
+        </div>
+        <div class="form-group" ng-if="!formData.is_internal">
+            <label class="col-md-3">Driver</label>
+            <div class="col-md-9">
+              <drivers-select-input ng-model="formData.driver_eksternal_id" />
+            </div>
+        </div>
+        <div class="form-group" ng-if="!formData.is_internal">
+            <label class="col-md-3">No Polisi</label>
+            <div class="col-md-9">
+              <select class="form-control" display-disabled-options="false" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_eksternal_id" ng-options="s.id as s.nopol for s in data.vehicle_eksternal">
+                <option value=""></option>
+              </select>
+            </div>
+        </div>
+        <div class="form-group" ng-if="!formData.is_internal">
+            <label class="col-md-3">Surat Jalan</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="formData.delivery_order_number" >
+            </div>
+        </div>
+        <!-- Jika memakai driver internal -->
+        <div class="form-group" ng-if='formData.is_internal'>
+          <label class="col-md-3">Driver</label>
+          <div class="col-md-9">
+            <drivers-select-input ng-model="formData.driver_internal_id" />
+          </div>
+        </div>
+        <div class="form-group" ng-if='formData.is_internal'>
+          <label class="col-md-3">No Polisi</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_internal_id" ng-options="s.id as s.nopol for s in data.vehicle_internal">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <button type="button" ng-click='backward()' class="btn btn-sm btn-warning"><% solog.label.general.back %></button>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>

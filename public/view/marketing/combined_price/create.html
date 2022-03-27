@@ -1,0 +1,101 @@
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      <div class="form-group required">
+          <label class="col-md-3">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+      <div class="form-group required">
+        <label class="col-md-3">Kode</label>
+        <div class="col-md-9">
+          <input type="text" class='form-control' ng-model="formData.code">
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-md-3">Nama</label>
+        <div class="col-md-9">
+            <input type="text" class='form-control' ng-model="formData.name">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      <div class="form-group">
+        <label class="col-md-3">Layanan</label>
+        <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Layanan'" chosen allow-single-deselect="false" ng-model="detailData.service" ng-options="s as s.name+' ('+s.service_type.name+')' group by s.service_type.name for s in services">
+              <option value=""></option>
+            </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3"></label>
+        <div class="col-md-9">
+          <button type="button" class="btn btn-sm btn-primary btn-block" ng-disabled="!detailData.service" ng-click="appendTable()"><i class="fa fa-plus"></i> Add ke Tabel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+      <table class="table table-bordered table-striped" id="appendTable">
+        <thead>
+          <tr>
+            <th>Layanan</th>
+            <th style="width:3%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+              <td class="text-center" colspan='2'  ng-show='formData.detail.length == 0'>Tidak ada layanan</td>
+
+        </tbody>
+      </table>
+      <!-- <pre><% jStyle(formData) %></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <button type="button" ng-click="submitForm()" ng-disabled="disBtn" class="btn btn-sm btn-primary" name="button">Save</button>
+      <a ui-sref="marketing.combined_price" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</div>
+<!-- modal pallet master -->
+<div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Item List</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped" id="pallet_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Code</th>
+              <th>Name</th>
+              <th class='hidden'>Barcode</th>
+              <th>Type</th>
+              <th>Measurement</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

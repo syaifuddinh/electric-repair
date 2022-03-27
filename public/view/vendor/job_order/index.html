@@ -1,0 +1,64 @@
+<div class="col-md-12">
+    <div class="ibox" ng-show="isFilter">
+        <div class="ibox-title">
+            <h5>Filter Job Order<h5>
+            </div>
+            <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+                <div class="ibox-content">
+                    
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Periode</label>
+                        <div class="col-md-9">
+                            <div class="input-daterange input-group" style="width:100%;">
+                                <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="">
+                                <span class="input-group-addon">to</span>
+                                <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Status</label>
+                        <div class="col-md-9">
+                            <select ng-change='searchData()' class="form-control ng-pristine ng-valid localytics-chosen ng-empty ng-touched" data-placeholder-text-single="'Semua Status'" chosen="" allow-single-deselect="true" ng-options="s.id as s.name for s in status" ng-model="formData.status">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="ibox-footer">
+                    <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+<!--                    <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button>-->
+                    <span id="export_button"></span>
+                </div>
+            </form>
+        </div>
+        
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Daftar Job Order</h5>
+                <div class="ibox-tools">
+                    <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+                    Export</a> 
+                </div>
+            </div>
+            <div class="ibox-content">
+                <table class="table display compact nowrap table-bordered" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Job Order</th>
+                            <th>Vendor</th>
+                            <th>Harga</th>
+                            <th>Jenis Biaya</th>
+                            <th>Keterangan</th>
+                            <th>Status</th>
+                            <th style="width:10%;"></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    

@@ -1,0 +1,181 @@
+<div class="sk-container row">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+  <div class="col-md-6">
+    <table class="table display compact nowrap table-borderless">
+      <tbody>
+        <tr>
+          <td style="width:25%;" class="font-bold"><% solog.label.general.name %></td>
+          <td>: <%item.name%></td>
+        </tr>
+        <tr>
+          <td class="font-bold"><% solog.label.general.address %></td>
+          <td>: <%item.address+', '+item.city.name+' - '+item.postal_code%></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Telephone</td>
+          <td>: <% item.phone +' / '+item.phone2 %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Email</td>
+          <td>: <% item.email %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Contact Person</td>
+          <td>: <% item.contact_person %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Email Contact Person</td>
+          <td>: <% item.contact_person_email %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Telfon Contact Person</td>
+          <td>: <% item.contact_person_phone %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Branch</td>
+          <td>: <% item.company.name %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Tanggal Lead</td>
+          <td ng-if="item.created_at">: <% item.created_at|fullDate %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Data Aktif</td>
+          <td class="font-bold">: <% item.active_name %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Tahapan</td>
+          <td class="">: <% findJsonId(item.step,step).name %></td>
+        </tr>
+        <tr ng-if="item.step==6">
+          <td class="font-bold">Waktu Gagal Lead</td>
+          <td class="">: <% item.cancel_date|fullDate %></td>
+        </tr>
+
+        <tr>
+          <td colspan="2"><hr></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Industri</td>
+          <td>: <% item.industry.name %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Lead Source</td>
+          <td>: <% item.lead_source.name %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Lead Status</td>
+          <td>: <% item.lead_status.status %></td>
+        </tr>
+        <tr>
+          <td class="font-bold">Sales</td>
+          <td>: <% item.sales.name %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <h4>AKTIVITAS SALES</h4>
+    <div class="activity-stream" style="max-height:70vh;overflow-y:auto;">
+
+      <div class="stream" ng-repeat="val in activity">
+          <div class="stream-badge">
+              <i class="fa <% val.is_done==0?'fa-calendar':'fa-check bg-primary' %>"></i>
+          </div>
+          <div class="stream-panel">
+            <div class="stream-info">
+              <span class="font-bold"><% val.name %></span><br>
+              <span class="date"><% val.created_at|timeago %></span>
+            </div>
+            <!-- <h4><small><% val.date_activity|date:'dd/MM/yyyy' %></small></h4> -->
+            <!-- <span class="font-bold"><% val.date_activity|date:'dd/MM' %></span>&nbsp; -->
+            <p><% val.description %> <b>(<% val.date_activity|date:'dd/MM/yyyy' %>)</b></p>
+          </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-12">
+    <hr>
+    <table class="table display compact nowrap table-borderless">
+      <tbody>
+        <tr>
+          <td>
+            <a ui-sref="marketing.lead" class="btn btn-sm btn-warning"> <% solog.label.general.back %> </a>
+            <span ng-if="!item.inquery_id && !item.quotation_id && item.step==1">
+              <a ng-show="roleList.includes('marketing.leads.detail.detail_info.edit')" ui-sref="marketing.lead.edit({id:item.id})" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit</a>
+              <a ng-show="roleList.includes('marketing.leads.detail.detail_info.status_change')" ng-click="changeStatus()" class="btn btn-sm btn-info">Ubah Status</a>
+              <!-- <a ng-click="moveContact()" class="btn btn-sm btn-success">Pindah ke Kontak</a> -->
+              |
+              <a ng-show="roleList.includes('marketing.leads.detail.detail_info.create_opportunity')" ui-sref="marketing.lead.create_opportunity({id:item.id})" class="btn btn-sm btn-success"><i class="fa fa-comment"></i> Buat Opportunity</a>
+              <a ng-show="roleList.includes('marketing.leads.detail.detail_info.create_inquery')" ui-sref="marketing.lead.create_inquery({id:item.id})" class="btn btn-sm btn-success"><i class="fa fa-address-book-o"></i> Buat Inquery</a>
+              <a ng-show="roleList.includes('marketing.leads.detail.detail_info.create_quotation')" ui-sref="marketing.lead.create_quotation({id:item.id})" class="btn btn-sm btn-success"><i class="fa fa-fax"></i> Buat Quotation</a>
+            </span>
+              <button type="button" ng-if="item.step==1" ng-click="cancelLead()" class="btn btn-sm btn-danger font-bold">Lead Failed</button>
+              <button type="button" ng-if="item.step==6" ng-click="cancelCancelLead()" class="btn btn-sm btn-success font-bold">Jadikan Lead</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="modalStatus" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Ubah Status</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitStatus()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3 control-label">Status Lead Terbaru</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Status Lead'" chosen allow-single-deselect="false" data-placeholder="Choose Header Akun" ng-model="statusData.lead_status_id" ng-options="s.id as s.status for s in lead_status">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Buat Rencana Aktivitas</label>
+            <div class="col-md-2">
+              <input type="checkbox" ng-model="statusData.is_activity" ng-true-value="1" ng-false-value="0"> Ya
+            </div>
+          </div>
+          <div ng-if="statusData.is_activity==1">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Nama Aktivitas</label>
+              <div class="col-md-9">
+                <input type="text" ng-model="statusData.name" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Tgl Rencana</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control text-center" ng-model="statusData.plan_date" datepick>
+              </div>
+              <div class="col-md-2">
+                <input type="text" class="form-control clockpick text-center" ng-model="statusData.plan_time">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Keterangan</label>
+              <div class="col-md-9">
+                <textarea ng-model="statusData.description" class="form-control" rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

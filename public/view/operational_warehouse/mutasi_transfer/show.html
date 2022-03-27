@@ -1,0 +1,59 @@
+<form class="form-horizontal" ng-submit="submitForm()" id="submitForm">
+<div class="col-md-12">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" id="info_tab" ng-click='openInfo()'>
+                <% solog.label.general.detail %> 
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" id="receipt_tab" ng-click='openReceipt()'>
+                <% solog.label.warehouse_receipt.title %> 
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" id="stocklist_tab" ng-click='openStocklist()'>
+                <% solog.label.general.stocklist %> 
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id='info_detail' class='tab-item'>
+            <item-migrations-show id="id">
+        </div>
+
+        <div id="receipt_detail" class="tab-item" >
+            <warehouse-receipts-table item-migration-id="id" add-route='"operational_warehouse.mutasi_transfer.create_receipt"'  add-params="{id : id}"  />
+        </div>
+
+        <div id="stocklist_detail" class="tab-item">
+            <stocklist-table hide-filter="1" item-migration-id="id" />
+        </div>
+    </div>
+</div>
+
+</form>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Item</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group required">
+          <label class="col-md-3">Qty</label>
+          <div class="col-md-5">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="editData.qty" >
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-disabled='disBtn' ng-click="submitEdit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

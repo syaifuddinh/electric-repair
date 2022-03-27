@@ -1,0 +1,77 @@
+<div class="col-md-12">
+    <div class="col-md-12">
+        <div class="ibox" ng-show="isFilter">
+            <div class="ibox-title">
+            <h5>Filter</h5>
+            </div>
+            <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+            <div class="ibox-content">
+                <div class="form-group">
+                <label class="col-md-3 control-label"><% solog.label.general.branch %></label>
+                <div class="col-md-9">
+                    <branch-select-input ng-change="refreshTable()" ng-model="filterData.company_id" />
+                </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Date</label>
+                    <div class="col-md-9">
+                        <div class="input-daterange input-group" style="width:100%;">
+                        <input type="text" class="input-sm form-control" ng-model="filterData.start_date"  ng-change="refreshTable()" datepick/>
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="input-sm form-control" ng-model="filterData.end_date"  ng-change="refreshTable()" datepick />
+                        </div>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-md-3 control-label"><% solog.label.general.customer %></label>
+                    <div class="col-md-9">
+                        <customer-select-input ng-model="filterData.customer_id" ng-change="refreshTable()" />
+                    </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-3 control-label">Service Type</label>
+                      <div class="col-md-9">
+                          <select class="form" data-placeholder-text-single="'Choose Service Type'" chosen allow-single-deselect="true" ng-model="filterData.service_type_id" ng-options="c.id as c.name for c in data.service_types"  ng-change="refreshTable()">
+                          <option value=""></option>
+                          </select>
+                      </div>
+            </div>
+            <div class="ibox-footer">
+                <button type="button" ng-click="reset()" class="btn btn-sm btn-warning"><i class="fa fa-times"></i> Reset</button>
+                <!-- <button type="button" ng-click='exportExcel()' class="btn btn-default btn-sm font-bold pull-right"><i class="fa fa-file-excel-o"></i> Export</button> -->
+            </div>
+            </form>
+        </div>
+    </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Contract Price</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ng-click="create()"><i class="fa fa-plus"></i> Add</a> -->
+          <!-- <a href="<%baseUrl+'/excel/contract_price_export'%>" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i> Export</a> -->
+          <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>Branch</th>
+            <th>Service</th>
+            <th>Service Type</th>
+            <th>Route</th>
+            <th>Customer</th>
+            <th>Commodity</th>
+            <th>Vehicle Type</th>
+            <th>Charge In</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th style="width:5%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

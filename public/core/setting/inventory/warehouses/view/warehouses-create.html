@@ -1,0 +1,96 @@
+<div class="col-md-12">
+    <div class="ibox">
+        <div class="ibox-content">  
+        <form class='form-horizontal'>
+            <div class="row">   
+                <div class="col-md-7">
+                    
+                    <div class="form-group" ng-show='!company_id'>
+                          <label class="col-md-3 control-label"><% $root.solog.label.general.branch %></label>
+                          <div class="col-md-9">
+                                <branch-select-input ng-model='formData.company_id'></branch-select-input>
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.general.code %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="formData.code">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.warehouses.name %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="formData.name">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.general.address %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" ng-model="formData.address">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.general.latitude %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" id="latitude" ng-change="updateMaps(formData.latitude, formData.longitude)" ng-model="formData.latitude">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.general.longitude %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" id="longitude" ng-change="updateMaps(formData.latitude, formData.longitude)" ng-model="formData.longitude">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.general.volume_capacity %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.capacity_volume">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.general.weight_capacity %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.capacity_tonase">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.warehouse.luas_lahan %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.luas_lahan">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.warehouse.luas_bangunan %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.luas_bangunan">
+                          </div>
+                    </div>
+                    <div class="form-group">
+                          <label class="col-md-3 control-label"><% $root.solog.label.warehouse.luas_gudang %></label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" jnumber2 only-num ng-model="formData.luas_gudang">
+                          </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group">
+                        <div class="col-md-12">
+                              <solog-map-with-marker 
+                                    is-draggable='true' 
+                                    with-popup='true' 
+                                    init-lat='formData.latitude' 
+                                    init-lng='formData.longitude' 
+                              />
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </form>
+        </div>
+
+        <div class="ibox-footer">
+            <button type="button" ng-disabled='$root.disBtn' ng-click="submitForm()"class="btn btn-sm btn-primary" name="button"><% $root.solog.label.general.save %></button>
+            <a ng-click="back()" class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+        </div>
+    </div>
+</div>

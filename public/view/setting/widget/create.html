@@ -1,0 +1,48 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      
+      <div class="form-group required">
+        <label class="col-md-3">Nama Widget</label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" ng-model="formData.name">
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-md-3">Nama Query</label>
+        <div class="col-md-9">
+          <select class="form-control" data-placeholder-text-single="'Choose Query'" chosen allow-single-deselect="true" ng-model="formData.query_id" ng-options="s.id as s.name for s in data.queries">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">Tipe</label>
+        <div class="col-md-9">
+            <label class='radio-inline'>
+                <input type="radio" ng-model='formData.type' ng-value='"grafik"'> Grafik
+            </label>
+            <label class='radio-inline'>
+                <input type="radio" ng-model='formData.type' ng-value='"tabel"'> Tabel
+            </label>
+            <label class='radio-inline'>
+                <input type="radio" ng-model='formData.type' ng-value='"nilai"'> Nilai
+            </label>
+        </div>
+      </div>
+      
+      <div class="form-group required">
+        <label class="col-md-3">Lebar</label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" ng-model="formData.width" only-num maxlength='2'>
+        </div>
+      </div>
+    </div>
+
+    <div class="ibox-footer">
+      <button type="button" ng-click="submitForm()" ng-disabled="disBtn" class="btn btn-sm btn-primary" name="button">Save</button>
+      <a ui-sref="setting.widget" class="btn btn-sm btn-warning">Kembali</a>
+    </div>
+  </div>
+</div>
+

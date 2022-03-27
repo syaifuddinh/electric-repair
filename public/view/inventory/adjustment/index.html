@@ -1,0 +1,73 @@
+<div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5>Filter Penyesuaian Barang</h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Branch</label>
+        <div class="col-md-9">
+          <select class="form" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="c.id as c.name for c in data.company" ng-change="searchData()">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Gudang</label>
+        <div class="col-md-9">
+          <select class="form" data-placeholder-text-single="'Choose Warehouse'" chosen allow-single-deselect="false" ng-model="formData.warehouse_id" ng-options="w.id as w.name for w in data.warehouse" ng-change="searchData()">
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Tanggal Penyesuaian</label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="" ng-change="searchData()">
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="" ng-change="searchData()">
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+      <!-- <button type="button" ng-click='searchData()' id='cari_data' class="btn btn-sm btn-primary">Cari</button> -->
+      <a href="<%baseUrl+'/excel/penyesuaian_barang_export'%>" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i> Export All</a>
+    </div>
+  </form>
+</div>
+
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>Penyesuaian Barang</h5>
+    <div class="ibox-tools">
+      <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+      <a ng-show="roleList.includes('inventory.adjustment.create')" class="btn btn-sm btn-primary" ui-sref="inventory.adjustment.create"><i class="fa fa-plus"></i> Add</a>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-bordered" id="datatable">
+      <thead>
+        <tr>
+          <th>Wilayah</th>
+          <th>Gudang</th>
+          <th>Kode Transaksi</th>
+          <th>Tgl. Penyesuaian</th>
+          <th>Pelaksana</th>
+          <th style="width:7%;"></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- modal -->

@@ -1,0 +1,130 @@
+<div class="ibox">
+  <div class="ibox-content" ng-class="{'sk-loading': !data}">
+    <div class="sk-spinner sk-spinner-wave" ng-include="'view/spinner.html'"></div>
+    <div class="row">
+      <div class="col-md-3">
+        <br>
+        <img class="rounded" src="img/scania-truck.jpg" style="max-width:100%;" alt="">
+        <a ng-click='is_print = !is_print' class="btn btn-warning btn-sm font-bold" style="white-space: normal; margin-top: 10px;">
+          <span><i class="fa fa-history"></i></span> Cetak Laporan Rekap Pengecekan Vehicle
+        </a>
+        
+        <div class="ibox" ng-show="is_print">
+          <div class="ibox-content form-horizontal">
+              <div class="form-group">
+                  <label class="col-md-3 control-label">Periode</label>
+                  <div class="col-md-9">
+                      <div class="input-daterange input-group" style="width:100%;">
+                          <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="date" datepick="">
+                      </div>
+                  </div>
+              </div>
+              <a class="btn btn-danger" ng-click="showPrint()"><span><i class="fa fa-print"></i></span> Cetak</a>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+        <table class="table display compact nowrap table-borderless">
+          <h2 class="font-bold" ng-bind="item.nopol"></h2>
+          <tbody>
+            <tr>
+              <td style="width:30%;"><i class="fa fa-home"></i> Branch</td>
+              <td>: <span class="font-bold" ng-bind="item.company"></span></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-calendar"></i> Tgl Entri</td>
+              <td>: <span class="font-bold" ng-bind="item.created_at"></span></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-user"></i> Pemilik</td>
+              <td>: <span class="font-bold" ng-bind="item.supplier"></span></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-truck"></i> Model</td>
+              <td>: <span class="font-bold" ng-bind="item.variant_name"></span></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-wrench"></i> No. Sassis / No. Mesin</td>
+              <td>: <span class="font-bold" ng-bind="item.chassis_no+' / '+item.machine_no"></span></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-check"></i> Status</td>
+              <td>: <span class="font-bold" ng-bind-html="findJsonId(item.is_active,is_active).name"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-3">
+        <table class="table display compact nowrap table-borderless">
+          <thead>
+            <tr>
+              <th colspan="2">
+                <h3><i class="fa fa-bar-chart"></i> Riwayat Perawatan Terakhir</h3>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <h5>Jenis Perawatan</h5>
+              </td>
+              <td>
+                <h3 style="color: #0175bc;" ng-bind="data.jenis_perawatan.name"></h3>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h5>Tanggal</h5>
+              </td>
+              <td>
+                <h3 style="color: #00801f;" ng-bind="data.perawatan_terakhir.tanggal"></h3>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-3">
+        <table class="table display compact nowrap table-borderless">
+          <thead>
+            <tr>
+              <th colspan="2"><h3><i class="fa fa-line-chart"></i> Vehicle Job Summary</h3></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><h5>TOTAL JOB ONGOING</h5></td>
+              <td><h3 style="color: #0175bc;" ng-bind="data.job.ongoing"></h3></td>
+            </tr>
+            <tr>
+              <td><h5>TOTAL JOB FINISHED</h5></td>
+              <td><h3 style="color: #00801f;" ng-bind="data.job.finished"></h3></td>
+            </tr>
+            <tr>
+              <td><h5>TOTAL JOB</h5></td>
+              <td><h3 style="color: #a1039f;" ng-bind="data.job.total"></h3></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-12">
+        <hr>
+        <h3><i class="fa fa-briefcase"></i> Delivery Job List</h3>
+        <table class="table display compact nowrap table-striped table-bordered" id="datatable">
+          <thead>
+            <tr>
+              <th>No. Surat Jalan</th>
+              <th>No. Manifest</th>
+              <th>Driver</th>
+              <th>Route</th>
+              <th>Status Pengiriman</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

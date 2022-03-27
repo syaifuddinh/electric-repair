@@ -1,0 +1,101 @@
+<form class="form-horizontal">
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Penjualan Asset</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+      <table class="table display compact nowrap table-borderless">
+        <tbody>
+          <tr>
+            <td style="width:30%;">Branch</td>
+            <td>: <span><% item.company.name %></span></td>
+          </tr>
+          <tr>
+            <td>Kode Transaksi</td>
+            <td>: <span><% item.code %></span></td>
+          </tr>
+          <tr>
+            <td>Tanggal Transaksi</td>
+            <td>: <span><% item.date_transaction|fullDate %></span></td>
+          </tr>
+          <tr>
+            <td>Nama Customer</td>
+            <td>: <span><% item.costumer.name %></span></td>
+          </tr>
+          <tr>
+            <td>Termin</td>
+            <td>: <span><% findJsonId(item.termin,termin).name %></span></td>
+          </tr>
+          <tr>
+            <td>Akun Kas</td>
+            <td>: <span><% item.cash_account.account_name %></span></td>
+          </tr>  
+          <tr>
+            <td>Jatuh Tempo</td>
+            <td>: <span><% item.tempo %> Hari</span></td>
+          </tr>
+          <!-- akun dan jatuh tempo dipilih salah satu sesuai termin -->
+          <tr>
+            <td>Akun Laba Penjualan</td>
+            <td>: <span><% item.sales_account.account_name %></span></td>
+          </tr>  
+          <tr>
+            <td>Keterangan</td>
+            <td>: <span><% item.description %></span></td>
+          </tr> 
+          <tr>
+            <td>Status</td>
+            <td>: <span ng-bind="findJsonId(item.status, status).name"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Item Asset </h5>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th>Nama Asset</th>
+            <th>Keterangan</th>
+            <th>Nilai Buku</th>
+            <th>Harga Jual</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(index, detail) in details">
+            <td><% detail.asset.name %></td>
+            <td><% detail.description %></td>
+            <td><% detail.nilai_buku|number %></td>
+            <td class="text-right"><% detail.price|number %></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3" style="text-align: right;">Total Penjualan</th>
+            <th class="text-right"><% item.total_price|number %></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="finance.penjualan_asset" class="btn btn-sm btn-warning">Kembali</a>
+      <button type="button" ng-show="roleList.includes('finance.asset.sell.detail.approve')" ng-click="approve()" ng-if="item.status==1" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Approve</button>
+    </div>
+  </div>
+</div>
+</form>

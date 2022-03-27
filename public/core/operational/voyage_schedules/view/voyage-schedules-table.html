@@ -1,0 +1,75 @@
+<div class="ibox">
+    <div class="ibox" ng-show="isFilter">
+        <div class="ibox-title">
+            <h5>Filter</h5>
+        </div>
+        <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+            <div class="ibox-content">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Kapal</label>
+                    <div class="col-md-9">
+                    <select ng-change='searchData()' class="form" data-placeholder-text-single="'Choose Kapal'" chosen allow-single-deselect="false" ng-model="formData.ship_id" ng-options="c.id as c.name for c in data.ships">
+                        <option value=""></option>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Periode Keberangkatan</label>
+                    <div class="col-md-9">
+                    <div class="input-daterange input-group" style="width:100%;">
+                        <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date_etd" datepick="">
+                        <span class="input-group-addon">to</span>
+                        <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date_etd" datepick="">
+                    </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Periode Kedatangan</label>
+                    <div class="col-md-9">
+                    <div class="input-daterange input-group" style="width:100%;">
+                        <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date_eta" datepick="">
+                        <span class="input-group-addon">to</span>
+                        <input ng-change='searchData()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date_eta" datepick="">
+                    </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="ibox-footer">
+                <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+            </div>
+        </form>
+    </div>
+  <div class="ibox-title">
+    <h5><% $root.pageTitle %></h5>
+    <div class="ibox-tools">
+        <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> Filter</button>
+        <a ng-show="$root.roleList.includes('operational.voyage_schedule.create')" class="btn btn-sm btn-primary" ui-sref="operational.voyage_schedule.create"><i class="fa fa-plus"></i> Add</a>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-bordered" id="datatable">
+      <thead>
+        <tr>
+          <th>Kapal</th>
+          <th>Voyage</th>
+          <th>POL</th>
+          <th>POD</th>
+          <th>ETD</th>
+          <th>ETA</th>
+          <th>ATD</th>
+          <th>ATA</th>
+          <th>Kontainer</th>
+          <th style="width:7%;"></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>

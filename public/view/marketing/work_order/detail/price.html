@@ -1,0 +1,121 @@
+<div>
+    <div ng-repeat='p in price_details'>
+        <div>
+            <div class='inline w-30 font-bold'>Layanan</div>
+            <div class="inline">: <% p.service_name  %></div>
+        </div>
+        <div ng-if='p.use_container == true'>
+            <div class='inline w-30 font-bold'>Qty</div>
+            <div class="inline">: <% p.qty  %></div>
+        </div>
+        <div ng-if='p.use_container == true'>
+            <div class='inline w-30 font-bold'>Harga</div>
+            <div class="inline">: Rp <% p.price | number  %></div>
+        </div>
+        <div ng-if='p.service_type_id == 15'>
+            <div class='inline w-30 font-bold'>Free Storage</div>
+            <div class="inline">: <% p.free_storage_day  %> Hari</div>
+        </div>
+        <div>
+            <div class='inline w-30 font-bold'>Total Harga</div>
+            <div class="inline">: Rp <% p.total_price | number  %></div>
+        </div>
+        <div ng-if='p.service_type_id == 15'>
+            <table class='table table-bordered mg-t3'>
+                <thead>
+                    <tr>
+                        <th>No TTB</th>
+                        <th>Barang</th>
+                        <th>Tanggal Masuk</th>
+                        <th>Tanggal Keluar</th>
+                        <th>Durasi</th>
+                        <th>Over Storage</th>
+                        <th>Pengenaan</th>
+                        <th>Qty</th>
+                        <th>Volume</th>
+                        <th>Tonase</th>
+                        <th>Harga</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if='p.items.length == 0'>
+                        <td colspan="11" class='text-center'>Tidak ada data</td>
+                    </tr>
+                    <tr ng-repeat='item in p.items'>
+                        <td>
+                            <a ui-sref="operational_warehouse.receipt.show({id:item.warehouse_receipt_id})"><% item.warehouse_receipt_code %></a>
+                        </td>
+                        <td><% item.item_name %></td>
+                        <td><% item.receive_date | fullDateTime %></td>
+                        <td><% item.outbound_date | fullDate %></td>
+                        <td class='text-right'><% item.durasi %> Hari</td>
+                        <td class='text-right'><% item.durasi_netto %> Hari</td>
+                        <td><% item.imposition_name %></td>
+                        <td class='text-right'><% item.qty %> </td>
+                        <td class='text-right'><% item.volume | number:3 %> m<sup>3</sup> </td>
+                        <td class='text-right'><% item.weight %> kg</td>
+                        <td class='text-right'>Rp <% item.price | number %></td>
+                        <td class='text-right'>Rp <% item.total_price | number %></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan='7'>Total</th>
+                        <th class='text-right'><% p.total_volume | number:3 %> m<sup>3</sup></th>
+                        <th class='text-right'><% p.total_tonase | number %> kg</th>
+                        <th></th>
+                        <th class='text-right'>Rp <% p.grandtotal | number %></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div ng-if='(p.service_type_id == 12 || p.service_type_id == 13) && p.handling_type == 1'>
+            <table class='table table-bordered mg-t3'>
+                <thead>
+                    <tr>
+                        <th>No TTB</th>
+                        <th>Barang</th>
+                        <th>Tanggal Masuk</th>
+                        <th>Tanggal Keluar</th>
+                        <th>Pengenaan</th>
+                        <th>Minimum</th>
+                        <th>Volume</th>
+                        <th>Tonase</th>
+                        <th>Harga</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if='p.items.length == 0'>
+                        <td colspan="11" class='text-center'>Tidak ada data</td>
+                    </tr>
+                    <tr ng-repeat='item in p.items'>
+                        <td>
+                            <a ui-sref="operational_warehouse.receipt.show({id:item.warehouse_receipt_id})"><% item.warehouse_receipt_code %></a>
+                        </td>
+                        <td><% item.item_name %></td>
+                        <td><% item.receive_date | fullDateTime %></td>
+                        <td><% item.outbound_date | fullDate %></td>
+                        <td><% item.imposition_name %></td>
+                        <td class='text-right'><% item.minimum || 0 %> <% item.unit_name %></td>
+                        <td class='text-right'><% item.volume | number:3 %> m<sup>3</sup> </td>
+                        <td class='text-right'><% item.weight %> kg</td>
+                        <td class='text-right'>Rp <% item.price | number %></td>
+                        <td class='text-right'>Rp <% item.total_price | number %></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan='6'>Total</th>
+                        <th class='text-right'><% p.total_volume | number:3 %> m<sup>3</sup></th>
+                        <th class='text-right'><% p.total_tonase | number %> kg</th>
+                        <th></th>
+                        <th class='text-right'>Rp <% p.grandtotal | number %></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <hr>
+    </div>
+</div>

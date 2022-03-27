@@ -1,0 +1,111 @@
+<form class="form-horizontal">
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-title">
+            <h5>Detail Klaim</h5>
+            <div class="ibox-tools">
+                <div class="btn-group">
+                    <a class="btn btn-sm btn-success" ng-click='openJournal()' ng-if='formData.status == 2'>Buka Jurnal</a>
+                    <a class="btn btn-sm btn-primary" ng-click='approve()' ng-disabled='disBtn' ng-if='formData.status == 1'><i class="fa fa-check"></i> Setujui</a>
+                    <a class="btn btn-sm btn-success" ng-if='formData.status == 1' ui-sref="operational.claims.edit({id:formData.id})"><i class="fa fa-edit"></i> Edit</a>
+                </div>
+            </div>
+        </div>
+            <div class="ibox-content">
+                <table class="table display compact nowrap table-borderless">
+                <tbody>
+                    <tr>
+                    <td style="width:30%;">Cabang</td>
+                    <td>: <% formData.company_name %></td>
+                    </tr>
+                    <tr>
+                    <td>Tanggal Transaksi</td>
+                    <td>:  <% formData.date_transaction | fullDate %></td>
+                    </tr>
+                    <tr>
+                    <td>Nama Customer</td>
+                    <td>: <% formData.customer_name %></td>
+                    </tr>
+                    <tr>
+                    <td>Kode Job Order</td>
+                    <td>: <% formData.job_order_code %></td>
+                    </tr>
+                    <tr>
+                    <td>Tanggal Job Order</td>
+                    <td>: <% formData.job_order_date | fullDate %></td>
+                    </tr>  
+                    <tr>
+                    <td>Dikenakan Ke </td>
+                    <td>: <% formData.claim_type_name %> / <% formData.claim_type == 1 ? formData.driver_name : formData.vendor_name %></td>
+                    </tr>
+                    <tr>
+                    <td>Status</td>
+                    <td>: <% formData.status_name %></td>
+                    </tr>
+                    <tr>
+                    <td>Keterangan</td>
+                    <td>: <% formData.description %></td>
+                    </tr> 
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Detail Klaim </h5>
+            </div>
+            <div class="ibox-content">
+                <table class="table display compact nowrap table-bordered table-stripped" id="appendTable">
+                    <thead>
+                    <tr>
+                        <th>Komoditas</th>
+                        <th>Qty</th>
+                        <th>Harga Satuan</th>
+                        <th>Jml Klaim</th>
+                        <th>Klaim Kry/Vndr</th>
+                        <th>Penyebab</th>
+                        <th width="25%">Keterangan</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if='formData.detail.length == 0'>
+                            <td colspan="7" class='text-center'>Tidak ada data</td>
+                        </tr>
+                        <tr ng-repeat='d in formData.detail'>
+                            <td><% d.commodity_name %></td>
+                            <td class='text-right'><% d.qty %></td>
+                            <td class='text-right'><% d.price | number %></td>
+                            <td class='text-right'><% d.total_price | number %></td>
+                            <td class='text-right'><% d.claim_total_price | number %></td>
+                            <td class='regular'>
+                                <table class="table">
+                                    <tr ng-repeat="c in d.causes">
+                                        <td>
+                                            <% c.claim_category_name %>
+                                        </td>
+                                    </tr>
+                                </table>        
+                            </td>
+                            <td><% d.description %></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="6" style="text-align: right;">Total Klaim</th>
+                        <th class='text-right'>
+                            <% (formData.total || 0) | number %>
+                        </th>
+                    </tr>
+                    
+                    </tfoot>
+                </table>
+            </div>
+            <div class="ibox-footer">
+            <a ui-sref="operational.claims" class="btn btn-sm btn-warning">Kembali</a>
+            </div>
+        </div>
+    </div>
+</form>
+    

@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table display compact nowrap table-borderless">
+      <tbody>
+        <tr>
+          <td style="width:25%;">
+            <H4>Target Ritase Vehicle</H4>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Tahun</td>
+          <td>
+            <select class="form-control" ng-change="changeYear()" data-placeholder-text-single="'Choose Tahun'" chosen allow-single-deselect="false" ng-model="filterData.year" ng-options="s.id as s.name for s in years">
+              <option value=""></option>
+            </select>
+          </td>
+          <td class="text-right">
+            <button ng-show="roleList.includes('vehicle.vehicle.detail.detail.ritase.create')" type="button" ng-click="creates()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Tahun</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table display compact nowrap table-bordered" id="datatable">
+      <thead>
+        <tr>
+          <th>Bulan</th>
+          <th class="text-center">Target</th>
+          <th class="text-center">Realisasi</th>
+          <th class="text-center">Last Update</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:30%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Tahun Ritase</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitForm()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="">Tahun</label>
+            <input type="text" class="form-control" ng-model="formData.year" only-num>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:30%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Target</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitDetail()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="">Target</label>
+            <input type="text" class="form-control" ng-model="detailData.plan" jnumber2 only-num>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="ibox">
+    <div class="ibox-content">
+          <div class="ibox-tools">
+            <button  type="button" ng-if="item.status == 1" class="btn btn-sm btn-primary" ng-disabled='disBtn' ng-click="approve()" name="button"><i class="fa fa-upload"></i> Item Out</button>
+          </div>
+        <table class="table display compact nowrap table-borderless">
+            <tbody>
+                <tr>
+                    <td style="width:30%;"><% $root.solog.label.general.warehouse %></td>
+                    <td>: <% item.warehouse_from.name %></td>
+                </tr>
+                <tr>
+                    <td>No. Transaction</td>
+                    <td>: <% item.code %></td>
+                </tr>
+                <tr>
+                    <td><% $root.solog.label.general.date %></td>
+                    <td>: <% item.date_transaction|fullDate %></td>
+                </tr>
+                <tr>
+                    <td><% $root.solog.label.general.status %></td>
+                    <td>: <span ng-bind-html="$root.findJsonId(item.status,status).name"></span></td>
+                </tr>
+                <tr>
+                    <td><% $root.solog.label.general.description %></td>
+                    <td>: <% item.description %></td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <h4><% $root.solog.label.item.title %></h4>
+        <table class="table display compact nowrap table-bordered" id="appendTable">
+            <thead>
+              <tr>
+                <th><% $root.solog.label.item.code %></th>
+                <th><% $root.solog.label.item.name %></th>
+                <th class='hidden'>Barcode</th>
+                <th><% $root.solog.label.general.rack %></th>
+                <th><% $root.solog.label.general.qty %></th>
+                <th><% $root.solog.label.general.received_qty %></th>
+                <th><% $root.solog.label.general.destination_warehouse %></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(i,value) in detail">
+                <td><% value.item_code %></td>
+                <td><% value.item_name %></td>
+                <td><% value.origin_rack_code %></td>
+                <td class='text-right' style="width:8%;"><% value.qty|number %></td>
+                <td class='text-right' style="width:8%;"><% value.received_qty|number %></td>
+                <td><% value.destination_warehouse_name %></td>
+                <td class="text-center">
+                  <a ng-click="editDetail(value)" ng-if="item.status==1"><i class="fa fa-edit"></i></a>&nbsp;
+                  <a ng-click="deleteDetail(value.id)" ng-if="item.status==1"><i class="fa fa-trash"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>

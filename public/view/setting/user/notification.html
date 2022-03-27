@@ -1,0 +1,30 @@
+<h4>Pengaturan Notifikasi</h4>
+<span class="font-italic">(Perubahan akan berpengaruh pada notifikasi selanjutnya. Dan jika user adalah admin, maka semua notifikasi akan ditampilkan secara otomatis)</span>
+<hr>
+<table class="table display compact nowrap table-borderless table-striped">
+  <tbody>
+    <tr>
+      <td><span class="font-bold">Daftar Notifikasi</span></td>
+      <td class="text-center">
+        <div class="checkbox checkbox-primary checkbox-inline">
+          <input type="checkbox" id="checkAll" ng-change="changeAll(checkAll)" ng-model="checkAll" ng-true-value="1" ng-false-value="0">
+          <label for="checkAll"></label>
+        </div>
+      </td>
+    </tr>
+    <tr ng-repeat="(i,val) in data.notification_type">
+      <td><span><% val.name %></span></td>
+      <td class="text-center">
+        <div class="checkbox checkbox-primary checkbox-inline">
+          <input type="checkbox" id="<% 'ck-'+i %>" ng-model="formData.detail[i].value" ng-true-value="1" ng-false-value="0">
+          <label for="<% 'ck-'+i %>"></label>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="text-center"><button type="button" ng-click="submitForm()" class="btn btn-sm btn-primary">Save</button></td>
+    </tr>
+  </tbody>
+</table>
+<!-- <pre><% jStyle(formData) %></pre> -->

@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table display compact nowrap table-borderless">
+      <tr>
+        <td>
+          <h4>Driver Vehicle</h4>
+        </td>
+        <td class="text-right">
+          <a ng-show="roleList.includes('vehicle.vehicle.detail.detail.driver.create')" ng-click="addDriver()" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</a>
+        </td>
+      </tr>
+    </table>
+    <table class="table display compact nowrap table-bordered" id="datatable">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Alamat</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(i,val) in data.detail">
+          <td><% val.contact.name %></td>
+          <td><% val.contact.address %></td>
+          <td><% val.status_name %></td>
+          <td>
+            <a ng-show="roleList.includes('vehicle.vehicle.detail.detail.driver.delete')" ng-click="deletes(val.id)"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:40%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Add Driver</h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitForm()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="">Status Driver</label>
+            <select class="form-control" data-placeholder-text-single="'Choose Status'" chosen allow-single-deselect="false" ng-model="formData.status" ng-options="s.id as s.name for s in status" ng-change="change_status()">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="">Nama Driver</label>
+            <select class="form-control" data-placeholder-text-single="'Choose Driver'" chosen allow-single-deselect="false" ng-model="formData.driver_id" ng-options="s.id as s.name+', '+s.address for s in data.active_driver">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

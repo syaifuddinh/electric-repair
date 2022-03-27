@@ -1,0 +1,107 @@
+<div class="col-md-8">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Quotation</h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <!-- <div class="form-group">
+          <label class="col-md-3 control-label">Branch</label>
+          <div class="col-md-9">
+            <select class="form-control" disabled data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div> -->
+        <div class="form-group">
+          <label class="col-md-3 control-label">Tgl. Inquery</label>
+          <div class="col-md-4">
+            <input type="text" class="form-control" datepick ng-model="formData.date_inquery" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Customer</label>
+          <div class="col-md-9">
+            <span><% formData.name %></span>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">No. Inquery Customer</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.no_inquery" >
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-3 control-label">Periode Pengiriman</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Periode Pengiriman'" chosen allow-single-deselect="false" ng-model="formData.send_type" ng-options="s.id as s.name for s in send_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Tipe Tagihan Pengiriman</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Tipe Tagihan'" chosen allow-single-deselect="false" ng-model="formData.bill_type" ng-options="s.id as s.name for s in bill_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="formData.bill_type==2">
+          <label class="col-md-3 control-label">Pengenaan</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeImposition()" data-placeholder-text-single="'Choose Pengenaan'" chosen allow-single-deselect="false" ng-model="formData.imposition" ng-options="s.id as s.name for s in imposition">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="formData.bill_type==2 && formData.imposition==3">
+          <label class="col-md-3 control-label">Satuan</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Satuan'" chosen allow-single-deselect="false" ng-model="formData.piece_id" ng-options="s.id as s.name for s in data.piece">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-hide="formData.bill_type!=2">
+          <label class="col-md-3 control-label">Harga Borongan</label>
+          <div class="col-md-9">
+            <input type="text" jnumber2 only-num class="form-control" ng-model="formData.price_full_inquery" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Stage</label>
+          <div class="col-md-9">
+            <select class="form-control" data-placeholder-text-single="'Choose Customer Stage'" chosen allow-single-deselect="false" ng-model="formData.customer_stage_id" ng-options="s.id as s.name for s in data.customer_stage">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Salesman</label>
+          <div class="col-md-9">
+            <sales-select-input ng-model="formData.sales_id" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Keterangan</label>
+          <div class="col-md-9">
+            <textarea ng-model="formData.description_inquery" rows="3" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="marketing.lead" class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary"><% solog.label.general.save %></button>
+      </div>
+    </form>
+  </div>
+</div>

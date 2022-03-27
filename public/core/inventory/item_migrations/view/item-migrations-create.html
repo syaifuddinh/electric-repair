@@ -1,0 +1,109 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content form-horizontal">
+      <div class="form-group required">
+        <label class="col-md-3"><% $root.solog.label.general.origin_warehouse %> </label>
+        <div class="col-md-9">
+            <warehouses-select-input ng-change="changeWarehouseFrom(formData.warehouse_from_id)" ng-model="formData.warehouse_from_id" />
+        </div>
+      </div>
+      
+      <div class="form-group required">
+        <label class="col-md-3"><% $root.solog.label.general.date %></label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" ng-model="formData.date_transaction" datepick>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3"><% $root.solog.label.general.description %></label>
+        <div class="col-md-9">
+          <textarea class="form-control" ng-model="formData.description"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+            <div style='margin-bottom:11mm' ng-if='formData.warehouse_from_id'>
+                <div class="form-group pull-right">
+                      <item-warehouses-modal-input type='button' is-multiple='1' warehouse-id='formData.warehouse_from_id' ng-model='formData.item_id' is-pallet="isPallet" />
+                </div>
+            </div>
+            <div>
+              <table class="table table-bordered table-striped" id="appendTable">
+                    <thead>
+                      <tr>
+                        <th><% $root.solog.label.item.code %></th>
+                        <th><% $root.solog.label.item.name %></th>
+                        <th><% $root.solog.label.warehouse_receipt.code %></th>
+                        <th><% $root.solog.label.general.rack %></th>
+                        <th><% $root.solog.label.general.qty %></th>
+                        <th><% $root.solog.label.general.destination_warehouse %></th>
+                        <th style="width:5%;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if='formData.detail.length == 0'>
+                            <td colspan="7" class='text-center'><% $root.solog.label.general.no_data %></td>
+                        </tr>
+                        <tr ng-repeat='(i, v) in formData.detail'>
+                            <td><% v.code %></td>
+                            <td><% v.name %></td>
+                            <td><% v.warehouse_receipt_code %></td>
+                            <td><% v.rack_code %></td>
+                            <td>
+                                <input type="text" class='form-control' placeholder only-num ng-model='formData.detail[i].qty'>
+                            </td>
+                            <td>
+                                <warehouses-select-input ng-model='formData.detail[i].destination_warehouse_id' />
+                            </td>
+                            <td class='text-center'>
+                                <a ng-click='deletes(v.id)'>
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    <div class="ibox-footer">
+      <button type="button" ng-click="submitForm()" ng-disabled="$root.disBtn" class="btn btn-sm btn-primary" name="button"><% $root.solog.label.general.save %></button>
+      <a ng-click="back()" class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+    </div>
+  </div>
+</div>
+<!-- modal pallet master -->
+<div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Item List</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped" id="pallet_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Code</th>
+              <th>Name</th>
+              <th class='hidden'>Barcode</th>
+              <th>Type</th>
+              <th>Measurement</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

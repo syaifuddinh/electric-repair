@@ -1,0 +1,9 @@
+<span ng-show="$root.roleList.includes('inventory.receipt.edit')">
+    <span ng-if='type == "icon"'>
+        <a title="Edit" ng-click="do()"><i class="fa fa-edit"></i></a>
+    </span>
+
+    <span ng-if='type == "button"'>
+        <button ng-click="do()" class="btn btn-sm btn-success"><i class="fa fa-pencil"></i> <% $root.solog.label.general.edit %></button>
+    </span>
+</span>

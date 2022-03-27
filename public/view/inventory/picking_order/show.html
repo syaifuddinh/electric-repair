@@ -1,0 +1,148 @@
+<div class="col-md-6">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Detail Picking</h5>
+      <div class="ibox-tools">
+        <button type="button" ng-if="item.status==1 && !isRealisation" class="btn btn-sm btn-primary" ng-click="realisation()" name="button"><i class="fa fa-upload"></i> Input Realisation</button>
+        <button type="button" ng-if="isRealisation" class="btn btn-sm btn-danger" ng-click="cancelRealisation()" name="button"> Cancel</button>
+        <button type="button" ng-if="item.status==2" class="btn btn-sm btn-danger" ng-click="postCancelRealisation()" name="button"> Cancel Realisation</button>
+        <button type="button" ng-if="item.status==2" class="btn btn-sm btn-primary" ng-click="posting()" name="button"> Posting</button>
+      </div>
+    </div>
+      <div class="ibox-content">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:30%;">Company</td>
+              <td>: <% item.company.name %></td>
+            </tr>
+            <tr>
+              <td style="width:30%;">Warehouse</td>
+              <td>: <% item.warehouse.name %></td>
+            </tr>
+            <tr>
+              <td>Customer</td>
+              <td>: <% item.customer.name %></td>
+            </tr>
+            <tr>
+              <td>Staff</td>
+              <td>: <% item.staff.name %></td>
+            </tr>
+            <tr>
+              <td>Date Transaction</td>
+              <td>: <% item.date_transaction|fullDate %></td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>: <span ng-bind-html="findJsonId(item.status,status).name"></span></td>
+            </tr>
+            <tr>
+              <td>Keterangan</td>
+              <td>: <% item.description %></td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <pre><% jStyle(formData) %></pre> -->
+      </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Item Details</h5>
+      <div class="ibox-tools">
+        <button type="button" ng-click="importModal()" class="btn btn-sm btn-primary">Import</button>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="appendTable">
+        <thead>
+          <tr>
+            <th>Parents Name</th>
+            <th>Child No</th>
+            <th>Child Name</th>
+            <th>Sloc / Bin</th>
+            <th>Lot No</th>
+            <th>UM</th>
+            <th>Qty</th>
+            <th>Delivery Schedule</th>
+            <th>Time Staging</th>
+            <th>Time Finish</th>
+            <th>Qty Delivered</th>
+            <th ng-show="isRealisation">Qty Realisation</th>
+            <!-- <th ng-show='item.status == 1'></th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(i,val) in formData.detail">
+            <td><span ng-bind="val.category"></span></td>
+            <td><span ng-bind="val.item_code"></span></td>
+            <td><span ng-bind="val.item_name"></span></td>
+            <td><span ng-bind="val.bin"></span></td>
+            <td><span ng-bind="val.lot_no"></span></td>
+            <td><span ng-bind="val.um"></span></td>
+            <td><span ng-bind="val.qty|number"></span></td>
+            <td><span ng-bind="val.delivery_schedule||''"></span></td>
+            <td><span ng-bind="val.time_staging||''"></span></td>
+            <td><span ng-bind="val.time_finish||''"></span></td>
+            <td>
+              <span ng-if="item.status!=2" ng-bind="val.qty_delivered|number"></span>
+              <a ng-if="item.status==2" ng-click="editQty(i)"><% val.qty_delivered|number %>&nbsp;<i class="fa fa-edit"></i></a>
+            </td>
+            <td ng-show="isRealisation">
+              <input type="text" ng-change="changeQtyRealisation(i)" jnumber2 only-num ng-model="val.qty_realisation" class="form-control">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <%formData%> -->
+    </div>
+    <div class="ibox-footer">
+      <a ui-sref="inventory.picking_order" class="btn btn-sm btn-warning">Back</a>
+      <a ng-click="storeRealisation()" ng-show="isRealisation" class="btn btn-sm btn-primary">Save Picking</a>
+    </div>
+  </div>
+</div>
+<!-- modal import -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id=""></h4>
+      </div>
+      <div class="modal-body">
+        <form id="forms">
+          <div class="form-group">
+            <label for="">Excel File (.xls,.xlsx)</label>
+            <input type="file" class="form-control" name="file" placeholder="">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="importSubmit()" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalQtyRealisation" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Edit Qty Delivered</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <span class="input-group-addon">Qty</span>
+          <input type="text" class="form-control" ng-model="formEdit.qty_delivered" placeholder="">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="saveUpdateQty()" class="btn btn-primary">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

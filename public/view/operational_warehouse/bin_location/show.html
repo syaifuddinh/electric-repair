@@ -1,0 +1,130 @@
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a data-toggle="tab" id="info_tab" ng-click='openInfo()'>
+            <% solog.label.general.detail %> 
+        </a>
+    </li>
+    <li>
+        <a data-toggle="tab" id="category_tab" ng-click='openCategory()'>
+            <% solog.label.general.default_item_category %> 
+        </a>
+    </li>
+    <li>
+        <a data-toggle="tab" id="item_tab" ng-click='openItem()'>
+            <% solog.label.general.default_item %> 
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div id='info_detail' class='tab-item'>
+        <div class="ibox">
+          <div class="ibox-content">
+
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td style="width:18%;">Bin Code / Name</td>
+                  <td style="width:2%">:</td>
+                  <td><b><% data.code %></b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.barcode %></td>
+                  <td>:</td>
+                  <td><b><% data.barcode %></b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.branch %></td>
+                  <td>:</td>
+                  <td><b><% data.company %></b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.storage_type %></td>
+                  <td>:</td>
+                  <td><b><% data.storage_type %></b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.volume_capacity %></td>
+                  <td>:</td>
+                  <td><b><% data.capacity_volume|number:2 %> m<sup>3</sup> </b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.used %> <% solog.label.general.volume_capacity %></td>
+                  <td>:</td>
+                  <td><b><% data.capacity_volume_used|number:2 %> m<sup>3</sup> </b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.weight_capacity %></td>
+                  <td>:</td>
+                  <td><b><% data.capacity_tonase|number:2 %> kg </b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.used %> <% solog.label.general.weight_capacity %></td>
+                  <td>:</td>
+                  <td><b><% data.capacity_tonase_used|number:2 %> kg </b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.max %> <% solog.label.general.pallet %></td>
+                  <td>:</td>
+                  <td><b><% data.max_pallet %></b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.luas %></td>
+                  <td>:</td>
+                  <td><b><% data.luas | number %></b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.is_floor_stake %></td>
+                  <td>:</td>
+                  <td><b><% data.is_floor_stake ? solog.label.general.yes : solog.label.general.no %></b></td>
+                </tr>
+                <tr>
+                  <td><% solog.label.general.map_location %></td>
+                  <td>:</td>
+                  <td><b><% data.warehouse_map_code %></b></td>
+                </tr>
+              </tbody>
+            </table>
+
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li ui-sref-active="active"><a ui-sref="operational_warehouse.bin_location.show.qrcode" ui-sref-opts="{location:false}"><i class="fa fa-tags"></i> QR Code</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="panel-body">
+                                <!-- main body -->
+                                <div ng-init="states.go('operational_warehouse.bin_location.show.qrcode',{id:stateParams.id},{location:false})"  ui-view="" class="mains"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          </div>
+          <div class="ibox-footer">
+            <button type="button" ng-click='backward()' class="btn btn-sm btn-warning">Go Back</button>
+          </div>
+        </div>
+    </div>
+
+    <div id='category_detail' class='tab-item'>
+        <item-categories-table default-rack-id="id" hide-add-button='true' />
+    </div>
+
+    <div id='item_detail' class='tab-item'>
+        <div class="ibox">
+            <div class="ibox-content">
+
+                <div class='ibox-tools'>
+                    <div id="export_button">
+                        
+                    </div>
+                </div>
+
+                <div class='mg-t2'>
+                    <item-table default-rack-id="id" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

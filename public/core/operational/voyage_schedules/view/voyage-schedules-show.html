@@ -1,0 +1,103 @@
+<div class="ibox">
+                <div class="ibox-content">
+                    <div class="sk-spinner sk-spinner-wave">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table display compact nowrap table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:30%;">Kapal</td>
+                                        <td>: <%item.vessel_name%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Voyage</td>
+                                        <td class="font-bold">: <%item.voyage%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Negara</td>
+                                        <td class="font-bold">: <%item.country_name%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ETD</td>
+                                        <td ng-if="item.etd">: <%item.etd|fullDateTime%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ETA</td>
+                                        <td ng-if="item.eta">: <%item.eta|fullDateTime%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jml Kontainer</td>
+                                        <td>: <%item.total_container|number%></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table display compact nowrap table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:30%;">Waktu Keberangkatan</td>
+                                        <td>: <%item.departure | fullDateTime %></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:30%;">Waktu Kedatangan</td>
+                                        <td>: <%item.arrival | fullDateTime %></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:30%;">POL</td>
+                                        <td>: <%item.pol_name%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>POD</td>
+                                        <td>: <%item.pod_name%></td>
+                                    </tr>
+                                    <!-- <tr>
+                                    <td>Waktu Berangkat</td>
+                                    <td ng-if="item.departure">: <%item.departure|fullDateTime%></td>
+                                    </tr>
+                                    <tr>
+                                    <td>Waktu Sampai</td>
+                                    <td ng-if="item.arrival">: <%item.arrival|fullDateTime%></td>
+                                    </tr> -->
+
+                                </tbody>
+                           </table>
+
+                        </div>
+                        <div class="col-md-12">
+                            <hr>
+                            <table class="table display compact nowrap table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No. Kontainer</th>
+                                        <th>Jenis</th>
+                                        <th>Seal</th>
+                                        <th>Colly</th>
+                                        <th>Tonase</th>
+                                        <th>Kubikasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="val in detail">
+                                        <td><% val.container_no %></td>
+                                        <td><% val.container_type.code+' - '+val.container_type.name %></td>
+                                        <td><% val.seal_no %></td>
+                                        <td><% val.total_item|number %></td>
+                                        <td><% val.total_tonase|number %></td>
+                                        <td><% val.total_volume|number %></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <a ui-sref="operational.voyage_schedule" class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+                    <h5 class="pull-right"><small>Created by <% item.creator_name %> <%item.created_at|timeago%></small></h5>
+                </div>
+            </div>

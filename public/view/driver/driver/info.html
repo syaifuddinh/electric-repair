@@ -1,0 +1,81 @@
+<table class="table display compact nowrap table-borderless">
+  <tbody>
+    <tr>
+      <td style="width: 20%;" class="font-bold">Nama</td>
+      <td>: <% data.name %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Wilayah</td>
+      <td>: <% data.company.name %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Alamat</td>
+      <td>: <% data.address %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Telfon</td>
+      <td>: <% data.phone+' - '+data.phone2 %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Email</td>
+      <td>: <% data.email %></td>
+    </tr>
+    <tr>
+      <td class="font-bold">Status Driver</td>
+      <td>: <% data.driver_status_name %></td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<button type="button" class="btn btn-sm btn-primary font-bold" ng-click="settingUser()"><i class="fa fa-wrench"></i> Setting Aplikasi</button>
+<!-- modal setting -->
+<div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Setting Aplikasi</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group" ng-class="{ 'has-error' : formError.email }">
+          <label class="col-md-3">Email</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="formData.email" autocomplete="off">
+            <span class="help-block" ng-if="formError.email">
+              <ul>
+                <li ng-repeat="val in formError.email" ng-bind="val"></li>
+              </ul>
+            </span>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : formError.password }">
+          <label class="col-md-3">Password</label>
+          <div class="col-md-9">
+            <input type="password" class="form-control" ng-model="formData.password" autocomplete="new-password">
+            <span class="help-block" ng-if="formError.password">
+              <ul>
+                <li ng-repeat="val in formError.password" ng-bind="val"></li>
+              </ul>
+            </span>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : formError.password_confirmation }">
+          <label class="col-md-3">Ulangi Password</label>
+          <div class="col-md-9">
+            <input type="password" class="form-control" ng-model="formData.password_confirmation">
+            <span class="help-block" ng-if="formError.password_confirmation">
+              <ul>
+                <li ng-repeat="val in formError.password_confirmation" ng-bind="val"></li>
+              </ul>
+            </span>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="submitForm()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="col-md-12">
+    <div class="ibox">
+        <div class="ibox-content form-horizontal">
+            <div class="form-group">
+                <label class="col-md-3"><% $root.solog.label.general.branch %></label>
+                <div class="col-md-9">
+                    <branch-select-input ng-model="formData.company_id"  />
+                </div>
+            </div>
+      <div class="form-group">
+        <label class="col-md-3">Customer</label>
+        <div class="col-md-9">
+          <customer-select-input ng-model="formData.customer_id" ng-change="resetAppend(formData);" />
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-md-3"><% $root.solog.label.general.date %></label>
+        <div class="col-md-5">
+          <input type="text" class="form-control" ng-model="formData.date_transaction" datepick>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3"><% $root.solog.label.general.description %></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" ng-model="formData.description">
+        </div>
+      </div>
+      <!-- <pre><% jStyle(formData) %></pre> -->
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-content">
+        
+        <div class='pull-right mg-b2'>
+            <sales-order-details-modal-input 
+                ng-model='item_id' 
+                is-multiple="1" 
+                is-pallet="is_pallet" 
+                type="button" 
+                customer-id="formData.customer_id"
+            />
+        </div>
+
+
+      <table class="table display compact nowrap table-bordered table-striped" id="appendTable">
+        <thead>
+          <tr>
+                <th><% $root.solog.label.sales_order.code %></th>
+                <th><% $root.solog.label.item.name %></th>
+                <th><% $root.solog.label.sales_order.qty_in_sales %></th>
+                <th><% $root.solog.label.general.qty %></th>
+                <th style="width:10%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr ng-if='formData.detail.length == 0'>
+                <td colspan='5' class="text-center">
+                    <% $root.solog.label.general.no_data %>
+                </td>
+            </tr>
+
+            <tr ng-repeat="(i, v) in formData.detail">
+                <td><% v.sales_order_code %></td>
+                <td><% v.item_name %></td>
+                <td class="text-right"><% v.qty_in_sales %></td>
+                <td>
+                    <input type="text" ng-model='formData.detail[i].qty' class='form-control' only-num />
+                </td>
+                <td class='text-center'>
+                    <a ng-click='delete(v.id)'>
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+      </table>
+      <!-- <pre><% jStyle(formData) %></pre> -->
+    </div>
+    <div class="ibox-footer">
+      <button type="button" ng-click="back()" class="btn btn-sm btn-warning" name="button"><% $root.solog.label.general.back %></button>
+      <button type="button" ng-click="submitForm()" ng-disabled="disBtn" class="btn btn-sm btn-primary" name="button">Save</button>
+    </div>
+  </div>
+</div>
+<!-- modal pallet master -->
+<div class="modal fade" id="modalPo" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:70%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Sales Order</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-striped" id="po_datatable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>No. Sales Order</th>
+              <th>Transaction Date</th>
+              <th>Customer</th>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

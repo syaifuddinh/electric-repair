@@ -1,0 +1,77 @@
+
+<div class="ibox" ng-show="isFilter">
+<div class="ibox-title">
+<h5><% solog.label.general.filter %></h5>
+</div>
+<form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+<div class="ibox-content">
+  <div class="form-group">
+    <label class="col-md-3 control-label"><% solog.label.general.branch %></label>
+    <div class="col-md-9">
+        <branch-select-input ng-model='formData.company_id' ng-change='searchData()'></branch-select-input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3 control-label"><% solog.label.general.warehouse %></label>
+    <div class="col-md-9">
+      <warehouses-select-input ng-model="formData.warehouse_id"  ng-change='searchData()'></warehouses-select-input>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+          <label class="col-md-3 control-label"><% solog.label.general.status %></label>
+          <div class="col-md-9">
+  
+            <select class="form-control" data-placeholder-text-single="'Choose Status'" chosen  ng-model="formData.status"  ng-change='searchData()'>
+              <option value=""></option>
+              <option value="1">Pengajuan</option>
+              <option value="2">Disetujui</option>
+            </select>
+          </div>
+        </div>
+  
+  <div class="form-group">
+    <label class="col-md-3 control-label"><% solog.label.general.period %></label>
+    <div class="col-md-9">
+      <div class="input-daterange input-group" style="width:100%;">
+        <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" ng-change='searchData()' datepick="">
+        <span class="input-group-addon">to</span>
+        <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date"  ng-change='searchData()' datepick="">
+      </div>
+    </div>
+  </div>
+  
+</div>
+<div class="ibox-footer" id="export_button">
+  <a class="btn btn-sm btn-warning" ng-click="resetFilter()"><% solog.label.general.reset %></a>
+</div>
+</form>
+</div>
+
+<div class="ibox">
+<div class="ibox-title">
+<h5><% solog.label.stock_opname.title %></h5>
+<div class="ibox-tools">
+  <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> <% solog.label.general.filter %></button>
+  <a ng-show="roleList.includes('inventory.stock.opname.create')" class="btn btn-sm btn-primary" ui-sref="operational_warehouse.stok_opname.create"><i class="fa fa-plus"></i> <% solog.label.general.add %></a>
+</div>
+</div>
+<div class="ibox-content">
+<table class="table display compact nowrap table-bordered" id="datatable">
+  <thead>
+    <tr>
+      <th style="width: 15%"><% solog.label.general.code %></th>
+      <th style="width: 15%"><% solog.label.general.date %></th>
+      <th><% solog.label.general.branch %></th>
+      <th style="width: 15%"><% solog.label.general.warehouse %></th>
+      <th style="width: 15%"><% solog.label.general.status %></th>
+      <th style="width:15%;"></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div>
+</div>
+

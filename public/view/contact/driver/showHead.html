@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-2">
+    <div class="ibox-content product-box">
+      <div class="">
+        <img class="" style="width: 100%;" src="<%baseUrl+'/img/driver_profiles.jpg'%>" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div class="tabs-container">
+      <div class="">
+        <ul class="nav nav-tabs">
+          <span ng-if="states.current.name=='contact.driver.show'" ng-init="states.go('contact.driver.show.info',{id:statesParams.id},{location:false})" ></span>
+          <li ng-show="roleList.includes('contact.driver.detail')" ui-sref-active="active"><a ui-sref="contact.driver.show.info"><i class="fa fa-user"></i> Personal Info</a></li>
+          <li ng-show="roleList.includes('contact.driver.detail.vehicle')" ui-sref-active="active"><a ui-sref="contact.driver.show.vehicle"><i class="fa fa-truck"></i> Vehicle</a></li>
+          <li ng-show="roleList.includes('contact.driver.detail.history')" ui-sref-active="active"><a ui-sref="contact.driver.show.history"><i class="fa fa-clock-o"></i> History Job</a></li>
+          <!-- <li ui-sref-active="active"><a ui-sref="contact.driver.show.absence"><i class="fa fa-calendar"></i> Absensi</a></li> -->
+        </ul>
+        <div class="tab-content active">
+          <div class="panel-body">
+            <div ui-view="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

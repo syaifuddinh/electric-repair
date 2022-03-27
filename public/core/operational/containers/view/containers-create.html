@@ -1,0 +1,114 @@
+<div class="col-md-8">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5><% $root.solog.label.general.container %></h5>
+        </div>
+        <form class="form-horizontal">
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-3 control-label">Branch</label>
+                    <div class="col-md-9">
+                        <branch-select-input ng-model="formData.company_id" />
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-3 control-label">Jadwal Kapal</label>
+                    <div class="col-md-9">
+                        <select class="form-control" data-placeholder-text-single="'Choose Jadwal Kapal'" chosen allow-single-deselect="false" ng-model="formData.voyage_schedule_id" ng-options="s.id as s.voyage+' - ETA.'+(s.eta|fullDateTime)+'/ETD.'+(s.etd|fullDateTime) for s in data.voyage_schedule">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Waktu Stripping/Bongkar</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control text-center" ng-model="formData.stripping_date" datepick>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control clockpick text-center" clockpick ng-model="formData.stripping_time">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Waktu Stuffing/Muat</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control text-center" ng-model="formData.stuffing_date" datepick>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control clockpick text-center" clockpick ng-model="formData.stuffing_time">
+                    </div>
+                </div>
+                
+                <div class="form-group required">
+                    <label class="col-md-3 control-label">No Booking</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" ng-model="formData.booking_number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Tgl Booking</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="formData.booking_date" datepick>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-3 control-label">No Kontainer</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" ng-model="formData.container_no">
+                    </div>
+                </div>
+                
+                <div class="form-group required">
+                    <label class="col-md-3 control-label"><% $root.solog.label.general.container_type %></label>
+                    <div class="col-md-9">
+                        <container-types-select-input ng-model="formData.container_type_id" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">FCL/LCL</label>
+                    <div class="col-md-5">
+                        <div class="radio radio-primary radio-inline">
+                            <input type="radio" id="is_fcl" ng-model="formData.is_fcl" ng-value="1">
+                            <label for="is_fcl">FCL</label>
+                        </div>
+                        <div class="radio radio-primary radio-inline">
+                            <input type="radio" id="is_lcl" ng-model="formData.is_fcl" ng-value="0">
+                            <label for="is_lcl">LCL</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">No Seal</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" ng-model="formData.seal_no">
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-3 control-label">Komoditas Utama</label>
+                    <div class="col-md-9">
+                        <select class="form-control" data-placeholder-text-single="'Choose Komoditas Utama'" chosen allow-single-deselect="false" ng-model="formData.commodity_id" ng-options="s.id as s.name for s in data.commodity">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-md-3 control-label">Judul Komoditas</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" ng-model="formData.commodity">
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-footer">
+                <div class="btn-group">
+                    <a ng-click='backward()' class="btn btn-sm btn-warning"><% $root.solog.label.general.back %></a>
+                    <button type="button" ng-click='submitForm(1)' ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+                    <button type="button" ng-click='submitForm(0)' ng-disabled="disBtn" class="btn btn-sm btn-success">Save & continue</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

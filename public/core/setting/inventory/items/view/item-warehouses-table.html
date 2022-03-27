@@ -1,0 +1,13 @@
+<div>
+    <div class="pd-b10" ng-show='isFilter'>
+        <warehouses-select-input ng-model="formData.warehouse_id" ng-change="searchData()"/>
+    </div>
+    <div class='pd-b10' >
+        <button ng-if='!warehouse_id' class='btn btn-sm btn-primary' ng-click='openFilter()'><i class="fa fa-filter"></i> <% $root.solog.label.general.filter %></button>
+        <button ng-if='!warehouse_id' class='btn btn-sm btn-warning' ng-click='resetFilter()'><% $root.solog.label.general.reset %></button>
+        <button ng-if='is_multiple' class='btn btn-sm btn-success pull-right' ng-click='chooseItemWarehouses()'><% $root.solog.label.general.choose %></button>
+    </div>
+    <div>
+        <solog-datatable options='options' id='item_warehouse_datatable'></solog-datatable>
+    </div>
+</div>

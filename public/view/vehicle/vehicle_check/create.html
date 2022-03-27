@@ -1,0 +1,115 @@
+<div class="col-md-12">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>Pengecekan Vehicle</h5>
+    </div>
+    <form class="form-horizontal" ng-submit="submitForm()">
+      <div class="ibox-content">
+        <div class="form-group required">
+          <label class="col-md-2 control-label">Branch</label>
+          <div class="col-md-5">
+            <select class="form-control" ng-change="cariKendaraan(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-2 control-label">Vehicle</label>
+          <div class="col-md-5">
+            <div class="input-group">
+                <select class="form-control" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_id" ng-options="s.id as s.nopol for s in vehicles">
+                  <option value=""></option>
+                </select>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-md btn-success" ng-click='insertVehicle()' ng-show="roleList.includes('vehicle.vehicle.create')">
+                        <i class="fa fa-plus pd-08"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-2 control-label">Tanggal Cek</label>
+          <div class="col-md-4">
+            <input type="text" datepick class="form-control" ng-model="formData.date_transaction">
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-md-2 control-label">Petugas</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" ng-model="formData.officer">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label">Score</label>
+          <div class="col-md-6">
+            <% formData.score %>
+          </div>
+        </div>
+        <hr>
+        <h4>Kelengkapan Vehicle</h4>
+        <table class="table display compact nowrap table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th style="width:10%;" class="text-center">Ada</th>
+              <th style="width:10%;" class="text-center">Berfungsi</th>
+              <th style="width:15%;">Kondisi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(i,value) in data.checklist">
+              <td><% value.name %></td>
+              <td ng-init="formData.items[i].id=value.id" class="text-center">
+                <input type="checkbox" ng-init="formData.items[i].is_exist=0" ng-model="formData.items[i].is_exist" ng-true-value="1" ng-false-value="0" ng-change="changeDefaultValueItem(i)">
+              </td>
+              <td class="text-center">
+                <input ng-show='formData.items[i].is_exist == 1' type="checkbox" ng-init="formData.items[i].is_function=0" ng-model="formData.items[i].is_function" ng-true-value="1" ng-false-value="0">
+              </td>
+              <td class="text-center">
+                <div ng-show='formData.items[i].is_exist == 1'>
+                    <input type="radio" ng-init="formData.items[i].condition=0" ng-model="formData.items[i].condition" ng-value="1"> <strong>BAIK</strong>
+                    <input type="radio" ng-model="formData.items[i].condition" ng-value="2"> <strong>TIDAK</strong>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h4>Bodi Vehicle</h4>
+        <table class="table display compact nowrap table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th style="width:10%;" class="text-center">Ada</th>
+              <th style="width:10%;" class="text-center">Berfungsi</th>
+              <th style="width:15%;">Kondisi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(i,value) in data.body">
+              <td><% value.name %></td>
+              <td ng-init="formData.body[i].id=value.id;" class="text-center">
+                <input type="checkbox" ng-init="formData.body[i].is_exist=0" ng-model="formData.body[i].is_exist" ng-true-value="1" ng-false-value="0" ng-change="changeDefaultValueBody(i)">
+              </td>
+              <td class="text-center">
+                <div ng-show='formData.body[i].is_exist == 1'>
+                    <input type="checkbox" ng-init="formData.body[i].is_function=0" ng-model="formData.body[i].is_function" ng-true-value="1" ng-false-value="0">
+                </div>
+              </td>
+              <td class="text-center">
+                <div ng-show='formData.body[i].is_exist == 1'>
+                    <input type="radio" ng-init="formData.body[i].condition=0" ng-model="formData.body[i].condition" ng-value="1"> <strong>BAIK</strong>
+                    <input type="radio" ng-model="formData.body[i].condition" ng-value="2"> <strong>TIDAK</strong>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="vehicle.vehicle_check" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

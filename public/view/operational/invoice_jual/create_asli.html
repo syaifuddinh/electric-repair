@@ -1,0 +1,407 @@
+<div class="col-md-12">
+  <form class="form-horizontal" ng-submit="submitForm()">
+    <div class="ibox">
+      <div class="ibox-content">
+
+        <div class="form-group">
+          <label class="col-md-2">Branch</label>
+          <div class="col-md-5">
+            <select class="form-control" ng-change="companyChange(formData.company_id)" data-placeholder-text-single="'Choose Branch'" chosen allow-single-deselect="false" ng-model="formData.company_id" ng-options="s.id as s.name for s in data.company">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2">Tgl Invoice</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" ng-model="formData.date_invoice" datepick>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2">Customer Tagih</label>
+          <div class="col-md-5">
+            <select class="form-control" ng-change="resetDetail()" data-placeholder-text-single="'Choose Customer Penagihan'" chosen allow-single-deselect="false" ng-model="formData.customer_id" ng-options="s.id as s.name for s in customer">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2"></label>
+          <div class="col-md-5">
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="pJO" ng-change="wo_jo={}" ng-model="formData.type" ng-value="1">
+              <label for="pJO">Per Job Order</label>
+            </div>
+            <div class="radio radio-inline radio-primary">
+              <input type="radio" id="pWO" ng-change="wo_jo={}" ng-model="formData.type" ng-value="2">
+              <label for="pWO">Per Work Order</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" ng-if="formData.type==1">
+          <label class="col-md-2">Job Order / PO Customer</label>
+          <div class="col-md-5">
+            <div class="input-group">
+              <input readonly ng-click="cariJO(formData.customer_id)" type="text" class="form-control" ng-model="wo_jo.job_order_code" placeholder="Cari Job Order">
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="formData.type==2">
+          <label class="col-md-2">Work Order</label>
+          <div class="col-md-5">
+            <div class="input-group">
+              <input readonly ng-click="cariWO(formData.customer_id)" type="text" class="form-control" ng-model="wo_jo.work_order_code" placeholder="Cari Work Order">
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2">Termin</label>
+          <div class="col-md-2">
+            <select class="form-control" data-placeholder-text-single="'Choose Termin'" chosen allow-single-deselect="false" ng-model="formData.type_bayar" ng-options="s.id as s.name for s in termin">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="col-md-6" ng-if="formData.type_bayar==1">
+            <select class="form-control" data-placeholder-text-single="'Choose Akun Kas'" chosen allow-single-deselect="false" ng-model="formData.cash_account_id" ng-options="s.id as s.account_name group by s.parent.name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="col-md-3" ng-if="formData.type_bayar==2">
+            <div class="input-group">
+              <input type="text" class="form-control" jnumber2 only-num ng-model="formData.termin">
+              <span class="input-group-addon">Hari</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="formData.type_bayar==2">
+          <label class="col-md-2">Akun Piutang</label>
+          <div class="col-md-5">
+            <select class="form-control" data-placeholder-text-single="'Choose Akun Piutang'" chosen allow-single-deselect="false" ng-model="formData.account_receivable_id" ng-options="s.id as s.account_name group by s.parent.name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2">Akun Penjualan</label>
+          <div class="col-md-5">
+            <select class="form-control" data-placeholder-text-single="'Choose Akun Penjualan'" chosen allow-single-deselect="false" ng-model="formData.account_selling_id" ng-options="s.id as s.account_name group by s.parent.name for s in data.account">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2">Keterangan</label>
+          <div class="col-md-6">
+            <textarea ng-model="formData.description" class="form-control" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2"></label>
+          <div class="col-md-5">
+            <button type="button" class="btn btn-sm btn-primary" ng-click="appendDetail()" ng-disabled="!wo_jo.job_order_id && !wo_jo.work_order_id" name="button"><i class="fa fa-plus"></i> Add Detail</button>
+          </div>
+        </div>
+
+        <!-- <pre><%jStyle(formData)%></pre> -->
+        <!-- <pre><%jStyle(wo_jo)%></pre> -->
+      </div>
+    </div>
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><i class="fa fa-fax"></i> Detail Invoice</h5>
+        <div class="ibox-tools">
+          <button type="button" ng-click="addDetail()" ng-disabled="!formData.customer_id" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Detail</button>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table display compact nowrap table-bordered" id="tableDetail">
+              <thead>
+                <tr>
+                  <th>Job Order</th>
+                  <th>No PO</th>
+                  <th>Route</th>
+                  <th>Nopol</th>
+                  <th>Driver</th>
+                  <th>Container</th>
+                  <th>Komoditas</th>
+                  <th>Keterangan</th>
+                  <th>Jumlah</th>
+                  <th>Pengenaan</th>
+                  <th>Harga Satuan</th>
+                  <th>Harga Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-5 pull-right">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td>Sub Total</td>
+                  <td colspan="2">
+                    <input type="text" ng-model="formData.sub_total" class="form-control text-right" jnumber2 only-num readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Diskon</td>
+                  <td style="width:20%;">
+                    <input type="text" ng-keyup="formData.discount_total=formData.sub_total*formData.discount_percent/100;hitungSubTotalDetail()" ng-model="formData.discount_percent" class="form-control text-center" jnumber2 only-num>
+                  </td>
+                  <td>
+                    <input type="text" ng-keyup="hitungSubTotalDetail()" ng-model="formData.discount_total" class="form-control text-right" jnumber2 only-num>
+                  </td>
+                </tr>
+                <tr>
+                  <td>PPN 10%</td>
+                  <td colspan="2">
+                    <div class="input-group" style="width:100%;">
+                      <span class="input-group-addon">
+                        <input ng-change="changeDetailPpn(formData.is_ppn)" type="checkbox" ng-model="formData.is_ppn" ng-true-value="1" ng-false-value="0">
+                      </span>
+                      <input type="text" ng-model="formData.ppn_total" class="form-control text-right" jnumber2 only-num readonly>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Pajak</td>
+                  <td colspan="2">
+                    <div class="input-group" style="width:100%;">
+                      <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                      <input type="text" ng-click="addTax()" ng-model="formData.total_another_ppn" class="form-control text-right" jnumber2 only-num readonly>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Grand Total</td>
+                  <td colspan="2">
+                    <input type="text" ng-model="formData.grand_total" class="form-control text-right" jnumber2 only-num readonly>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="ibox">
+      <div class="ibox-title">
+        <h5><i class="fa fa-fax"></i> Invoice Lain - Lain</h5>
+        <div class="ibox-tools">
+          <button type="button" ng-click="addAdditional()" ng-disabled="!formData.customer_id" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Detail</button>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table display compact nowrap table-bordered" id="tableAdditional">
+              <thead>
+                <tr>
+                  <th>Nama Item</th>
+                  <th>Keterangan</th>
+                  <th>Jumlah</th>
+                  <th>Satuan</th>
+                  <th>Harga Satuan</th>
+                  <th>Harga Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-5 pull-right">
+            <table class="table display compact nowrap table-borderless">
+              <tbody>
+                <tr>
+                  <td>Sub Total</td>
+                  <td colspan="2">
+                    <input type="text" ng-model="formData.sub_total_additional" class="form-control text-right" jnumber2 only-num readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Diskon</td>
+                  <td style="width:20%;">
+                    <input type="text" ng-keyup="formData.discount_total_additional=formData.sub_total_additional*formData.discount_percent_additional/100;hitungSubTotalAdditional()" ng-model="formData.discount_percent_additional" class="form-control text-center" jnumber2 only-num>
+                  </td>
+                  <td>
+                    <input type="text" ng-keyup="hitungSubTotalAdditional()" ng-model="formData.discount_total_additional" class="form-control text-right" jnumber2 only-num>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Grand Total</td>
+                  <td colspan="2">
+                    <input type="text" readonly ng-model="formData.grand_total_additional" class="form-control text-right" jnumber2 only-num readonly>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <!-- <pre><% jStyle(formData) %></pre> -->
+      </div>
+      <div class="ibox-footer">
+        <a ui-sref="operational.invoice_jual" class="btn btn-sm btn-warning">Kembali</a>
+        <button type="submit" ng-disabled="disBtn" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- modal JO-->
+<div class="modal fade" id="modalJO" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Job Order</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="jo_datatable" style="width:100%;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode JO</th>
+              <th>Tanggal</th>
+              <th>PO Customer</th>
+              <th>Layanan</th>
+              <th>Jenis</th>
+              <th>Route</th>
+              <th>Customer</th>
+              <th>Alamat Kirim</th>
+              <th>Pengiriman</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal invoice tambahan -->
+<div class="modal fade" id="invoiceAddModal" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Biaya Addan</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+
+        <div class="form-group">
+          <label class="col-md-2">Invoice Addan</label>
+          <div class="col-md-9">
+            <select class="form-control" ng-change="changeCT(detailInv.cost_type_id)" data-placeholder-text-single="'Choose Jenis Biaya'" chosen allow-single-deselect="false" ng-model="detailInv.cost_type_id" ng-options="s.id as s.name group by s.parent.name for s in data.cost_type">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2">Qty</label>
+          <div class="col-md-3">
+            <input type="text" ng-keyup="detailInv.total_price=detailInv.qty*detailInv.price" class="form-control" jnumber2 only-num ng-model="detailInv.qty">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2">Harga Satuan</label>
+          <div class="col-md-5">
+            <input type="text" ng-keyup="detailInv.total_price=detailInv.qty*detailInv.price" class="form-control" jnumber2 only-num ng-model="detailInv.price">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2">Total Price</label>
+          <div class="col-md-5">
+            <input type="text" readonly class="form-control" jnumber2 only-num ng-model="detailInv.total_price">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2">Keterangan</label>
+          <div class="col-md-9">
+            <textarea ng-model="detailInv.description" rows="4" class="form-control"></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-if="is_using_ppn" ng-disabled="!detailInv.cost_type_id" ng-click="addInvoiceOther()" class="btn btn-primary"><i class="fa fa-plus"></i> Add Ke Tabel</button>
+        <button type="button" ng-if="!is_using_ppn" ng-disabled="!detailInv.cost_type_id" ng-click="addInvoiceAdditional()" class="btn btn-primary"><i class="fa fa-plus"></i> Add Ke Tabel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal pajak -->
+<div class="modal fade" id="modalTax" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Pajak</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr ng-repeat="(i,val) in taxInput">
+              <td>
+                <select class="form-control" ng-change="hitungTax(i,taxData[i].tax)" data-placeholder-text-single="'Pajak 1'" chosen allow-single-deselect="true" ng-model="taxData[i].tax" ng-options="s.id as s.name for s in data.tax">
+                  <option value=""></option>
+                </select>
+              </td>
+              <td>
+                <input type="text" class="form-control" jnumber2 only-num readonly ng-model="taxData[i].value">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Selesai</button>
+        <!-- <button type="button" class="btn btn-primary">Masukkan Pajak</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal WO-->
+<div class="modal fade" id="modalWO" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="">Cari Work Order</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table display compact nowrap table-bordered" id="wo_datatable" style="width:100%;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Kode WO</th>
+              <!-- <th>Tanggal</th> -->
+              <th>Kontrak</th>
+              <th>Job Order</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

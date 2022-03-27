@@ -1,0 +1,89 @@
+<div class="sk-container col-md-12">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <h4>Status Logs</h4>
+    <table class="table display compact nowrap table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Updated At</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(i,val) in job_order.kpiLogDetail">
+                <td><% i+1 %></td>
+                <td><% val.kpi_status.name %></td>
+                <td><% val.date_update|fullDateTime %></td>
+                <td><% val.creates.name %></td>
+                <td><% val.description %></td>
+                <td class="text-center">
+                    <a ng-click="job_order.editKpiStatus(val)"><i class="fa fa-edit"></i>&nbsp;</a>
+                    <a ng-click="job_order.deleteKpiStatus(val.id)" ng-if="i>0"><i class="fa fa-trash"></i>&nbsp;</a>
+                    <a ng-if="val.file_name" download="<% 'docs_'+val.job_order_id+'_'+val.id+'.'+val.extension %>" href="<% urls+'/'+val.file_name %>"><i class="fa fa-file"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+<!-- modal status -->
+<div class="modal fade" id="modalUpdateStatus" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Update Status Proses</h4>
+            </div>
+            <form class="form-horizontal" ng-submit="job_order.updateStatus()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-md-3">Current Status</label>
+                        <div class="col-md-9">
+                            <span class="font-bold"><% job_order.statusData.name %></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">New Status</label>
+                        <div class="col-md-9">
+                            <select class="form-control" data-placeholder-text-single="'Choose Status'" chosen allow-single-deselect="false" ng-model="job_order.statusData.kpi_status_id" ng-options="s.id as s.name for s in job_order.kpi_status">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Tanggal Update</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control text-center" ng-model="job_order.statusData.update_date" datepick>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control clockpick text-center" ng-model="job_order.statusData.update_time">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Keterangan</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" ng-model="job_order.statusData.description" rows="4"></textarea>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

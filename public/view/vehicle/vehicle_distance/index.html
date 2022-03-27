@@ -1,0 +1,104 @@
+<div class="col-md-12">
+    <div class="ibox" ng-show="is_filter">
+        <div class="ibox-title">
+            <h5>Filter Vehicle</h5>
+        </div>
+        <div class="ibox-content form-horizontal">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Branch</label>
+                <div class="col-md-9">
+                    <select ng-change='refreshTable()' class="form" data-placeholder-text-single="'Semua Branch'" chosen allow-single-deselect="false" ng-model="formFilter.company_id" ng-options="c.id as c.name for c in data.companies" ng-change="company_changed()">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Vehicle</label>
+                <div class="col-md-9">
+                    <select ng-change='refreshTable()' class="form" data-placeholder-text-single="'Semua Vehicle'" chosen allow-single-deselect="false" ng-model="formFilter.vehicle_id" ng-options="c.id as c.code for c in data.active_vehicles">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Periode</label>
+                <div class="col-md-9">
+                    <div class="input-daterange input-group" style="width:100%;">
+                    <input ng-change='refreshTable()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formFilter.start_date" datepick="">
+                    <span class="input-group-addon">to</span>
+                    <input ng-change='refreshTable()' type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formFilter.end_date" datepick="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-footer">
+            <button class="btn btn-warning" ng-click='reset_filter()'>Reset</button>
+<!--            <button class="btn btn-primary" ng-click='refreshTable()'>Cari</button>-->
+            <a ng-click="exportExcel()" class="btn btn-default btn-sm font-bold"><i class="fa fa-file-excel-o"></i> Export</a>
+        </div>
+    </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>KM Vehicle</h5>
+      <div class="ibox-tools">
+            <a ng-click='is_filter = !is_filter' class="btn btn-success btn-sm font-bold"><i class="fa fa-filter"></i> Filter</a>
+        <a ng-show="roleList.includes('vehicle.log_km.create')" class="btn btn-sm btn-primary" ng-click="create()"><i class="fa fa-plus"></i> Update KM</a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <table class="table display compact nowrap table-bordered" id="datatable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nopol</th>
+            <th>Tanggal Update</th>
+            <th>Kilometer</th>
+            <!-- <th style="width:10%;"></th> -->
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modal" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" ><% modalTitle %></h4>
+      </div>
+      <form class="form-horizontal" ng-submit="submitForm()">
+        <div class="modal-body">
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Vehicle</label>
+            <div class="col-md-9">
+              <select class="form-control" data-placeholder-text-single="'Choose Vehicle'" chosen allow-single-deselect="false" ng-model="formData.vehicle_id" ng-options="s.id as s.code+' - '+s.nopol for s in data.vehicles">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Tanggal Tempuh</label>
+            <div class="col-md-5">
+              <input type="text" datepick class="form-control" ng-model="formData.date_distance">
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-md-3 control-label">Kilometer Tempuh</label>
+            <div class="col-md-9">
+              <input type="text" jnumber2 only-num class="form-control" ng-model="formData.distance">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Tutup</button>
+          <button type="submit" ng-disabled="disBtn" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

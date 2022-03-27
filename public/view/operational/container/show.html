@@ -1,0 +1,75 @@
+<form class="form-horizontal">
+<div class="col-md-9">
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5><% solog.label.general.container %></h5>
+      <div class="ibox-tools">
+        <!-- <a class="btn btn-sm btn-primary" ui-sref="setting.account.create"><i class="fa fa-plus"></i> Add</a> -->
+      </div>
+    </div>
+      <div class="ibox-content">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+        </div>
+        <table class="table display compact nowrap table-borderless">
+          <tbody>
+            <tr>
+              <td style="width:30%;">Branch</td>
+              <td>: <% item.company.name %></td>
+            </tr>
+            <tr>
+              <td>Nomor Kontainer</td>
+              <td>: <span class="font-bold"><% item.container_no %></span></td>
+            </tr>
+            <tr>
+              <td>Tipe Kontainer</td>
+              <td>: <span class=""><% item.container_type.code %></span></td>
+            </tr>
+            <tr>
+              <td>Kapal</td>
+              <td>: <% item.voyage_schedule.vessel.name %></td>
+            </tr>
+            <tr>
+              <td>Voyage</td>
+              <td>: <% item.voyage_schedule.voyage %></td>
+            </tr>
+            <tr>
+              <td>Komiditi</td>
+              <td>: <% item.commodity %></td>
+            </tr>
+            <tr>
+              <td>Waktu Booking</td>
+              <td>: <span ng-if="item.booking_date" ng-bind="item.booking_date|fullDateTime"></span></td>
+            </tr>
+            <tr>
+              <td>No. Booking</td>
+              <td>: <% item.booking_number %></td>
+            </tr>
+            <tr>
+              <td>Waktu Stuffing</td>
+              <td>: <span ng-if="item.stuffing" ng-bind="item.stuffing|fullDateTime"></span></td>
+            </tr>  
+            <tr>
+              <td>Waktu Stripping </td>
+              <td>: <span ng-if="item.stripping" ng-bind="item.stripping|fullDateTime"></span></td>
+              <td>: </td>
+            </tr>
+            <tr>
+              <td>Tipe</td>
+              <td>: <% findJsonId(item.is_fcl,type).name %></td>
+            </tr> 
+          </tbody>
+        </table>
+      </div>
+      <div class="ibox-footer">
+        <div class="btn-group">
+            <a ng-click='backward()' class="btn btn-sm btn-warning"><% solog.label.general.back %></a>
+            <a ui-sref="operational.container.edit({id:item.id})" class="btn btn-sm btn-primary"><% solog.label.general.edit %></a>
+        </div>
+      </div>
+
+  </div>
+</div>
+</form>

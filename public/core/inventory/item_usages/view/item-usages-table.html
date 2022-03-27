@@ -1,0 +1,88 @@
+<div class="ibox" ng-show="isFilter">
+  <div class="ibox-title">
+    <h5>Filter</h5>
+  </div>
+  <form class="form-horizontal ng-valid ng-dirty ng-valid-parse" >
+    <div class="ibox-content">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Branch</label>
+        <div class="col-md-9">
+            <branch-select-input ng-model='formData.company_id' ng-change="searchData()" />
+        </div>
+      </div>
+     
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% $root.solog.label.general.requested_date %></label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date" datepick="" ng-change="searchData()">
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date" datepick="" ng-change="searchData()">
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="col-md-3 control-label"><% $root.solog.label.general.realization_date %></label>
+        <div class="col-md-9">
+          <div class="input-daterange input-group" style="width:100%;">
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.start_date_penggunaan" datepick="" ng-change="searchData()">
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control ng-untouched ng-valid ng-empty ng-dirty ng-valid-parse" ng-model="formData.end_date_penggunaan" datepick="" ng-change="searchData()">
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="col-md-3 control-label">Status</label>
+        <div class="col-md-9">
+          <select class="form" data-placeholder-text-single="'Choose Status'" chosen allow-single-deselect="false" ng-model="formData.status" ng-change="searchData()">
+            <option value=""></option>
+            <option value="1">Draft</option>
+            <option value="2">Approved</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-footer">
+      <a class="btn btn-sm btn-warning" ng-click="resetFilter()">Reset</a>
+    </div>
+  </form>
+</div>
+
+<div class="ibox">
+  <div class="ibox-title">
+    <h5><% $root.pageTitle %></h5>
+    <div class="ibox-tools">
+        <button type="button" class="btn btn-success btn-sm font-bold" ng-click="isFilter = !isFilter"><i class="fa fa-filter"></i> <% $root.solog.label.general.filter %></button>
+        <a 
+            class="btn btn-sm btn-primary" 
+            ng-click='add()'
+            ng-show="$root.roleList.includes('inventory.good_issue.create')"
+        >
+            <i class="fa fa-plus"></i> <% $root.solog.label.general.add %>
+        </a>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="sk-spinner sk-spinner-wave">
+        <div class="sk-rect1"></div>
+        <div class="sk-rect2"></div>
+        <div class="sk-rect3"></div>
+    </div>
+    <table class="table display compact nowrap table-bordered table-hover context-menu" id="datatable">
+      <thead>
+        <tr>
+          <th><% $root.solog.label.general.branch %></th>
+          <th><% $root.solog.label.item_usage.code %></th>
+          <th><% $root.solog.label.general.requested_date %></th>
+          <th><% $root.solog.label.general.realization_date %></th>
+          <th><% $root.solog.label.general.status %></th>
+          <th style="width:5%;"></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
